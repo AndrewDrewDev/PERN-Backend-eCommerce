@@ -1,3 +1,4 @@
 dist/
 data/
 config/
+yarn.lock
