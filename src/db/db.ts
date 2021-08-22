@@ -1,13 +1,11 @@
-import { Sequelize } from 'sequelize'
+import { Pool } from 'pg'
 import config from 'config'
 
-export default new Sequelize(
-  config.get('DB_NAME'),
-  config.get('DB_USER'),
-  config.get('DB_PASSWORD'),
-  {
-    dialect: 'postgres',
-    host: config.get('DB_HOST'),
-    port: config.get('DB_PORT'),
-  }
-)
+// Connected to PorsgresSQL
+export default new Pool({
+  user: config.get('DB_USER'),
+  host: config.get('DB_HOST'),
+  database: config.get('DB_NAME'),
+  password: config.get('DB_PASSWORD'),
+  port: config.get('DB_PORT'),
+})
