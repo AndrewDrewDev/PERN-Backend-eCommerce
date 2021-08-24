@@ -15,10 +15,7 @@ const start = async () => {
     app.listen(PORT, () => {
       console.log(`Server Running on port ${PORT}!`)
     })
-    const user: string = `select product.name as product_name, label.name as label_name from product left join label on product.label_id=label.id;`
-
-    const result = await db.query(user)
-    console.log(result.rows)
+    db.initDatabaseModel()
   } catch (e) {
     console.log(e)
   }
