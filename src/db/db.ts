@@ -1,7 +1,5 @@
 import { Pool } from 'pg'
 import config from 'config'
-import fs from 'fs-extra'
-import path from 'path/posix'
 
 // Connected to PorsgresSQL
 class Database {
@@ -17,14 +15,6 @@ class Database {
     })
   }
 
-  public initDatabaseModel() {
-    const sql: string = fs.readFileSync(
-      path.resolve(__dirname, './sql/model.sql'),
-      'utf-8'
-    )
-    this.query(sql)
-  }
-
   public async query(text: string, params: any[] = []) {
     const start = Date.now()
     const res = await this.db.query(text, params)
@@ -34,6 +24,4 @@ class Database {
   }
 }
 
-let db = new Database()
-
-export default db
+export default new Database()
