@@ -97,9 +97,6 @@ ALTER TABLE tag_to_product
   REFERENCES product(id);
 
 -- FK product table
-ALTER TABLE product
-  ADD COLUMN categ_id INTEGER
-  REFERENCES category_to_product(id);
 
 ALTER TABLE product
   ADD COLUMN info_id INTEGER
@@ -108,10 +105,6 @@ ALTER TABLE product
 ALTER TABLE product
   ADD COLUMN label_id INTEGER
   REFERENCES labels(id);
-
-ALTER TABLE product
-  ADD COLUMN tag_id INTEGER
-  REFERENCES tag_to_product(id);
 
 ALTER TABLE product
   ADD COLUMN property_id INTEGER

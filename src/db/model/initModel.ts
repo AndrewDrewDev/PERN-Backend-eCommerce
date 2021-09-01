@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import db from '../db'
 
-const initDBModel = () => {
+const initModel = () => {
   const sql: string = fs.readFileSync(
     path.resolve(__dirname, './model.sql'),
     'utf-8'
@@ -10,4 +10,5 @@ const initDBModel = () => {
   db.query(sql)
 }
 
-export default initDBModel
+initModel()
+// export default initDBModel

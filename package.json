@@ -2,21 +2,22 @@
   "private": true,
   "main": "./src/app.ts",
   "scripts": {
-    "start": "nodemon ./src/app.ts",
+    "dev:server": "nodemon ./src/app.ts",
+    "dev:db:migrate": "nodemon ./src/db/migration/startMigrate.ts",
+    "dev:db:model": "nodemon ./src/db/model/initModel.ts",
     "build": "tsc -p ."
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "config": "^3.3.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs-extra": "^10.0.0",
+    "iuliia": "^0.6.1",
     "pg": "^8.7.1",
     "sequelize": "^6.6.5"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.1",
-    "@types/config": "^0.0.39",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/fs-extra": "^9.0.12",

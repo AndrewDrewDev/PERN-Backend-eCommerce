@@ -1,5 +1,4 @@
 import express, { Application } from 'express'
-import config from 'config'
 import { TPORTConfig } from './types'
 import cors from 'cors'
 
