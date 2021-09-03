@@ -1,15 +1,15 @@
 CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
-  name VARCHAR,
-  url VARCHAR,
+  name VARCHAR UNIQUE NOT NULL,
+  url VARCHAR UNIQUE NOT NULL,
   description VARCHAR,
   img VARCHAR
 );
 
 CREATE TABLE tags (
   id SERIAL PRIMARY KEY,
-  name VARCHAR,
-  url VARCHAR,
+  name VARCHAR UNIQUE NOT NULL,
+  url VARCHAR UNIQUE NOT NULL,
   description TEXT
 );
 
@@ -22,7 +22,8 @@ CREATE TABLE category_to_product (
 
 CREATE TABLE labels (
   id SERIAL PRIMARY KEY,
-  name VARCHAR
+  name VARCHAR UNIQUE NOT NULL,
+  url VARCHAR UNIQUE NOT NULL
 );
 
 CREATE TABLE tag_to_product (
@@ -33,12 +34,14 @@ CREATE TABLE tag_to_product (
 
 CREATE TABLE units (
   id SERIAL PRIMARY KEY,
-  name VARCHAR
+  name VARCHAR,
+  url VARCHAR UNIQUE NOT NULL
 );
 
 CREATE TABLE suppliers (
   id SERIAL PRIMARY KEY,
-  name VARCHAR
+  name VARCHAR UNIQUE NOT NULL,
+  url VARCHAR UNIQUE NOT NULL
 );
 
 CREATE TABLE product (
@@ -69,12 +72,8 @@ CREATE TABLE info (
 CREATE TABLE properties (
   id SERIAL PRIMARY KEY,
   -- product_id INT,
-  size VARCHAR,
-  color VARCHAR,
-  type VARCHAR,
-  rest1 VARCHAR,
-  rest2 VARCHAR,
-  rest3 VARCHAR
+  key VARCHAR,
+  value VARCHAR
 );
 
 

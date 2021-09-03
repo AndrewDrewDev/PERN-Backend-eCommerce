@@ -17,11 +17,25 @@ class MigrationData {
     const { Goods } = jsonData
     this._categories = PrepareData.categoriesTable(Goods)
     this._labels = PrepareData.labelsTable()
-    // console.log(this._labels);
+    this._units = PrepareData.unitsTable(Goods)
+    // this._suppliers = PrepareData.suppliersTable(Goods)
+    // console.log(this._suppliers)
   }
 
   public get categories() {
     return this._categories
+  }
+
+  public get labels() {
+    return this._labels
+  }
+
+  public get units() {
+    return this._units
+  }
+
+  public get suppliers() {
+    return this._suppliers
   }
 }
 

@@ -80,3 +80,8 @@ export type TDBMDataLabels = {
   name: string
   url: string
 }
+
+export type TDBMDataUnits = {
+  name: string
+  url: string
+}

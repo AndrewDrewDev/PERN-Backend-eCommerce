@@ -25,9 +25,9 @@ const startMigrate = () => {
   const jsonData: TDBMJson = JSON.parse(fs.readFileSync(absolutePath, 'utf-8'))
   const migrationData = new MigrationData(jsonData)
 
-  console.log(migrationData.categories)
-
   // InsertToDB.categoriesTable(migrationData.categories)
+  // InsertToDB.labelsTable(migrationData.labels)
+  // InsertToDB.unitsTable(migrationData.units)
 }
 
 startMigrate()

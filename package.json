@@ -5,6 +5,7 @@
     "dev:server": "nodemon ./src/app.ts",
     "dev:db:migrate": "nodemon ./src/db/migration/startMigrate.ts",
     "dev:db:model": "nodemon ./src/db/model/initModel.ts",
+    "format": "prettier --write \"src/**/*.(ts|js|html)\"",
     "build": "tsc -p ."
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "@types/pg": "^8.6.1",
     "@types/sequelize": "^4.28.10",
     "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
     "ts-node": "^10.2.1",
     "typescript": "^4.3.5"
   }

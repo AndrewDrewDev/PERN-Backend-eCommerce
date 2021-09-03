@@ -1,27 +1,34 @@
-import { TDBMJsonGoods, TDBMDataCategories, TDBMDataLabels } from '../../types'
+import {
+  TDBMJsonGoods,
+  TDBMDataCategories,
+  TDBMDataLabels,
+  TDBMDataUnits,
+} from '../../types'
 import transliterateWord from '../../utils/transliterateWord'
 
 class PrepareData {
   public categoriesTable(goods: TDBMJsonGoods[]): TDBMDataCategories[] {
+    const allCategories: string[] = []
     const result: TDBMDataCategories[] = []
 
-    const productItem = (name: string): TDBMDataCategories => {
-      return {
-        name,
-        url: transliterateWord(name),
-      }
-    }
-
     for (const product of goods) {
-      result.push(productItem(product.d691_exCategory1))
-      result.push(productItem(product.d692_exCategory2))
-      result.push(productItem(product.d693_exCategory3))
+      allCategories.push(product.d691_exCategory1)
+      if (product.d692_exCategory2) allCategories.push(product.d692_exCategory2)
+      if (product.d693_exCategory3) allCategories.push(product.d693_exCategory3)
     }
 
-    return Array.from(new Set(result))
+    let uniqueCategories: string[] = Array.from(new Set(allCategories))
+    for (const category of uniqueCategories) {
+      result.push({
+        name: category,
+        url: transliterateWord(category),
+      })
+    }
+
+    return result
   }
 
-  // TODO: Add table tabls
+  // TODO: Add lables tables to excel
   public labelsTable(): TDBMDataLabels[] {
     const result: TDBMDataLabels[] = []
     const labels = ['Акции', 'Новинки']
@@ -35,8 +42,28 @@ class PrepareData {
 
     return result
   }
+
+  public unitsTable(data: TDBMJsonGoods[]): TDBMDataUnits[] {
+    const result: TDBMDataUnits[] = []
+    const allUnits: string[] = []
+    let uniqueUnits: string[] = []
+
+    for (const product of data) {
+      allUnits.push(product.d781_exEd)
+    }
+
+    uniqueUnits = Array.from(new Set(allUnits))
+    for (const unit of uniqueUnits) {
+      result.push({
+        name: unit,
+        url: transliterateWord(unit),
+      })
+    }
+
+    return result
+  }
+
   public tagsTable(data: TDBMJsonGoods[]) {}
-  public unitsTable(data: TDBMJsonGoods[]) {}
   public suppliersTable(data: TDBMJsonGoods[]) {}
   public productsTable(data: TDBMJsonGoods[]) {}
   public categoryTable(data: TDBMJsonGoods[]) {}
