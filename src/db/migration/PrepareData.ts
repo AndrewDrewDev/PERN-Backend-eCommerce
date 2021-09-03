@@ -3,6 +3,7 @@ import {
   TDBMDataCategories,
   TDBMDataLabels,
   TDBMDataUnits,
+  TDBMDataSuppliers,
 } from '../../types'
 import transliterateWord from '../../utils/transliterateWord'
 
@@ -64,7 +65,26 @@ class PrepareData {
   }
 
   public tagsTable(data: TDBMJsonGoods[]) {}
-  public suppliersTable(data: TDBMJsonGoods[]) {}
+  public suppliersTable(data: TDBMJsonGoods[]): TDBMDataSuppliers[] {
+    const result: TDBMDataSuppliers[] = []
+    const allSuppliers: string[] = []
+    let uniqueSuppliers: string[] = []
+
+    for (const product of data) {
+      allSuppliers.push(product.d738_exProductManufacturer)
+    }
+
+    uniqueSuppliers = Array.from(new Set(allSuppliers))
+    for (const suppliers of uniqueSuppliers) {
+      result.push({
+        name: suppliers,
+        url: transliterateWord(suppliers),
+      })
+    }
+
+    return result
+  }
+
   public productsTable(data: TDBMJsonGoods[]) {}
   public categoryTable(data: TDBMJsonGoods[]) {}
   public tagTable(data: TDBMJsonGoods[]) {}

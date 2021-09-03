@@ -1,4 +1,9 @@
-import { TDBMDataCategories, TDBMDataLabels, TDBMDataUnits } from '../../types'
+import {
+  TDBMDataCategories,
+  TDBMDataLabels,
+  TDBMDataSuppliers,
+  TDBMDataUnits,
+} from '../../types'
 import db from '../db'
 
 class InsertToDB {
@@ -27,6 +32,15 @@ class InsertToDB {
       `)
     }
     console.log(`Успешная миграция таблицы units!`)
+  }
+
+  public suppliersTable(suppliers: TDBMDataSuppliers[]): void {
+    for (const supplier of suppliers) {
+      db.query(
+        `insert into suppliers (name, url) values ('${supplier.name}', '${supplier.url}')`
+      )
+    }
+    console.log(`Успешная миграция таблицы suppliers!`)
   }
 }
 

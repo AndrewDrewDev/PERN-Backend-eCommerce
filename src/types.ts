@@ -85,3 +85,8 @@ export type TDBMDataUnits = {
   name: string
   url: string
 }
+
+export type TDBMDataSuppliers = {
+  name: string
+  url: string
+}

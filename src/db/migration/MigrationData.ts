@@ -1,10 +1,15 @@
-import { TDBMJson, TDBMDataCategories, TDBMDataLabels } from '../../types'
+import {
+  TDBMJson,
+  TDBMDataCategories,
+  TDBMDataLabels,
+  TDBMDataUnits,
+} from '../../types'
 import PrepareData from './PrepareData'
 
 class MigrationData {
   private _categories: TDBMDataCategories[]
   private _tags: any
-  private _units: any
+  private _units: TDBMDataUnits[]
   private _suppliers: any
   private _labels: TDBMDataLabels[]
   private _products: any
@@ -18,7 +23,7 @@ class MigrationData {
     this._categories = PrepareData.categoriesTable(Goods)
     this._labels = PrepareData.labelsTable()
     this._units = PrepareData.unitsTable(Goods)
-    // this._suppliers = PrepareData.suppliersTable(Goods)
+    this._suppliers = PrepareData.suppliersTable(Goods)
     // console.log(this._suppliers)
   }
 
