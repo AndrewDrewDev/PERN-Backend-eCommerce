@@ -13,7 +13,7 @@ class InsertToDB {
       insert into categories (name, url) values ('${category.name}', '${category.url}')
       `)
     }
-    console.log(`Успешная миграция таблицы categories!`)
+    console.log(`УСПЕШНАЯ миграция таблицы categories!`)
   }
 
   public labelsTable(data: TDBMDataLabels[]): void {
@@ -22,7 +22,7 @@ class InsertToDB {
       insert into labels (name, url) values ('${label.name}', '${label.url}')
       `)
     }
-    console.log(`Успешная миграция таблицы labels!`)
+    console.log(`УСПЕШНАЯ миграция таблицы labels!`)
   }
 
   public unitsTable(units: TDBMDataUnits[]): void {
@@ -31,16 +31,20 @@ class InsertToDB {
       insert into units (name, url) values ('${unit.name}', '${unit.url}')
       `)
     }
-    console.log(`Успешная миграция таблицы units!`)
+    console.log(`УСПЕШНАЯ миграция таблицы units!`)
   }
 
   public suppliersTable(suppliers: TDBMDataSuppliers[]): void {
-    for (const supplier of suppliers) {
-      db.query(
-        `insert into suppliers (name, url) values ('${supplier.name}', '${supplier.url}')`
-      )
+    if (suppliers.length > 0) {
+      for (const supplier of suppliers) {
+        db.query(
+          `insert into suppliers (name, url) values ('${supplier.name}', '${supplier.url}')`
+        )
+      }
+      console.log(`УСПЕШНАЯ миграция таблицы suppliers!`)
+    } else {
+      console.log(`НЕУДАЧНАЯ миграция таблицы suppliers! Отсутстую данные!`)
     }
-    console.log(`Успешная миграция таблицы suppliers!`)
   }
 }
 

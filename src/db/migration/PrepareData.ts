@@ -30,9 +30,8 @@ class PrepareData {
   }
 
   // TODO: Add lables tables to excel
-  public labelsTable(): TDBMDataLabels[] {
+  public labelsTable(labels: string[]): TDBMDataLabels[] {
     const result: TDBMDataLabels[] = []
-    const labels = ['Акции', 'Новинки']
 
     for (const label of labels) {
       result.push({
@@ -64,14 +63,14 @@ class PrepareData {
     return result
   }
 
-  public tagsTable(data: TDBMJsonGoods[]) {}
   public suppliersTable(data: TDBMJsonGoods[]): TDBMDataSuppliers[] {
     const result: TDBMDataSuppliers[] = []
     const allSuppliers: string[] = []
     let uniqueSuppliers: string[] = []
 
     for (const product of data) {
-      allSuppliers.push(product.d738_exProductManufacturer)
+      if (product.d738_exProductManufacturer)
+        allSuppliers.push(product.d738_exProductManufacturer)
     }
 
     uniqueSuppliers = Array.from(new Set(allSuppliers))
@@ -84,12 +83,6 @@ class PrepareData {
 
     return result
   }
-
-  public productsTable(data: TDBMJsonGoods[]) {}
-  public categoryTable(data: TDBMJsonGoods[]) {}
-  public tagTable(data: TDBMJsonGoods[]) {}
-  public infoTable(data: TDBMJsonGoods[]) {}
-  public propertiesTable(data: TDBMJsonGoods[]) {}
 }
 
 export default new PrepareData()
