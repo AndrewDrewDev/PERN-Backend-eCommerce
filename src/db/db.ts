@@ -3,10 +3,10 @@ import config from '../config'
 
 // Connected to PorsgresSQL
 class Database {
-  private db: Pool
+  private _pool: Pool
 
   constructor() {
-    this.db = new Pool({
+    this._pool = new Pool({
       user: config.DB_USER,
       host: config.DB_HOST,
       database: config.DB_NAME,
@@ -16,7 +16,7 @@ class Database {
   }
 
   public async query(text: string, params: any[] = []) {
-    return await this.db.query(text, params)
+    return await this._pool.query(text, params)
   }
 }
 

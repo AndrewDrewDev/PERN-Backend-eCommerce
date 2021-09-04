@@ -29,6 +29,7 @@ const startMigrate = () => {
   // InsertToDB.labelsTable(migrationData.labels)
   // InsertToDB.unitsTable(migrationData.units)
   // InsertToDB.suppliersTable(migrationData.suppliers)
+  // InsertToDB.productsTable(migrationData.products)
 }
 
 startMigrate()

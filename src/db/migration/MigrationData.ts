@@ -9,15 +9,10 @@ import PrepareData from './PrepareData'
 
 class MigrationData {
   private _categories: TDBMDataCategories[]
-  private _tags: any
   private _units: TDBMDataUnits[]
   private _suppliers: any
   private _labels: TDBMDataLabels[]
   private _products: TDBMJsonGoods[]
-  private _category_to_product: any
-  private _tag_to_product: any
-  private _info: any
-  private _properties: any
 
   constructor(jsonData: TDBMJson) {
     const { Goods } = jsonData
