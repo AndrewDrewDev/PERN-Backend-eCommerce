@@ -4,15 +4,18 @@ import {
   TDBMDataLabels,
   TDBMDataUnits,
   TDBMJsonGoods,
+  TDBMDataSuppliers,
+  TDBMDataCategoryToProduct,
 } from '../../types'
 import PrepareData from './PrepareData'
 
 class MigrationData {
   private _categories: TDBMDataCategories[]
   private _units: TDBMDataUnits[]
-  private _suppliers: any
+  private _suppliers: TDBMDataSuppliers[]
   private _labels: TDBMDataLabels[]
   private _products: TDBMJsonGoods[]
+  private _categoryToProduct: TDBMDataCategoryToProduct
 
   constructor(jsonData: TDBMJson) {
     const { Goods } = jsonData
@@ -21,6 +24,7 @@ class MigrationData {
     this._labels = PrepareData.labelsTable(['Акции', 'Новинки'])
     this._units = PrepareData.unitsTable(Goods)
     this._suppliers = PrepareData.suppliersTable(Goods)
+    this._categoryToProduct = PrepareData.categoryToProductTable(Goods)
   }
 
   public get categories() {
@@ -41,6 +45,10 @@ class MigrationData {
 
   public get products() {
     return this._products
+  }
+
+  public get categoryToProduct() {
+    return this._categoryToProduct
   }
 }
 

@@ -1,9 +1,10 @@
 import {
-  TDBMJsonGoods,
   TDBMDataCategories,
+  TDBMDataCategoryToProduct,
   TDBMDataLabels,
-  TDBMDataUnits,
   TDBMDataSuppliers,
+  TDBMDataUnits,
+  TDBMJsonGoods,
 } from '../../types'
 import transliterateWord from '../../utils/transliterateWord'
 
@@ -79,6 +80,24 @@ class PrepareData {
         name: suppliers,
         url: transliterateWord(suppliers),
       })
+    }
+
+    return result
+  }
+
+  public categoryToProductTable(
+    products: TDBMJsonGoods[]
+  ): TDBMDataCategoryToProduct {
+    const result: TDBMDataCategoryToProduct = {} as any
+
+    for (const product of products) {
+      const categories: string[] = []
+
+      categories.push(product.d691_exCategory1)
+      if (product.d692_exCategory2) categories.push(product.d692_exCategory2)
+      if (product.d693_exCategory3) categories.push(product.d693_exCategory3)
+
+      result[product.d721_exProductName] = categories
     }
 
     return result

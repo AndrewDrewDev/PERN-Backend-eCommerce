@@ -90,3 +90,7 @@ export type TDBMDataSuppliers = {
   name: string
   url: string
 }
+
+export type TDBMDataCategoryToProduct = {
+  [key: string]: string[]
+}

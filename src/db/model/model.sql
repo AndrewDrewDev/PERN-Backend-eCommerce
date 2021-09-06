@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS products (
   -- supplier_id INT,
   -- vendor_id INT,
   productId VARCHAR,
-  name VARCHAR,
+  name VARCHAR UNIQUE NOT NULL,
   description TEXT,
   price VARCHAR,
   oldPrice VARCHAR,

@@ -1,13 +1,14 @@
 import {
   TDBMDataCategories,
+  TDBMDataCategoryToProduct,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
   TDBMJsonGoods,
 } from '../../types'
-import chalk from 'chalk'
 
 import db from '../db'
+import ApiError from '../../error/ApiError'
 import { log } from 'console'
 
 class InsertToDB {
@@ -18,18 +19,10 @@ class InsertToDB {
       insert into categories (name, url) values ('${category.name}', '${category.url}')
       `)
       }
-      console.log(
-        `${chalk.bgGreen(
-          chalk.black('SUCCESS:')
-        )} migration data to table: categories!`
-      )
+
+      ApiError.successLog('migration data to table: categories!')
     } catch (err) {
-      console.log(
-        `${chalk.bgRed(
-          chalk.black('FAILED:')
-        )} migration data to table: categories!\n\n`,
-        err
-      )
+      ApiError.failedLog('migration data to table: categories!', err)
     }
   }
 
@@ -40,18 +33,9 @@ class InsertToDB {
           `insert into labels (name, url) values ('${label.name}', '${label.url}')`
         )
       }
-      console.log(
-        `${chalk.bgGreen(
-          chalk.black('SUCCESS:')
-        )} migration data to table: labels!`
-      )
+      ApiError.successLog('migration data to table: labels!')
     } catch (err) {
-      console.log(
-        `${chalk.bgRed(
-          chalk.black('FAILED:')
-        )} migration data to table: labels!\n\n`,
-        err
-      )
+      ApiError.failedLog('migration data to table: labels!', err)
     }
   }
 
@@ -62,18 +46,9 @@ class InsertToDB {
       insert into units (name, url) values ('${unit.name}', '${unit.url}')
       `)
       }
-      console.log(
-        `${chalk.bgGreen(
-          chalk.black('SUCCESS:')
-        )} migration data to table: units!`
-      )
+      ApiError.successLog('migration data to table: units!')
     } catch (err) {
-      console.log(
-        `${chalk.bgRed(
-          chalk.black('FAILED:')
-        )} migration data to table: units!\n\n`,
-        err
-      )
+      ApiError.failedLog('migration data to table: units!', err)
     }
   }
 
@@ -85,71 +60,115 @@ class InsertToDB {
             `insert into suppliers (name, url) values ('${supplier.name}', '${supplier.url}')`
           )
         }
-        console.log(
-          `${chalk.bgGreen(
-            chalk.black('SUCCESS:')
-          )} migration data to table: suppliers!`
-        )
+        ApiError.successLog('migration data to table: suppliers!')
       } else {
-        console.log(
-          `${chalk.bgRed(
-            chalk.black('FAILED:')
-          )} migration data to table: suppliers! - Lack in data!\n\n`
+        ApiError.failedLog(
+          'migration data to table: suppliers! - Lack in data!'
         )
       }
     } catch (err) {
-      console.log(
-        `${chalk.bgRed(
-          chalk.black('FAILED:')
-        )} migration data to table: suppliers!\n\n`,
-        err
-      )
+      ApiError.failedLog('migration data to table: suppliers!', err)
     }
   }
 
   public productsTable(products: TDBMJsonGoods[]) {
-    const VPT = new ValidateProductsTable()
+    try {
+      const VPT = new ValidateProductsTable()
 
-    for (const product of products) {
-      const productid: string = VPT.valueOrNull(product.d720_exProductID)
-      const name: string = VPT.valueOrNull(product.d721_exProductName)
-      const description: string = VPT.descriptionOrNull(
-        product.d723_exProductDescription
-      )
-      const price: string = VPT.valueOrNull(product.d802_exPriceSell)
-      const oldPrice: string = VPT.valueOrNull(product.d803_exPriceOldSell)
-      const amount: string = VPT.valueOrNull(
-        product.d748_exProductAmountRemaind
-      )
-      const vendorId: string = VPT.valueOrNull(product.d747_exProductCodeVender)
+      for (const product of products) {
+        const productid: string = VPT.valueOrNull(product.d720_exProductID)
+        const name: string = VPT.valueOrNull(product.d721_exProductName)
+        const description: string = VPT.descriptionOrNull(
+          product.d723_exProductDescription
+        )
+        const price: string = VPT.valueOrNull(product.d802_exPriceSell)
+        const oldPrice: string = VPT.valueOrNull(product.d803_exPriceOldSell)
+        const amount: string = VPT.valueOrNull(
+          product.d748_exProductAmountRemaind
+        )
+        const vendorId: string = VPT.valueOrNull(
+          product.d747_exProductCodeVender
+        )
+        const label_id = (New: string, discount: string): string => {
+          if (New) {
+            return `(SELECT id from labels WHERE labels.name='Новинки')`
+          } else if (discount) {
+            return `(SELECT id from labels WHERE labels.name='Акции')`
+          } else {
+            return 'null'
+          }
+        }
+        const units_id = (unit: string): string => {
+          return `(SELECT id from units WHERE units.name='${unit}')`
+        }
+        const supplier_id = (supplier: string): string => {
+          if (supplier) {
+            return `(SELECT id from suppliers WHERE suppliers.name='${supplier}')`
+          }
+          return 'null'
+        }
 
-      // (SELECT id from foo WHERE id='blue')
+        db.query(`
+        INSERT INTO products (
+          productid,
+          name,
+          description,
+          price,
+          oldprice,
+          amount,
+          vendorId,
+          info_id,
+          property_id,
+          label_id,
+          units_id,
+          supplier_id
+        ) VALUES
+        (${productid},
+         ${name},
+         ${description},
+         ${price},
+         ${oldPrice},
+         ${amount},
+         ${vendorId},
+         null,
+         null,
+         ${label_id(
+           product.d734_exProductNew,
+           product.d735_exProductDiscounts
+         )},
+         ${units_id(product.d781_exEd)},
+         ${supplier_id(product.d738_exProductManufacturer)}
+        )`)
+      }
+      ApiError.successLog('migration data to table: products!')
+    } catch (err) {
+      ApiError.failedLog('migration data to table: products!', err)
+    }
+  }
 
-      console.log(`
-      INSERT INTO products (
-        productid,
-        name,
-        description,
-        price,
-        oldprice,
-        amount,
-        vendorId,
-        info_id,
-        label_id,
-        property_id,
-        units_id,
-        supplie_id,
-
-      ) VALUES
-      (${productid},
-       ${name},
-       ${description},
-       ${price},
-       ${oldPrice},
-       ${amount},
-       ${vendorId},
-
-      )`)
+  public categoryToProductTable(data: TDBMDataCategoryToProduct): void {
+    try {
+      for (const name in data) {
+        const categArr: string[] = data[name]
+        for (const key in categArr) {
+          const category: string = categArr[key]
+          db.query(`
+           INSERT INTO category_to_product (
+           category_id,
+           product_id,
+           level )
+           VALUES
+           (
+           (SELECT id FROM categories cc WHERE cc.name='${category}'),
+           (SELECT id FROM products pp WHERE pp.name='${name}'),
+           ${Number(key) + 1}
+           )
+           `)
+        }
+      }
+      ApiError.successLog('migration data to table: category_to_product!')
+    } catch (err) {
+      ApiError.failedLog('migration data to table: category_to_product!', err)
     }
   }
 }
@@ -161,7 +180,7 @@ export class ValidateProductsTable {
 
   public descriptionOrNull(desc: string): string {
     let result: string = desc
-    const replaceFromTo: string[][] = [["'", '']] // ['\'', ''] - from ' to ''
+    const replaceFromTo: string[][] = [["'", "\\'"]] // ['\'', ''] - from ' to ''
 
     // If description empty line
     if (!desc) return 'null'
