@@ -1,36 +1,28 @@
 import {
   TDBMJson,
-  TDBMDataCategories,
   TDBMDataLabels,
   TDBMDataUnits,
-  TDBMJsonGoods,
   TDBMDataSuppliers,
   TDBMDataCategoryToProduct,
+  TDBMJsonGoods,
 } from '../../types'
 import PrepareData from './PrepareData'
 
 class MigrationData {
-  private _categories: TDBMDataCategories[]
   private _units: TDBMDataUnits[]
   private _suppliers: TDBMDataSuppliers[]
   private _labels: TDBMDataLabels[]
-  private _products: TDBMJsonGoods[]
+  private _products: TDBMJsonGoods[] = []
   private _categoryToProduct: TDBMDataCategoryToProduct
 
   constructor(jsonData: TDBMJson) {
     const { Goods } = jsonData
-    this._products = Goods
-    this._categories = PrepareData.categoriesTable(Goods)
-    this._labels = PrepareData.labelsTable(['Акции', 'Новинки'])
-    this._units = PrepareData.unitsTable(Goods)
-    this._suppliers = PrepareData.suppliersTable(Goods)
-    this._categoryToProduct = PrepareData.categoryToProductTable(Goods)
+    this._products = PrepareData.productsData(Goods)
+    this._labels = [] // PrepareData.labelsTable(['Акции', 'Новинки'])
+    this._units = [] // PrepareData.unitsTable(Goods)
+    this._suppliers = [] // PrepareData.suppliersTable(Goods)
+    this._categoryToProduct = {} // PrepareData.categoryToProductTable(Goods)
   }
-
-  public get categories() {
-    return this._categories
-  }
-
   public get labels() {
     return this._labels
   }

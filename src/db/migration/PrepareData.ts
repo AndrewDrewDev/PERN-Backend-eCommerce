@@ -1,29 +1,47 @@
 import {
-  TDBMDataCategories,
-  TDBMDataCategoryToProduct,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
   TDBMJsonGoods,
+  TDBMJsonGoodsRaw,
 } from '../../types'
 import transliterateWord from '../../utils/transliterateWord'
 
 class PrepareData {
-  public categoriesTable(goods: TDBMJsonGoods[]): TDBMDataCategories[] {
-    const allCategories: string[] = []
-    const result: TDBMDataCategories[] = []
+  private categoryToArray(product: TDBMJsonGoodsRaw): string[] {
+    const result: string[] = []
 
-    for (const product of goods) {
-      allCategories.push(product.d691_exCategory1)
-      if (product.d692_exCategory2) allCategories.push(product.d692_exCategory2)
-      if (product.d693_exCategory3) allCategories.push(product.d693_exCategory3)
-    }
+    result.push(product.d691_exCategory1)
+    if (product.d692_exCategory2) result.push(product.d692_exCategory2)
+    if (product.d693_exCategory3) result.push(product.d693_exCategory3)
 
-    let uniqueCategories: string[] = Array.from(new Set(allCategories))
-    for (const category of uniqueCategories) {
+    return result
+  }
+
+  private setLabel(product: TDBMJsonGoodsRaw): 'Акция' | 'Новинка' | '' {
+    if (product.d734_exProductNew) return 'Новинка'
+    if (product.d735_exProductDiscounts) return 'Акция'
+    return ''
+  }
+
+  public productsData(goods: TDBMJsonGoodsRaw[]): TDBMJsonGoods[] {
+    const result: TDBMJsonGoods[] = []
+
+    for (const p of goods) {
       result.push({
-        name: category,
-        url: transliterateWord(category),
+        categories: this.categoryToArray(p),
+        id: p.d720_exProductID,
+        name: p.d721_exProductName,
+        label: this.setLabel(p),
+        property: '',
+        price: p.d802_exPriceSell,
+        oldPrice: p.d803_exPriceOldSell,
+        unit: p.d781_exEd,
+        description: p.d723_exProductDescription,
+        amount: p.d748_exProductAmountRemaind,
+        inStock: p.d722_exProductInStock,
+        vendorId: p.d747_exProductCodeVender,
+        supplier: p.d738_exProductManufacturer,
       })
     }
 
@@ -44,7 +62,7 @@ class PrepareData {
     return result
   }
 
-  public unitsTable(data: TDBMJsonGoods[]): TDBMDataUnits[] {
+  public unitsTable(data: TDBMJsonGoodsRaw[]): TDBMDataUnits[] {
     const result: TDBMDataUnits[] = []
     const allUnits: string[] = []
     let uniqueUnits: string[] = []
@@ -64,7 +82,7 @@ class PrepareData {
     return result
   }
 
-  public suppliersTable(data: TDBMJsonGoods[]): TDBMDataSuppliers[] {
+  public suppliersTable(data: TDBMJsonGoodsRaw[]): TDBMDataSuppliers[] {
     const result: TDBMDataSuppliers[] = []
     const allSuppliers: string[] = []
     let uniqueSuppliers: string[] = []
@@ -80,24 +98,6 @@ class PrepareData {
         name: suppliers,
         url: transliterateWord(suppliers),
       })
-    }
-
-    return result
-  }
-
-  public categoryToProductTable(
-    products: TDBMJsonGoods[]
-  ): TDBMDataCategoryToProduct {
-    const result: TDBMDataCategoryToProduct = {} as any
-
-    for (const product of products) {
-      const categories: string[] = []
-
-      categories.push(product.d691_exCategory1)
-      if (product.d692_exCategory2) categories.push(product.d692_exCategory2)
-      if (product.d693_exCategory3) categories.push(product.d693_exCategory3)
-
-      result[product.d721_exProductName] = categories
     }
 
     return result

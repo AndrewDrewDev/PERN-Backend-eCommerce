@@ -1,35 +1,35 @@
 import {
-  TDBMDataCategories,
   TDBMDataCategoryToProduct,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
   TDBMJsonGoods,
+  TDBMJsonGoodsRaw,
 } from '../../types'
 
 import db from '../db'
 import ApiError from '../../error/ApiError'
-import { log } from 'console'
 
 class InsertToDB {
-  public categoriesTable(data: TDBMDataCategories[]): void {
+  public categoriesTable(goods: TDBMJsonGoods[]): void {
     try {
-      for (const category of data) {
-        db.query(`
-      insert into categories (name, url) values ('${category.name}', '${category.url}')
-      `)
+      let categoryCounter: number = 1
+      const countCategories: number = goods[0].categories.length
+
+      // Add first category
+      for (const product of goods) {
       }
 
-      ApiError.successLog('migration data to table: categories!')
+      // ApiError.successLog('migration data to table: categories!')
     } catch (err) {
       ApiError.failedLog('migration data to table: categories!', err)
     }
   }
 
-  public async labelsTable(data: TDBMDataLabels[]) {
+  public labelsTable(data: TDBMDataLabels[]) {
     try {
       for (const label of data) {
-        await db.query(
+        db.query(
           `insert into labels (name, url) values ('${label.name}', '${label.url}')`
         )
       }
@@ -71,7 +71,7 @@ class InsertToDB {
     }
   }
 
-  public productsTable(products: TDBMJsonGoods[]) {
+  public productsTable(products: TDBMJsonGoodsRaw[]) {
     try {
       const VPT = new ValidateProductsTable()
 
