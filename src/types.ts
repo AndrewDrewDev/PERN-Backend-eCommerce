@@ -18,10 +18,10 @@ export type Tconfig = {
 export type TDBMJson = {
   BaseInfo: TDBMJsonBaseInfo
   Categories: TDBMJsonCatefories
-  Goods: TDBMJsonGoodsRaw[]
+  Goods: TDBMJsonGoods[]
 }
 
-export type TDBMJsonGoodsRaw = {
+export type TDBMJsonGoods = {
   d691_exCategory1: string
   d692_exCategory2: string
   d693_exCategory3: string
@@ -38,22 +38,6 @@ export type TDBMJsonGoodsRaw = {
   d722_exProductInStock: string
   d747_exProductCodeVender: string
   d738_exProductManufacturer: string
-}
-
-export type TDBMJsonGoods = {
-  categories: string[]
-  id: string
-  name: string
-  label: 'Акция' | 'Новинка' | ''
-  property: string
-  price: string
-  unit: string
-  oldPrice: string
-  description: string
-  amount: string
-  inStock: string
-  vendorId: string
-  supplier: string
 }
 
 export type TDBMJsonBaseInfo = {
@@ -85,6 +69,16 @@ export type TDBMJsonBaseInfo = {
 
 export type TDBMJsonCatefories = {
   [key: string]: string
+}
+
+export type TDBMDataCategories = {
+  name: string
+  url: string
+}
+
+export type TDBMDataCategoriesItem = {
+  category: TDBMDataCategories
+  parent?: TDBMDataCategories
 }
 
 export type TDBMDataLabels = {

@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS categories (
   id SERIAL PRIMARY KEY,
-  parentId INT,
   name VARCHAR UNIQUE NOT NULL,
   url VARCHAR UNIQUE NOT NULL,
   description VARCHAR,
-  img VARCHAR
+  img VARCHAR,
+  parentId INT REFERENCES categories(id)
 );
 
 CREATE TABLE IF NOT EXISTS tags (
@@ -14,10 +14,23 @@ CREATE TABLE IF NOT EXISTS tags (
   description TEXT
 );
 
+CREATE TABLE IF NOT EXISTS category_to_product (
+  id SERIAL PRIMARY KEY,
+  -- category_id INT,
+  -- product_id INT,
+  level INT
+);
+
 CREATE TABLE IF NOT EXISTS labels (
   id SERIAL PRIMARY KEY,
   name VARCHAR UNIQUE NOT NULL,
   url VARCHAR UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tag_to_product (
+  id SERIAL PRIMARY KEY
+  -- tag_id INT,
+  -- product_id INT,
 );
 
 CREATE TABLE IF NOT EXISTS units (
@@ -34,9 +47,9 @@ CREATE TABLE IF NOT EXISTS suppliers (
 
 CREATE TABLE IF NOT EXISTS products (
   id SERIAL PRIMARY KEY,
-  -- category_id INT
   -- info_id INT,
   -- label_id INT,
+  -- tag_id INT,
   -- property_id INT,
   -- units_id INT,
   -- supplier_id INT,
@@ -65,17 +78,25 @@ CREATE TABLE IF NOT EXISTS properties (
 );
 
 
--- FC tags table
+-- FK to category_to_product table
+ALTER TABLE category_to_product
+  ADD COLUMN IF NOT EXISTS category_id INTEGER
+  REFERENCES categories(id);
 
-ALTER TABLE tags
+ALTER TABLE category_to_product
+  ADD COLUMN IF NOT EXISTS product_id INTEGER
+  REFERENCES products(id);
+
+-- FK to tag_to_product table
+ALTER TABLE tag_to_product
+  ADD COLUMN IF NOT EXISTS tag_id INTEGER
+  REFERENCES tags(id);
+
+ALTER TABLE tag_to_product
   ADD COLUMN IF NOT EXISTS product_id INTEGER
   REFERENCES products(id);
 
 -- FK product table
-
-ALTER TABLE products
-  ADD COLUMN IF NOT EXISTS category_id INTEGER
-  REFERENCES categories(id);
 
 ALTER TABLE products
   ADD COLUMN IF NOT EXISTS info_id INTEGER

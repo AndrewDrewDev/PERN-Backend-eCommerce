@@ -1,77 +1,88 @@
 import {
+  TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
   TDBMJsonGoods,
-  TDBMJsonGoodsRaw,
 } from '../../types'
 
 import db from '../db'
 import ApiError from '../../error/ApiError'
 
 class InsertToDB {
-  public categoriesTable(goods: TDBMJsonGoods[]): void {
+  public async categoriesTable(data: TDBMDataCategoriesItem[]): Promise<void> {
     try {
-      let categoryCounter: number = 1
-      const countCategories: number = goods[0].categories.length
-
-      // Add first category
-      for (const product of goods) {
+      for (const item of data) {
+        const parentName: string = item.parent
+          ? `(select id from categories where name='${item.parent.name}')`
+          : 'null'
+        await db.query(
+          `insert into categories (name, url, parentId) values ('${item.category.name}', '${item.category.url}', ${parentName})`
+        )
       }
+      ApiError.successLog('migration data to table: categories!')
 
-      // ApiError.successLog('migration data to table: categories!')
+      return Promise.resolve()
     } catch (err) {
       ApiError.failedLog('migration data to table: categories!', err)
+      return Promise.reject()
     }
   }
 
-  public labelsTable(data: TDBMDataLabels[]) {
+  public async labelsTable(data: TDBMDataLabels[]): Promise<void> {
     try {
       for (const label of data) {
-        db.query(
+        await db.query(
           `insert into labels (name, url) values ('${label.name}', '${label.url}')`
         )
       }
       ApiError.successLog('migration data to table: labels!')
+      return Promise.resolve()
     } catch (err) {
       ApiError.failedLog('migration data to table: labels!', err)
+      return Promise.reject()
     }
   }
 
-  public unitsTable(units: TDBMDataUnits[]): void {
+  public async unitsTable(units: TDBMDataUnits[]): Promise<void> {
     try {
       for (const unit of units) {
-        db.query(`
+        await db.query(`
       insert into units (name, url) values ('${unit.name}', '${unit.url}')
       `)
       }
       ApiError.successLog('migration data to table: units!')
+      return Promise.resolve()
     } catch (err) {
       ApiError.failedLog('migration data to table: units!', err)
+      return Promise.reject()
     }
   }
 
-  public suppliersTable(suppliers: TDBMDataSuppliers[]): void {
+  public async suppliersTable(suppliers: TDBMDataSuppliers[]): Promise<void> {
     try {
       if (suppliers.length > 0) {
         for (const supplier of suppliers) {
-          db.query(
+          await db.query(
             `insert into suppliers (name, url) values ('${supplier.name}', '${supplier.url}')`
           )
         }
         ApiError.successLog('migration data to table: suppliers!')
+        return Promise.resolve()
       } else {
         ApiError.failedLog(
           'migration data to table: suppliers! - Lack in data!'
         )
+        return Promise.reject()
       }
     } catch (err) {
       ApiError.failedLog('migration data to table: suppliers!', err)
+      return Promise.reject()
     }
   }
 
-  public productsTable(products: TDBMJsonGoodsRaw[]) {
+  public async productsTable(products: TDBMJsonGoods[]): Promise<void> {
     try {
       const VPT = new ValidateProductsTable()
 
@@ -108,7 +119,7 @@ class InsertToDB {
           return 'null'
         }
 
-        db.query(`
+        await db.query(`
         INSERT INTO products (
           productid,
           name,
@@ -141,12 +152,16 @@ class InsertToDB {
         )`)
       }
       ApiError.successLog('migration data to table: products!')
+      return Promise.resolve()
     } catch (err) {
       ApiError.failedLog('migration data to table: products!', err)
+      return Promise.reject()
     }
   }
 
-  public categoryToProductTable(data: TDBMDataCategoryToProduct): void {
+  public async categoryToProductTable(
+    data: TDBMDataCategoryToProduct
+  ): Promise<void> {
     try {
       for (const name in data) {
         const categArr: string[] = data[name]
@@ -167,8 +182,10 @@ class InsertToDB {
         }
       }
       ApiError.successLog('migration data to table: category_to_product!')
+      return Promise.resolve()
     } catch (err) {
       ApiError.failedLog('migration data to table: category_to_product!', err)
+      return Promise.reject()
     }
   }
 }

@@ -3,7 +3,7 @@
   "main": "./src/app.ts",
   "scripts": {
     "dev:server": "nodemon ./src/app.ts",
-    "dev:db:init": "nodemon ./src/db/model/initModel.ts",
+    "dev:db:init": "nodemon ./src/db/model/startInitModel.ts",
     "dev:db:migrate": "nodemon ./src/db/migration/startMigrate.ts",
     "format": "prettier --write \"src/**/*.(ts|js|html)\"",
     "build": "tsc -p .",

@@ -1,50 +1,69 @@
 import {
+  TDBMDataCategoriesItem,
+  TDBMDataCategoryToProduct,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
   TDBMJsonGoods,
-  TDBMJsonGoodsRaw,
 } from '../../types'
 import transliterateWord from '../../utils/transliterateWord'
 
 class PrepareData {
-  private categoryToArray(product: TDBMJsonGoodsRaw): string[] {
-    const result: string[] = []
-
-    result.push(product.d691_exCategory1)
-    if (product.d692_exCategory2) result.push(product.d692_exCategory2)
-    if (product.d693_exCategory3) result.push(product.d693_exCategory3)
-
-    return result
-  }
-
-  private setLabel(product: TDBMJsonGoodsRaw): 'Акция' | 'Новинка' | '' {
-    if (product.d734_exProductNew) return 'Новинка'
-    if (product.d735_exProductDiscounts) return 'Акция'
-    return ''
-  }
-
-  public productsData(goods: TDBMJsonGoodsRaw[]): TDBMJsonGoods[] {
-    const result: TDBMJsonGoods[] = []
+  public categoriesTable(goods: TDBMJsonGoods[]): TDBMDataCategoriesItem[] {
+    const result: TDBMDataCategoriesItem[] = []
+    const tempArray: string[] = []
 
     for (const p of goods) {
-      result.push({
-        categories: this.categoryToArray(p),
-        id: p.d720_exProductID,
-        name: p.d721_exProductName,
-        label: this.setLabel(p),
-        property: '',
-        price: p.d802_exPriceSell,
-        oldPrice: p.d803_exPriceOldSell,
-        unit: p.d781_exEd,
-        description: p.d723_exProductDescription,
-        amount: p.d748_exProductAmountRemaind,
-        inStock: p.d722_exProductInStock,
-        vendorId: p.d747_exProductCodeVender,
-        supplier: p.d738_exProductManufacturer,
-      })
-    }
+      const category1 = p.d691_exCategory1
+      const category2 = p.d692_exCategory2
+      const category3 = p.d693_exCategory3
 
+      if (category1 && !tempArray.includes(category1)) {
+        const categoryItem: TDBMDataCategoriesItem = {} as any
+
+        categoryItem.category = {
+          name: category1,
+          url: transliterateWord(category1),
+        }
+
+        tempArray.push(category1)
+        result.push(categoryItem)
+      }
+
+      if (category2 && !tempArray.includes(category2)) {
+        const categoryItem: TDBMDataCategoriesItem = {} as any
+
+        categoryItem.category = {
+          name: category2,
+          url: transliterateWord(category2),
+        }
+
+        categoryItem.parent = {
+          name: category1,
+          url: transliterateWord(category1),
+        }
+
+        tempArray.push(category2)
+        result.push(categoryItem)
+      }
+
+      if (category3 && !tempArray.includes(category3)) {
+        const categoryItem: TDBMDataCategoriesItem = {} as any
+
+        categoryItem.category = {
+          name: category3,
+          url: transliterateWord(category3),
+        }
+
+        categoryItem.parent = {
+          name: category2,
+          url: transliterateWord(category2),
+        }
+
+        tempArray.push(category3)
+        result.push(categoryItem)
+      }
+    }
     return result
   }
 
@@ -62,7 +81,7 @@ class PrepareData {
     return result
   }
 
-  public unitsTable(data: TDBMJsonGoodsRaw[]): TDBMDataUnits[] {
+  public unitsTable(data: TDBMJsonGoods[]): TDBMDataUnits[] {
     const result: TDBMDataUnits[] = []
     const allUnits: string[] = []
     let uniqueUnits: string[] = []
@@ -82,7 +101,7 @@ class PrepareData {
     return result
   }
 
-  public suppliersTable(data: TDBMJsonGoodsRaw[]): TDBMDataSuppliers[] {
+  public suppliersTable(data: TDBMJsonGoods[]): TDBMDataSuppliers[] {
     const result: TDBMDataSuppliers[] = []
     const allSuppliers: string[] = []
     let uniqueSuppliers: string[] = []
@@ -98,6 +117,24 @@ class PrepareData {
         name: suppliers,
         url: transliterateWord(suppliers),
       })
+    }
+
+    return result
+  }
+
+  public categoryToProductTable(
+    products: TDBMJsonGoods[]
+  ): TDBMDataCategoryToProduct {
+    const result: TDBMDataCategoryToProduct = {} as any
+
+    for (const product of products) {
+      const categories: string[] = []
+
+      categories.push(product.d691_exCategory1)
+      if (product.d692_exCategory2) categories.push(product.d692_exCategory2)
+      if (product.d693_exCategory3) categories.push(product.d693_exCategory3)
+
+      result[product.d721_exProductName] = categories
     }
 
     return result
