@@ -1,7 +1,6 @@
 // Main server config
-export type TConfigPort = number
 export type Tconfig = {
-  readonly PORT: TConfigPort
+  readonly PORT: number
   readonly DBM_JSON_FILE_NAME: string
   readonly DB_NAME: string
   readonly DB_USER: string
@@ -11,7 +10,10 @@ export type Tconfig = {
   readonly SECRET_KEY: string
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
 // Database types
+// T - type
 // DB - database
 // DBM - database migrate
 
@@ -98,4 +100,39 @@ export type TDBMDataSuppliers = {
 
 export type TDBMDataCategoryToProduct = {
   [key: string]: string[]
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Controllers types
+// T - type
+// C - controler
+
+export type TCproductGetOneData = {
+  categoryname: string
+  categoryurl: string
+  name: string
+  label: string
+  unit: string
+  supplier: string
+  id: string
+  description: string
+  price: string
+  oldPrice: string
+  amount: string
+  vendorId: string
+}
+
+export type TCproductGetOneResult = {
+  categories: TDBMDataCategories[]
+  name: string
+  label: string
+  unit: string
+  supplier: string
+  id: string
+  description: string
+  price: string
+  oldPrice: string
+  amount: string
+  vendorId: string
 }

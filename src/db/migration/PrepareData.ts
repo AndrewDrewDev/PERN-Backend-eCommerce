@@ -1,3 +1,5 @@
+import iuliia from 'iuliia'
+
 import {
   TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
@@ -6,7 +8,6 @@ import {
   TDBMDataUnits,
   TDBMJsonGoods,
 } from '../../types'
-import transliterateWord from '../../utils/transliterateWord'
 
 class PrepareData {
   public categoriesTable(goods: TDBMJsonGoods[]): TDBMDataCategoriesItem[] {
@@ -139,6 +140,10 @@ class PrepareData {
 
     return result
   }
+}
+
+const transliterateWord = (word: string): string => {
+  return iuliia.translate(word, iuliia.ICAO_DOC_9303).replace(/ /, '-')
 }
 
 export default new PrepareData()

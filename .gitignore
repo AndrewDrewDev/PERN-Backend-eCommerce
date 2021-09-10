@@ -4,4 +4,5 @@ data/
 config/
 yarn.lock
 node_modules/
-scratch.org
+scratch/
+package-lock.json

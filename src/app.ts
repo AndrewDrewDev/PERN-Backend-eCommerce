@@ -1,12 +1,16 @@
 import express, { Application } from 'express'
-import { TPORTConfig } from './types'
-import cors from 'cors'
 
-const PORT: TPORTConfig = config.get('PORT')
+import cors from 'cors'
+import config from './config'
+import routes from './routes'
+
+const PORT = config.PORT
 
 const app: Application = express()
 app.use(cors())
 app.use(express.json())
+
+app.use('/api', routes)
 
 const start = async () => {
   try {
