@@ -1,6 +1,11 @@
+import fs from 'fs-extra'
+import path from 'path'
+import { v4 } from 'uuid'
+
 import {
   TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
+  TDBMDataImages,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
@@ -188,7 +193,90 @@ class InsertToDB {
       return Promise.reject()
     }
   }
+
+  // TODO Добавить стравнение картинок с id товара
+  public async imagesTable(images: TDBMDataImages): Promise<void> {
+    try {
+      const staticPath = path.resolve(__dirname, '..', '..', 'static')
+      const datasetPath = path.resolve(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        'data',
+        'img-goods'
+      )
+
+      const writeToDB = async (
+        productId: string,
+        imgName: string,
+        preview?: boolean
+      ) => {
+        await db.query(
+          `
+          insert into images
+            (product_id, name, preview)
+          values
+          (
+            (select id from products pp where pp.productId=$1),
+            $2,
+            $3
+          )
+          `,
+          [productId, imgName, preview]
+        )
+        return Promise.resolve()
+      }
+
+      const copyFile = (
+        imgName: string,
+        newFileName?: string
+      ): void | undefined => {
+        if (imgName === '000-nonePhoto.jpg') return
+
+        const srcPath = path.resolve(datasetPath, imgName)
+        const destPath = path.resolve(staticPath, newFileName ?? imgName)
+        fs.copySync(srcPath, destPath)
+      }
+
+      for (const id in images) {
+        const img = images[id]
+        img.preview.forEach(async i => {
+          const newFileName = v4() + '.jpg'
+          await writeToDB(id, newFileName, true).then(() =>
+            copyFile(i, newFileName)
+          )
+        })
+
+        img.big.forEach(async i => {
+          const newFileName = v4() + '.jpg'
+          await writeToDB(id, newFileName, false).then(() =>
+            copyFile(i, newFileName)
+          )
+        })
+      }
+
+      ApiError.successLog('migration data to table: images!')
+      return Promise.resolve()
+    } catch (err) {
+      ApiError.failedLog('migration data to table: category_to_product!', err)
+      return Promise.reject()
+    }
+  }
 }
+
+// for (const img of images) {
+//       const imgPath = path.resolve(datasetPath, img)
+//       const destPath = path.resolve(staticPath, img)
+//       const newImgName = v4() + '.jpg'
+//       if (img === '000-nonePhoto.jpg') {
+//         fs.copySync(imgPath, destPath)
+//       } else {
+//         const isPreviewImg: boolean = img.match(/00\.jpg/g) ? true : false
+//         const porductId = img.match(/[A-Za-z0-9].*(?=(....jpg))/gm)
+//         console.log(porductId)
+//       }
+//     }
 
 export class ValidateProductsTable {
   public valueOrNull(value: string): string | 'null' {

@@ -3,11 +3,14 @@
   "main": "./src/app.ts",
   "scripts": {
     "dev:server": "cross-env NODE_ENV=development nodemon ./src/app.ts",
-    "dev:db:init": "nodemon ./src/db/model/startInitModel.ts",
-    "dev:db:migrate": "nodemon ./src/db/migration/startMigrate.ts",
+    "dev:db:init": "cross-env NODE_ENV=development nodemon ./src/db/model/startInitModel.ts",
+    "dev:db:migrate": "cross-env NODE_ENV=development nodemon ./src/db/migration/startMigrate.ts",
     "format": "prettier --write \"src/**/*.(ts|js|html)\"",
     "build": "tsc -p .",
     "test": "jest"
+  },
+  "nodemonConfig": {
+    "ignore": ["src/static/*"]
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -17,7 +20,8 @@
     "fs-extra": "^10.0.0",
     "iuliia": "^0.6.1",
     "pg": "^8.7.1",
-    "pino": "^6.13.2"
+    "pino": "^6.13.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.1",
@@ -29,9 +33,11 @@
     "@types/node": "^16.7.0",
     "@types/pg": "^8.6.1",
     "@types/pino": "^6.3.11",
+    "@types/uuid": "^8.3.1",
     "chalk": "^4.1.2",
     "jest": "^27.1.0",
     "nodemon": "^2.0.12",
+    "pino-pretty": "^7.0.0",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",

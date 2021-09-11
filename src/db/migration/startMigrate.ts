@@ -29,6 +29,7 @@ const startMigrate = () => {
     .then(() =>
       InsertToDB.categoryToProductTable(migrationData.categoryToProduct)
     )
+    .then(() => InsertToDB.imagesTable(migrationData.images))
     .then(() => ApiError.successLog('MIGRATE TO DATABASE'))
     .catch(() => ApiError.failedLog('MIGRATE TO DATABASE'))
 }

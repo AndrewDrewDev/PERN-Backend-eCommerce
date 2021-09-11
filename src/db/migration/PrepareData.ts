@@ -1,8 +1,11 @@
 import iuliia from 'iuliia'
+import path from 'path'
+import fs from 'fs-extra'
 
 import {
   TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
+  TDBMDataImages,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
@@ -136,6 +139,43 @@ class PrepareData {
       if (product.d693_exCategory3) categories.push(product.d693_exCategory3)
 
       result[product.d721_exProductName] = categories
+    }
+
+    return result
+  }
+
+  // TODO Refactor withoud any type
+  public imagesTable(products: TDBMJsonGoods[]): TDBMDataImages {
+    const datasetPath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'data',
+      'img-goods'
+    )
+
+    const result: TDBMDataImages = {} as any
+
+    const allImgNameStr = fs
+      .readdirSync(datasetPath)
+      .toString()
+      .replace(/,/gm, '\n')
+
+    for (let p of products) {
+      const id = p.d720_exProductID
+      const regexPreviewImg = new RegExp(`${id}-00\.jpg`, `gmi`)
+      const regexBigImg = new RegExp(`${id}-[0-9][1-9]\.jpg`, `gmi`)
+
+      const previewImgArr = allImgNameStr.match(regexPreviewImg)
+
+      const bigImgArr: any = allImgNameStr.match(regexBigImg)
+        ? allImgNameStr.match(regexBigImg)
+        : ['000-nonePhoto.jpg']
+
+      result[id] = {} as any
+      result[id].preview = previewImgArr || [bigImgArr[0]]
+      result[id].big = bigImgArr
     }
 
     return result

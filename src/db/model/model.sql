@@ -77,6 +77,12 @@ CREATE TABLE IF NOT EXISTS properties (
   value VARCHAR
 );
 
+CREATE TABLE IF NOT EXISTS images (
+  id SERIAL PRIMARY KEY,
+  -- product_id INT,
+  name VARCHAR UNIQUE NOT NULL,
+  preview BOOLEAN
+);
 
 -- FK to category_to_product table
 ALTER TABLE category_to_product
@@ -127,5 +133,11 @@ ALTER TABLE info
 -- FK properties table
 
 ALTER TABLE properties
+  ADD COLUMN IF NOT EXISTS product_id INTEGER
+  REFERENCES products(id);
+
+-- FK images table
+
+ALTER TABLE images
   ADD COLUMN IF NOT EXISTS product_id INTEGER
   REFERENCES products(id);

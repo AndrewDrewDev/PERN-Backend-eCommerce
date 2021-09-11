@@ -102,6 +102,13 @@ export type TDBMDataCategoryToProduct = {
   [key: string]: string[]
 }
 
+export type TDBMDataImages = {
+  [key: string]: {
+    preview: string[]
+    big: string[]
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Controllers types
@@ -109,6 +116,8 @@ export type TDBMDataCategoryToProduct = {
 // C - controler
 
 export type TCproductGetOneData = {
+  image: string
+  ispreview: boolean
   categoryname: string
   categoryurl: string
   name: string
@@ -125,6 +134,7 @@ export type TCproductGetOneData = {
 
 export type TCproductGetOneResult = {
   categories: TDBMDataCategories[]
+  images: { preview: string; big: string[] }
   name: string
   label: string
   unit: string
