@@ -86,7 +86,7 @@ class ProductController {
       result.id = item.id
       result.description = item.description
       result.price = item.price
-      result.oldPrice = item.oldPrice
+      result.oldPrice = item.oldprice
       result.amount = item.amount
       result.vendorId = item.vendorId
     }

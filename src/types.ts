@@ -127,7 +127,7 @@ export type TCproductGetOneData = {
   id: string
   description: string
   price: string
-  oldPrice: string
+  oldprice: string
   amount: string
   vendorId: string
 }

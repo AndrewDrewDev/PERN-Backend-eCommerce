@@ -1,6 +1,0 @@
-#+TITLE: Readme
-
-* TODO Дописать unit тесты к PrepareData.ts по остальным методам
-:LOGBOOK:
-- Note taken on [2021-09-08 Ср 20:47]
-:END:

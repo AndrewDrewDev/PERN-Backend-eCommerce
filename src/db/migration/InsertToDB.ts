@@ -194,7 +194,6 @@ class InsertToDB {
     }
   }
 
-  // TODO Добавить стравнение картинок с id товара
   public async imagesTable(images: TDBMDataImages): Promise<void> {
     try {
       const staticPath = path.resolve(__dirname, '..', '..', 'static')
@@ -239,6 +238,13 @@ class InsertToDB {
         fs.copySync(srcPath, destPath)
       }
 
+      // Always copy nonePhoto image
+      fs.copySync(
+        datasetPath + '/000-nonePhoto.jpg',
+        staticPath + '/000-nonePhoto.jpg'
+      )
+
+      // Write to db new image name and copy to express static folder
       for (const id in images) {
         const img = images[id]
         img.preview.forEach(async i => {
@@ -264,19 +270,6 @@ class InsertToDB {
     }
   }
 }
-
-// for (const img of images) {
-//       const imgPath = path.resolve(datasetPath, img)
-//       const destPath = path.resolve(staticPath, img)
-//       const newImgName = v4() + '.jpg'
-//       if (img === '000-nonePhoto.jpg') {
-//         fs.copySync(imgPath, destPath)
-//       } else {
-//         const isPreviewImg: boolean = img.match(/00\.jpg/g) ? true : false
-//         const porductId = img.match(/[A-Za-z0-9].*(?=(....jpg))/gm)
-//         console.log(porductId)
-//       }
-//     }
 
 export class ValidateProductsTable {
   public valueOrNull(value: string): string | 'null' {
