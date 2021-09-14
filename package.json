@@ -10,7 +10,9 @@
     "test": "jest"
   },
   "nodemonConfig": {
-    "ignore": ["src/static/*"]
+    "ignore": [
+      "src/static/*"
+    ]
   },
   "dependencies": {
     "body-parser": "^1.19.0",

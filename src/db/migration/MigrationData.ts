@@ -18,6 +18,7 @@ class MigrationData {
   private _products: TDBMJsonGoods[]
   private _categoryToProduct: TDBMDataCategoryToProduct
   private _images: TDBMDataImages
+  private _statuses: string[]
 
   constructor(jsonData: TDBMJson) {
     const { Goods } = jsonData
@@ -28,6 +29,7 @@ class MigrationData {
     this._suppliers = PrepareData.suppliersTable(Goods)
     this._categoryToProduct = PrepareData.categoryToProductTable(Goods)
     this._images = PrepareData.imagesTable(Goods)
+    this._statuses = PrepareData.statusesTable(Goods)
   }
 
   public get categories() {
@@ -56,6 +58,10 @@ class MigrationData {
 
   public get images() {
     return this._images
+  }
+
+  public get statuses() {
+    return this._statuses
   }
 }
 

@@ -129,7 +129,8 @@ export type TCproductGetOneData = {
   price: string
   oldprice: string
   amount: string
-  vendorId: string
+  vendorid: string
+  status: string
 }
 
 export type TCproductGetOneResult = {
@@ -145,4 +146,5 @@ export type TCproductGetOneResult = {
   oldPrice: string
   amount: string
   vendorId: string
+  status: string
 }

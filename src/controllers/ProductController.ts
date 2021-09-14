@@ -23,7 +23,8 @@ class ProductController {
         pp.price as price,
         pp.oldPrice as oldPrice,
         pp.amount as amount,
-        pp.vendorId as vendorId
+        pp.vendorid as vendorid,
+        st.name as status
       from
         category_to_product cp
       left join
@@ -46,10 +47,14 @@ class ProductController {
         suppliers su
       on
        su.id=pp.supplier_id
-      left outer join
+      left join
         images im
       on
        im.product_id=pp.id
+      left join
+      statuses st
+      on
+      st.id=pp.id
       where
         cp.product_id=(select id from products pp where pp.productId=$1)
       ORDER BY
@@ -84,11 +89,12 @@ class ProductController {
       result.unit = item.unit
       result.supplier = item.supplier
       result.id = item.id
+      result.vendorId = item.vendorid
       result.description = item.description
       result.price = item.price
       result.oldPrice = item.oldprice
       result.amount = item.amount
-      result.vendorId = item.vendorId
+      result.status = item.status
     }
 
     return res.json(result)

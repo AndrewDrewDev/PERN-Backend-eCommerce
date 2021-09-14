@@ -180,6 +180,17 @@ class PrepareData {
 
     return result
   }
+
+  public statusesTable(products: TDBMJsonGoods[]): string[] {
+    const result: string[] = []
+
+    for (const product of products) {
+      const status = product.d722_exProductInStock
+      result.push(status)
+    }
+
+    return Array.from(new Set(result))
+  }
 }
 
 const transliterateWord = (word: string): string => {

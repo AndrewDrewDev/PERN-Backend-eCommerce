@@ -15,7 +15,7 @@ const initModel = async (): Promise<void> => {
     ApiError.successLog(`init model of ${config.DB_NAME} database!`)
     return Promise.resolve()
   } catch (err) {
-    ApiError.failedLog(`init model of ${config.DB_NAME} database!`)
+    ApiError.failedLog(`init model of ${config.DB_NAME} database!`, err)
     return Promise.reject()
   }
 }

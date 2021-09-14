@@ -23,6 +23,7 @@ const startMigrate = () => {
   initModel()
     .then(() => InsertToDB.categoriesTable(migrationData.categories))
     .then(() => InsertToDB.labelsTable(migrationData.labels))
+    .then(() => InsertToDB.statusesTable(migrationData.statuses))
     .then(() => InsertToDB.unitsTable(migrationData.units))
     .then(() => InsertToDB.suppliersTable(migrationData.suppliers))
     .then(() => InsertToDB.productsTable(migrationData.products))

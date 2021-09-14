@@ -269,6 +269,20 @@ class InsertToDB {
       return Promise.reject()
     }
   }
+
+  public async statusesTable(statuses: string[]): Promise<void> {
+    try {
+      for (const status of statuses) {
+        await db.query(`insert into statuses (name) values ($1)`, [status])
+      }
+
+      ApiError.successLog('migration data to table: statuses!')
+      return Promise.resolve()
+    } catch (err) {
+      ApiError.failedLog('migration data to table: statuses!', err)
+      return Promise.reject()
+    }
+  }
 }
 
 export class ValidateProductsTable {
