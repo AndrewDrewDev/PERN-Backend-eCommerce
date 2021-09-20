@@ -97,8 +97,12 @@ class ProductController {
       result.status = item.status
     }
 
+    // Check if product not founded in db
+    if (!result.name) return res.json(null)
     return res.json(result)
   }
+
+  public getCategoryProducts(req: Request, res: Response) {}
 }
 
 export default new ProductController()
