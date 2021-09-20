@@ -4,6 +4,7 @@ import path from 'path'
 import config from '../../config'
 import db from '../db'
 import ApiError from '../../error/ApiError'
+import logger from '../../utils/logger'
 
 const initModel = async (): Promise<void> => {
   try {
@@ -12,10 +13,10 @@ const initModel = async (): Promise<void> => {
       'utf-8'
     )
     await db.query(sql)
-    ApiError.successLog(`init model of ${config.DB_NAME} database!`)
+    logger.info(`init model of ${config.DB_NAME} database!`)
     return Promise.resolve()
-  } catch (err) {
-    ApiError.failedLog(`init model of ${config.DB_NAME} database!`, err)
+  } catch (error) {
+    logger.error(error, `init model of ${config.DB_NAME} database!`)
     return Promise.reject()
   }
 }

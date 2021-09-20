@@ -13,7 +13,7 @@ import {
 } from '../../types'
 
 import db from '../db'
-import ApiError from '../../error/ApiError'
+import logger from '../../utils/logger'
 
 class InsertToDB {
   public async categoriesTable(data: TDBMDataCategoriesItem[]): Promise<void> {
@@ -26,11 +26,11 @@ class InsertToDB {
           `insert into categories (name, url, parentId) values ('${item.category.name}', '${item.category.url}', ${parentName})`
         )
       }
-      ApiError.successLog('migration data to table: categories!')
+      logger.info('migration data to table: categories!')
 
       return Promise.resolve()
-    } catch (err) {
-      ApiError.failedLog('migration data to table: categories!', err)
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: categories!')
       return Promise.reject()
     }
   }
@@ -42,10 +42,10 @@ class InsertToDB {
           `insert into labels (name, url) values ('${label.name}', '${label.url}')`
         )
       }
-      ApiError.successLog('migration data to table: labels!')
+      logger.info('migration data to table: labels!')
       return Promise.resolve()
-    } catch (err) {
-      ApiError.failedLog('migration data to table: labels!', err)
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: labels!')
       return Promise.reject()
     }
   }
@@ -57,10 +57,10 @@ class InsertToDB {
       insert into units (name, url) values ('${unit.name}', '${unit.url}')
       `)
       }
-      ApiError.successLog('migration data to table: units!')
+      logger.info('migration data to table: units!')
       return Promise.resolve()
-    } catch (err) {
-      ApiError.failedLog('migration data to table: units!', err)
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: units!')
       return Promise.reject()
     }
   }
@@ -73,16 +73,14 @@ class InsertToDB {
             `insert into suppliers (name, url) values ('${supplier.name}', '${supplier.url}')`
           )
         }
-        ApiError.successLog('migration data to table: suppliers!')
+        logger.info('migration data to table: suppliers!')
         return Promise.resolve()
       } else {
-        ApiError.failedLog(
-          'migration data to table: suppliers! - Lack in data!'
-        )
+        logger.fatal('migration data to table: suppliers! - Lack in data!')
         return Promise.reject()
       }
     } catch (err) {
-      ApiError.failedLog('migration data to table: suppliers!', err)
+      logger.fatal('migration data to table: suppliers!', err)
       return Promise.reject()
     }
   }
@@ -156,10 +154,10 @@ class InsertToDB {
          ${supplier_id(product.d738_exProductManufacturer)}
         )`)
       }
-      ApiError.successLog('migration data to table: products!')
+      logger.info('migration data to table: products!')
       return Promise.resolve()
     } catch (err) {
-      ApiError.failedLog('migration data to table: products!', err)
+      logger.fatal('migration data to table: products!', err)
       return Promise.reject()
     }
   }
@@ -186,10 +184,10 @@ class InsertToDB {
            `)
         }
       }
-      ApiError.successLog('migration data to table: category_to_product!')
+      logger.info('migration data to table: category_to_product!')
       return Promise.resolve()
     } catch (err) {
-      ApiError.failedLog('migration data to table: category_to_product!', err)
+      logger.fatal('migration data to table: category_to_product!', err)
       return Promise.reject()
     }
   }
@@ -262,10 +260,10 @@ class InsertToDB {
         })
       }
 
-      ApiError.successLog('migration data to table: images!')
+      logger.info('migration data to table: images!')
       return Promise.resolve()
-    } catch (err) {
-      ApiError.failedLog('migration data to table: category_to_product!', err)
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: category_to_product!')
       return Promise.reject()
     }
   }
@@ -276,10 +274,10 @@ class InsertToDB {
         await db.query(`insert into statuses (name) values ($1)`, [status])
       }
 
-      ApiError.successLog('migration data to table: statuses!')
+      logger.info('migration data to table: statuses!')
       return Promise.resolve()
-    } catch (err) {
-      ApiError.failedLog('migration data to table: statuses!', err)
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: statuses!')
       return Promise.reject()
     }
   }

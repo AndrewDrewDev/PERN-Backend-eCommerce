@@ -5,8 +5,8 @@ import config from '../../config'
 import { TDBMJson } from '../../types'
 import MigrationData from './MigrationData'
 import InsertToDB from './InsertToDB'
-import ApiError from '../../error/ApiError'
 import initModel from '../model/initModel'
+import logger from '../../utils/logger'
 
 const startMigrate = () => {
   const absolutePath: string = path.resolve(
@@ -31,8 +31,8 @@ const startMigrate = () => {
       InsertToDB.categoryToProductTable(migrationData.categoryToProduct)
     )
     .then(() => InsertToDB.imagesTable(migrationData.images))
-    .then(() => ApiError.successLog('MIGRATE TO DATABASE'))
-    .catch(() => ApiError.failedLog('MIGRATE TO DATABASE'))
+    .then(() => logger.info('MIGRATE TO DATABASE'))
+    .catch(() => logger.fatal('MIGRATE TO DATABASE'))
 }
 
 startMigrate()

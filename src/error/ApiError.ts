@@ -1,14 +1,30 @@
-import chalk from 'chalk'
+import { NextFunction, Request, Response } from 'express'
+import logger from '../utils/logger'
 
-class ApiError {
-  public successLog(message: string): void {
-    console.log(`${chalk.bgGreen(chalk.black(' SUCCESS '))} ${message}`)
-  }
-
-  public failedLog(message: string, err?: Error): void {
-    console.log(`${chalk.bgRed(chalk.black(' FAILED '))} ${message}\n\n`)
-    if (err) console.error(err)
-  }
+const handleError = (
+  err: ErrorHandler,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { statusCode, message } = err
+  logger.error(err)
+  res.status(statusCode || 500).json({
+    status: 'error',
+    statusCode: statusCode || 500,
+    message: statusCode === 500 ? 'An error occurred!' : message,
+  })
+  next()
 }
 
-export default new ApiError()
+class ErrorHandler extends Error {
+  public status: string = ''
+  public statusCode: number
+  constructor(statusCode: number, message: string) {
+    super()
+    this.status = 'error'
+    this.statusCode = statusCode
+    this.message = message
+  }
+}
+export { ErrorHandler, handleError }

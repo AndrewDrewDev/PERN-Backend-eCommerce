@@ -1,67 +1,17 @@
 import { Request, Response } from 'express'
-import { QueryResult } from 'pg'
-import db from '../db/db'
-import { TCproductGetOneData, TCproductGetOneResult } from '../types'
+import { TCproductGetOneResult } from '../types'
+import ProductService from '../services/ProductService'
 
 class ProductController {
-  public async getOne(req: Request, res: Response) {
+  public async getOne(
+    req: Request,
+    res: Response
+  ): Promise<Response<TCproductGetOneResult | null>> {
     const result: TCproductGetOneResult = {} as any
     const { id } = req.params
-    const data: QueryResult<TCproductGetOneData> = await db.query(
-      `
-      select
-        im.name as image,
-        im.preview as ispreview,
-        cc.name as categoryname,
-        cc.url as categoryurl,
-        pp.name as name,
-        lb.name as label,
-        un.name as unit,
-        su.name as supplier,
-        pp.productId as id,
-        pp.description as description,
-        pp.price as price,
-        pp.oldPrice as oldPrice,
-        pp.amount as amount,
-        pp.vendorid as vendorid,
-        st.name as status
-      from
-        category_to_product cp
-      left join
-        categories cc
-      on
-        cc.id=cp.category_id
-      left join
-        products pp
-      on
-        pp.productId=$1
-      left join
-        labels lb
-      on
-        lb.id=pp.label_id
-      left join
-        units un
-      on
-        un.id=pp.units_id
-      left join
-        suppliers su
-      on
-       su.id=pp.supplier_id
-      left join
-        images im
-      on
-       im.product_id=pp.id
-      left join
-      statuses st
-      on
-      st.id=pp.id
-      where
-        cp.product_id=(select id from products pp where pp.productId=$1)
-      ORDER BY
-        cp.level ASC`,
-      [id]
-    )
+    const data = await ProductService.getOneProductDb(id)
 
+    // Preparation & Combine data
     result.categories = []
     result.images = { preview: '', big: [] }
     const temp: string[] = []
@@ -102,7 +52,10 @@ class ProductController {
     return res.json(result)
   }
 
-  public getCategoryProducts(req: Request, res: Response) {}
+  public getCategoryProducts(req: Request, res: Response) {
+    // const limit = 12
+    // const offset = (page - 1) * limit
+  }
 }
 
 export default new ProductController()
