@@ -1,6 +1,9 @@
 import { QueryResult } from 'pg'
-import { TCproductGetOneData } from '../types'
-import { ErrorHandler } from '../error/ApiError'
+import {
+  TCproductGetOneData,
+  TProductsByCategoryData,
+  TgetProductsByCategory,
+} from '../types'
 import db from '../db/db'
 import logger from '../utils/logger'
 

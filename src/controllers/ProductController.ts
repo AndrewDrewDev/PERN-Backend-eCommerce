@@ -51,11 +51,6 @@ class ProductController {
     if (!result.name) return res.json(null)
     return res.json(result)
   }
-
-  public getCategoryProducts(req: Request, res: Response) {
-    // const limit = 12
-    // const offset = (page - 1) * limit
-  }
 }
 
 export default new ProductController()

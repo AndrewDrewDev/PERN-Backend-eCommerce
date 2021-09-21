@@ -148,3 +148,23 @@ export type TCproductGetOneResult = {
   vendorId: string
   status: string
 }
+
+export type TProductsByCategoryData = {
+  count: number
+  name: string
+  id: string
+  price: string
+  oldprice: string
+  img: string
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// Services types
+//
+
+export type TgetProductsByCategory = {
+  name: string
+  limit: string
+  offset: string
+}
