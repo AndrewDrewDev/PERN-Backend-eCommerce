@@ -2,7 +2,7 @@ import { QueryResult } from 'pg'
 import {
   TCproductGetOneData,
   TProductsByCategoryData,
-  TgetProductsByCategory,
+  TGetProductsByCategory,
 } from '../types'
 import db from '../db/db'
 import logger from '../utils/logger'

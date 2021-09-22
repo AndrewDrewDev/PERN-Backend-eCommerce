@@ -167,8 +167,14 @@ export type TProductsByCategoryData = {
 // Services types
 //
 
-export type TgetProductsByCategory = {
+export type TGetProductsByCategory = {
   name: string
   limit: string
   offset: string
+}
+
+export type TGetInfoByLevel = {
+  count: number
+  name: string
+  url: string
 }

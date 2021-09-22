@@ -1,4 +1,8 @@
-import { TProductsByCategoryData, TgetProductsByCategory } from '../types'
+import {
+  TProductsByCategoryData,
+  TGetProductsByCategory,
+  TGetInfoByLevel,
+} from '../types'
 import { QueryResult } from 'pg'
 import db from '../db/db'
 import logger from '../utils/logger'
@@ -8,7 +12,7 @@ class CategoryService {
     name,
     limit,
     offset,
-  }: TgetProductsByCategory): Promise<
+  }: TGetProductsByCategory): Promise<
     QueryResult<TProductsByCategoryData>[] | null
   > {
     try {
@@ -57,6 +61,29 @@ class CategoryService {
       return data.rows
     } catch (error) {
       throw logger.error(error, 'getProductsByCategory occurred error')
+    }
+  }
+
+  public async getInfoByLevel(
+    level: string
+  ): Promise<QueryResult<TGetInfoByLevel>[] | null> {
+    try {
+      const result = await db.query(
+        `
+      select count(pp) as count, cc.name, cc.url from categories cc
+        left join category_to_product cp on cp.category_id=cc.id and cp.level=$1
+        left join products pp on cp.product_id=pp.id
+      where 
+      cp.level is not null
+      group by cc.name, cc.url, cp.level    
+      `,
+        [level]
+      )
+
+      if (result.rows.length === 0) return null
+      return result.rows
+    } catch (error) {
+      throw logger.error(error, 'getInfoByLevel occurred error')
     }
   }
 }
