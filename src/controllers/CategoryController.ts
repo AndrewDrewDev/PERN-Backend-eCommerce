@@ -2,13 +2,6 @@ import { Request, Response } from 'express'
 import CategoryService from '../services/CategoryService'
 import { TProductsByCategoryData } from '../types'
 
-type LLL = {
-  name: string
-  page: number
-  limit: number
-  offset: number
-}
-
 class CategoryController {
   public async getCategoryProducts(
     req: Request,

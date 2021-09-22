@@ -11,5 +11,3 @@ TODO: Will Describe
 TODO: Will Describe
 
 * TODO-LIST
-** TODO Replace with pino custom logger
-** TODO To finish write the test by PrepareData.ts

@@ -14,35 +14,42 @@ class CategoryService {
     try {
       const data = await db.query(
         `
-      select 
-      (
-        SELECT COUNT(*) FROM categories cc, products pp, category_to_product cp
+        select
+          pp.name as name,
+          pp.productid as id,
+          pp.price as price,
+          pp.oldprice as oldprice,
+          lb.name as label,
+          im.name as img
+        from
+          products pp
+        left join
+          category_to_product cp
+          on
+          pp.id=cp.product_id
+        left join
+          categories cc
+        on
+          cc.url=$1
+          and
+          cc.id=cp.category_id
+        left join
+          labels lb
+          on
+          lb.id=pp.label_id
+        left join
+          images im
+          on
+          im.product_id=pp.id
+          and
+          im.preview=true
         where
-        cc.url=$1
-        and
-        cc.id=cp.category_id
-        and
-        pp.id=cp.product_id
-      ) 
-      as count,
-      pp.name as name,
-      pp.productid as id,
-      pp.price as price,
-      pp.oldprice as oldprice,
-      im.name as img
-      from
-      categories cc, products pp, category_to_product cp, images im
-      where
-      cc.url=$1
-      and
-      cc.id=cp.category_id
-      and
-      pp.id=cp.product_id
-      and 
-      im.product_id=pp.id
-      and 
-      im.preview=true
-      group by pp.id, im.name limit $2 offset $3
+          cc.url=$1
+          and
+          cc.id=cp.category_id
+          and
+          pp.id=cp.product_id
+        group by pp.id, im.name, lb.name limit $2 offset $3
       `,
         [name, limit, offset]
       )

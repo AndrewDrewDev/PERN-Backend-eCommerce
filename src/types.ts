@@ -114,6 +114,8 @@ export type TDBMDataImages = {
 // Controllers types
 // T - type
 // C - controler
+//
+// Note: PostgreSQL not returned property names in camelCase hence I not use it
 
 export type TCproductGetOneData = {
   image: string
@@ -155,6 +157,8 @@ export type TProductsByCategoryData = {
   id: string
   price: string
   oldprice: string
+  status: string
+  label: string
   img: string
 }
 
