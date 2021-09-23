@@ -2,10 +2,12 @@ import {
   TProductsByCategoryData,
   TGetProductsByCategory,
   TGetInfoByLevel,
+  TGetBreadcrumb,
 } from '../types'
 import { QueryResult } from 'pg'
 import db from '../db/db'
 import logger from '../utils/logger'
+import { Response } from 'express'
 
 class CategoryService {
   public async getProductsByCategory({
@@ -84,6 +86,36 @@ class CategoryService {
       return result.rows
     } catch (error) {
       throw logger.error(error, 'getInfoByLevel occurred error')
+    }
+  }
+
+  public async getBreadcrumb(
+    categoryUrl: string
+  ): Promise<TGetBreadcrumb[] | null> {
+    try {
+      const data: QueryResult<TGetBreadcrumb> = await db.query(
+        `
+      with recursive tree(id, url, name, parentid) as (
+      select n.id, n.name, n.url, n.parentid
+      from categories n
+      where n.url = $1
+      union all
+      select n.id, n.name, n.url, n.parentid
+      from categories n
+      join tree t on (n.id = t.parentid)
+      ) 
+      select *
+      from tree;`,
+        [categoryUrl]
+      )
+
+      if (data.rows.length === 0) return null
+
+      return data.rows.map(i => {
+        return { name: i.name, url: i.url }
+      })
+    } catch (error) {
+      throw logger.error(error, 'getBreadcrumb occurred error')
     }
   }
 }

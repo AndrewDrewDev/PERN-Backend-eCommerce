@@ -45,6 +45,7 @@ class ProductController {
       result.oldPrice = item.oldprice
       result.amount = item.amount
       result.status = item.status
+      result.images.big.reverse()
     }
 
     // Check if product not founded in db

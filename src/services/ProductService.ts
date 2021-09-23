@@ -1,9 +1,5 @@
 import { QueryResult } from 'pg'
-import {
-  TCproductGetOneData,
-  TProductsByCategoryData,
-  TGetProductsByCategory,
-} from '../types'
+import { TCproductGetOneData } from '../types'
 import db from '../db/db'
 import logger from '../utils/logger'
 

@@ -178,3 +178,8 @@ export type TGetInfoByLevel = {
   name: string
   url: string
 }
+
+export type TGetBreadcrumb = {
+  name: string
+  url: string
+}

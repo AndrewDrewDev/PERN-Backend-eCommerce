@@ -1,6 +1,10 @@
 import { Request, Response } from 'express'
 import CategoryService from '../services/CategoryService'
-import { TGetInfoByLevel, TProductsByCategoryData } from '../types'
+import {
+  TGetBreadcrumb,
+  TGetInfoByLevel,
+  TProductsByCategoryData,
+} from '../types'
 
 class CategoryController {
   public async getCategoryProducts(
@@ -27,6 +31,15 @@ class CategoryController {
   ): Promise<Response<TGetInfoByLevel[] | null>> {
     const { level } = req.params
     const data = await CategoryService.getInfoByLevel(level)
+    return res.json(data)
+  }
+
+  public async getCategoryBreadcrumb(
+    req: Request,
+    res: Response
+  ): Promise<Response<TGetBreadcrumb[] | null>> {
+    const { url } = req.params
+    const data = await CategoryService.getBreadcrumb(url)
     return res.json(data)
   }
 }
