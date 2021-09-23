@@ -95,7 +95,7 @@ class CategoryService {
     try {
       const data: QueryResult<TGetBreadcrumb> = await db.query(
         `
-      with recursive tree(id, url, name, parentid) as (
+      with recursive tree(id, name, url , parentid) as (
       select n.id, n.name, n.url, n.parentid
       from categories n
       where n.url = $1
@@ -103,9 +103,9 @@ class CategoryService {
       select n.id, n.name, n.url, n.parentid
       from categories n
       join tree t on (n.id = t.parentid)
-      ) 
+      )
       select *
-      from tree;`,
+      from tree t ORDER BY t.parentid ASC nulls FIRST`,
         [categoryUrl]
       )
 
