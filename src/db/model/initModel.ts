@@ -3,7 +3,6 @@ import path from 'path'
 
 import config from '../../config'
 import db from '../db'
-import ApiError from '../../error/ApiError'
 import logger from '../../utils/logger'
 
 const initModel = async (): Promise<void> => {

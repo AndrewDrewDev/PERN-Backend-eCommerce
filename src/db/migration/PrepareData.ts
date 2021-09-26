@@ -3,12 +3,14 @@ import path from 'path'
 import fs from 'fs-extra'
 
 import {
+  TDBMDataBaseInfo,
   TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
   TDBMDataImages,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
+  TDBMJsonBaseInfo,
   TDBMJsonGoods,
 } from '../../types'
 
@@ -191,6 +193,10 @@ class PrepareData {
 
     return Array.from(new Set(result))
   }
+
+  // public baseInfoTable(baseInfo: TDBMJsonBaseInfo): TDBMDataBaseInfo {
+  //   return {}
+  // }
 }
 
 const transliterateWord = (word: string): string => {

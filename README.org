@@ -11,3 +11,120 @@ TODO: Will Describe
 TODO: Will Describe
 
 * TODO-LIST
+* Select example
+** Get all product by category name
+
+#+begin_src sql
+
+select cc.name, pp.name
+from
+categories cc, products pp, category_to_product cp
+where
+cc.name='Умные гаджеты'
+and
+cc.id=cp.category_id
+and
+pp.id=cp.product_id
+;
+
+#+end_src
+
+** Get breadcrumb product by product name
+
+#+begin_src sql
+
+select
+cc.name, cp.level
+from
+category_to_product cp
+left join
+categories cc on cc.id=cp.category_id
+where
+cp.product_id=(select id from products pp where pp.name='Контейнер «Свежесть» (5,5 л)')
+ORDER BY
+cp.level ASC
+
+#+end_src
+
+** Get breadcrumb categories
+
+#+begin_src sql
+
+with recursive tree(id, name, parentId) as (
+select n.name, n.parentId
+from categories n
+where n.name = 'Овощечистки'
+union all
+select n.id, n.name, n.parentId
+from categories n
+join tree t on (n.id = t.parentId)
+)
+select * from tree;
+
+#+end_src
+
+** Get full data info
+*** Query
+
+#+begin_src sql
+
+select
+cc.name as categories,
+pp.name as name,
+lb.name as label,
+un.name as unit,
+su.name as supplier,
+pp.productId as id,
+pp.name as name,
+pp.description as description,
+pp.price as price,
+pp.oldPrice as oldPrice,
+pp.amount as amount,
+pp.vendorId as vendorId
+from
+category_to_product cp
+left join
+categories cc
+on cc.id=cp.category_id
+left join
+products pp
+on pp.productId='A03'
+left join
+labels lb
+on
+lb.id=pp.label_id
+left join
+units un
+on
+un.id=pp.units_id
+left join
+suppliers su
+on
+su.id=pp.supplier_id
+where
+cp.product_id=(select id from products pp where pp.productId='A03')
+ORDER BY
+cp.level ASC
+
+#+end_src
+
+*** Result
+
+|category1|name|...|
+|category2|name|...|
+|category3|name|...|
+|category... |name|...|
+
+** Get count of category by category name
+
+#+begin_src sql
+
+SELECT COUNT(*) FROM categories cc, products pp, category_to_product cp
+where
+cc.url='Klassika-«Tupperware»'
+and
+cc.id=cp.category_id
+and
+pp.id=cp.product_id
+
+#+end_src

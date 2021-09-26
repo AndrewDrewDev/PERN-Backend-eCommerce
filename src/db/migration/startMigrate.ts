@@ -1,24 +1,55 @@
 import path from 'path'
-import fs from 'fs-extra'
+import excelValidator from 'excel-validator'
 
 import config from '../../config'
 import { TDBMJson } from '../../types'
-import MigrationData from './MigrationData'
-import InsertToDB from './InsertToDB'
+import MigrationDataStore from './MigrationDataStore'
 import initModel from '../model/initModel'
+import InsertToDB from './InsertToDB'
 import logger from '../../utils/logger'
 
 const startMigrate = () => {
-  const absolutePath: string = path.resolve(
+  const excelFilePath: string = path.resolve(
     __dirname,
     '..',
     '..',
     '..',
     'data',
-    config.DBM_JSON_FILE_NAME
+    config.DBM_EXCEL_FILE_NAME
   )
-  const jsonData: TDBMJson = JSON.parse(fs.readFileSync(absolutePath, 'utf-8'))
-  const migrationData: MigrationData = new MigrationData(jsonData)
+
+  const configFilePath: string = path.resolve(
+    __dirname,
+    '..',
+    '..',
+    '..',
+    'data',
+    config.DBM_EXCEL_CONFIG_FILE_NAME
+  )
+
+  const jsonData = excelValidator<TDBMJson>({
+    setting: {
+      configFilePath,
+      excelFilePath,
+    },
+    WSOptions: [
+      {
+        WSName: 'Goods',
+        type: 'horizontal',
+      },
+      {
+        WSName: 'Categories',
+        type: 'vertical',
+        columns: ['B', 'C'],
+      },
+      {
+        WSName: 'BaseInfo',
+        type: 'vertical',
+        columns: ['A', 'B'],
+      },
+    ],
+  })
+  const migrationData: MigrationDataStore = new MigrationDataStore(jsonData)
 
   initModel()
     .then(() => InsertToDB.categoriesTable(migrationData.categories))

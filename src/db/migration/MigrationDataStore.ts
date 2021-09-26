@@ -7,10 +7,11 @@ import {
   TDBMDataCategoryToProduct,
   TDBMDataCategoriesItem,
   TDBMDataImages,
+  TDBMJsonBaseInfo,
 } from '../../types'
 import PrepareData from './PrepareData'
 
-class MigrationData {
+class MigrationDataStore {
   private _categories: TDBMDataCategoriesItem[]
   private _units: TDBMDataUnits[]
   private _suppliers: TDBMDataSuppliers[]
@@ -19,9 +20,10 @@ class MigrationData {
   private _categoryToProduct: TDBMDataCategoryToProduct
   private _images: TDBMDataImages
   private _statuses: string[]
+  // private _baseInfo: TDBMJsonBaseInfo
 
   constructor(jsonData: TDBMJson) {
-    const { Goods } = jsonData
+    const { Goods, BaseInfo } = jsonData
     this._products = Goods
     this._categories = PrepareData.categoriesTable(Goods)
     this._labels = PrepareData.labelsTable(['Акции', 'Новинки'])
@@ -30,6 +32,7 @@ class MigrationData {
     this._categoryToProduct = PrepareData.categoryToProductTable(Goods)
     this._images = PrepareData.imagesTable(Goods)
     this._statuses = PrepareData.statusesTable(Goods)
+    // this._baseInfo = PrepareData.baseInfoTable(BaseInfo)
   }
 
   public get categories() {
@@ -65,4 +68,4 @@ class MigrationData {
   }
 }
 
-export default MigrationData
+export default MigrationDataStore

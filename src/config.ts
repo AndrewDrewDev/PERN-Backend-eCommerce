@@ -2,7 +2,8 @@ import { Tconfig } from '../src/types'
 
 const config: Tconfig = {
   PORT: 5000,
-  DBM_JSON_FILE_NAME: 'Demo-DataSet-Tupperware-150.json',
+  DBM_EXCEL_FILE_NAME: 'Demo-DataSet-Tupperware-150.xlsx',
+  DBM_EXCEL_CONFIG_FILE_NAME: 'excelConfig.json',
   DB_NAME: 'pern_eccomerce_db',
   DB_USER: 'postgres',
   DB_PASSWORD: 'root',

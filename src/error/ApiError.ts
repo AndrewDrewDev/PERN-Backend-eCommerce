@@ -27,4 +27,4 @@ class ErrorHandler extends Error {
     this.message = message
   }
 }
-export { ErrorHandler, handleError }
+// export { ErrorHandler, handleError }

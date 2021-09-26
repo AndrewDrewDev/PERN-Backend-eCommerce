@@ -7,7 +7,6 @@ import {
 import { QueryResult } from 'pg'
 import db from '../db/db'
 import logger from '../utils/logger'
-import { Response } from 'express'
 
 class CategoryService {
   public async getProductsByCategory({

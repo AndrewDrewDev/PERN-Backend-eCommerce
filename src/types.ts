@@ -1,7 +1,8 @@
 // Main server config
 export type Tconfig = {
   readonly PORT: number
-  readonly DBM_JSON_FILE_NAME: string
+  readonly DBM_EXCEL_FILE_NAME: string
+  readonly DBM_EXCEL_CONFIG_FILE_NAME: string
   readonly DB_NAME: string
   readonly DB_USER: string
   readonly DB_PASSWORD: string
@@ -107,6 +108,29 @@ export type TDBMDataImages = {
     preview: string[]
     big: string[]
   }
+}
+
+export type TDBMDataBaseInfo = {
+  Title: string
+  SubTitle: string
+  id: string
+  BaseLink: string
+  Address: string
+  Phone: string
+  Email: string
+  PaginationNumber: '1' | '2' | '3'
+  Currency: 'грн.' | 'руб.' | 'usd'
+  CatalogPage: 'grid' | 'grid4'
+  CategoryNumber: '1' | '2' | '3'
+  Copyright: string
+  SocialNetwork: string
+  CategoryCloudNumber: string
+  CardView: 'square' | 'vertical'
+  SiteGridView: 'square' | 'vertical'
+  SiteDetailView: 'square' | 'vertical'
+  SliderHeaders: string[]
+  DiscountCards: string[]
+  NewCards: string[]
 }
 
 ///////////////////////////////////////////////////////////////////////////////
