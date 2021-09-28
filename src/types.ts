@@ -135,6 +135,11 @@ export type TDBMDataCustomCategories = {
   url: string
 }
 
+export type TDBMDataCustomCategoriesProducts = {
+  discount: string[]
+  New: string[]
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Controllers types

@@ -13,6 +13,7 @@ import {
   TDBMJsonBaseInfo,
   TDBMJsonGoods,
   TDBMDataCustomCategories,
+  TDBMDataCustomCategoriesProducts,
 } from '../../types'
 
 class PrepareData {
@@ -227,6 +228,25 @@ class PrepareData {
       }
     })
   }
+
+  public customCategoriesProducts({
+    discount,
+    New,
+  }: {
+    discount: string
+    New: string
+  }): TDBMDataCustomCategoriesProducts {
+    const discountProductsId = splitSemicolon(discount)
+    const newProductsId = splitSemicolon(New)
+    return {
+      discount: discountProductsId,
+      New: newProductsId,
+    }
+  }
+}
+
+const splitSemicolon = (string: string): string[] => {
+  return string.split(';').map(w => w.replace(/\n/, ''))
 }
 
 const transliterateWord = (word: string): string => {
