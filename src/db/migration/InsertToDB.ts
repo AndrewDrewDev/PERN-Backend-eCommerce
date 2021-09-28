@@ -12,6 +12,7 @@ import {
   TDBMDataUnits,
   TDBMJsonGoods,
   TDBMDataCustomCategories,
+  TDBMDataCustomCategoriesProducts,
 } from '../../types'
 
 import db from '../db'
@@ -350,6 +351,48 @@ class InsertToDB {
       return Promise.resolve()
     } catch (error) {
       logger.fatal(error, 'migration data to table: custom_categories!')
+      return Promise.resolve()
+    }
+  }
+
+  public async customCategoriesProductsTable({
+    discount,
+    New,
+  }: TDBMDataCustomCategoriesProducts): Promise<void> {
+    const queryExpression = async (
+      categoryName: 'Акции' | 'Новинки',
+      productId: string
+    ): Promise<void> => {
+      await db.query(
+        `insert into 
+            custom_categories_products 
+            (custom_categories_id, product_id)
+            values 
+            (
+             (select id from custom_categories cc where cc.name=$1),
+             (select id from products pp where pp.productId=$2)
+            )
+            `,
+        [categoryName, productId]
+      )
+    }
+
+    try {
+      for (const productId of discount) {
+        await queryExpression('Акции', productId)
+      }
+
+      for (const productId of New) {
+        await queryExpression('Новинки', productId)
+      }
+
+      logger.info('migration data to table: custom_categories_products!')
+      return Promise.resolve()
+    } catch (error) {
+      logger.fatal(
+        error,
+        'migration data to table: custom_categories_products!'
+      )
       return Promise.resolve()
     }
   }
