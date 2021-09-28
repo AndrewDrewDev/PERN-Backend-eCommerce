@@ -11,6 +11,7 @@ import {
   TDBMDataSuppliers,
   TDBMDataUnits,
   TDBMJsonGoods,
+  TDBMDataCustomCategories,
 } from '../../types'
 
 import db from '../db'
@@ -332,6 +333,24 @@ class InsertToDB {
     } catch (error) {
       logger.fatal(error, 'migration data to table: shop_config!')
       return Promise.reject()
+    }
+  }
+
+  public async customCategoriesTable(
+    categoriesData: TDBMDataCustomCategories[]
+  ): Promise<void> {
+    try {
+      for (const item of categoriesData) {
+        await db.query(
+          `insert into custom_categories (name, url) values ($1, $2)`,
+          [item.name, item.url]
+        )
+      }
+      logger.info('migration data to table: custom_categories!')
+      return Promise.resolve()
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: custom_categories!')
+      return Promise.resolve()
     }
   }
 }

@@ -130,6 +130,11 @@ export type TDBMDataShopConfig = {
   site_detail_view: string
 }
 
+export type TDBMDataCustomCategories = {
+  name: string
+  url: string
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Controllers types

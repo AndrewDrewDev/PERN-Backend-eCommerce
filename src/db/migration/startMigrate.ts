@@ -51,7 +51,10 @@ const startMigrate = () => {
   })
   const migrationData: MigrationDataStore = new MigrationDataStore(jsonData)
 
-  initModel().then(() => InsertToDB.shopConfigTable(migrationData.shopConfig))
+  initModel().then(() =>
+    InsertToDB.customCategoriesTable(migrationData.customCategories)
+  )
+  // .then(() => InsertToDB.shopConfigTable(migrationData.shopConfig))
   //   .then(() => InsertToDB.categoriesTable(migrationData.categories))
   //   .then(() => InsertToDB.labelsTable(migrationData.labels))
   //   .then(() => InsertToDB.statusesTable(migrationData.statuses))

@@ -9,6 +9,7 @@ import {
   TDBMDataImages,
   TDBMJsonBaseInfo,
   TDBMDataShopConfig,
+  TDBMDataCustomCategories,
 } from '../../types'
 import PrepareData from './PrepareData'
 
@@ -22,6 +23,7 @@ class MigrationDataStore {
   private readonly _images: TDBMDataImages
   private readonly _statuses: string[]
   private readonly _shopConfig: TDBMDataShopConfig
+  private readonly _customCategories: TDBMDataCustomCategories[]
 
   constructor(jsonData: TDBMJson) {
     const { Goods, BaseInfo } = jsonData
@@ -34,6 +36,14 @@ class MigrationDataStore {
     this._images = PrepareData.imagesTable(Goods)
     this._statuses = PrepareData.statusesTable(Goods)
     this._shopConfig = PrepareData.shopConfigTable(BaseInfo)
+    this._customCategories = PrepareData.customCategoriesTable([
+      'Акции',
+      'Новинки',
+    ])
+  }
+
+  get customCategories(): TDBMDataCustomCategories[] {
+    return this._customCategories
   }
 
   get categories(): TDBMDataCategoriesItem[] {

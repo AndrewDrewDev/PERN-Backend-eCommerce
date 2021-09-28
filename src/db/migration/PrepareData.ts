@@ -12,6 +12,7 @@ import {
   TDBMDataUnits,
   TDBMJsonBaseInfo,
   TDBMJsonGoods,
+  TDBMDataCustomCategories,
 } from '../../types'
 
 class PrepareData {
@@ -214,6 +215,17 @@ class PrepareData {
       site_grid_view: baseInfo.d602_exShopSiteGridView,
       site_detail_view: baseInfo.d603_exShopSiteDetailView,
     }
+  }
+
+  public customCategoriesTable(
+    categoriesNames: string[]
+  ): TDBMDataCustomCategories[] {
+    return categoriesNames.map(categoryName => {
+      return {
+        name: categoryName,
+        url: transliterateWord(categoryName),
+      }
+    })
   }
 }
 
