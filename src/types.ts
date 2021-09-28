@@ -1,5 +1,5 @@
 // Main server config
-export type Tconfig = {
+export type TConfig = {
   readonly PORT: number
   readonly DBM_EXCEL_FILE_NAME: string
   readonly DBM_EXCEL_CONFIG_FILE_NAME: string
@@ -110,27 +110,24 @@ export type TDBMDataImages = {
   }
 }
 
-export type TDBMDataBaseInfo = {
-  Title: string
-  SubTitle: string
+export type TDBMDataShopConfig = {
+  title: string
+  sub_title: string
   id: string
-  BaseLink: string
-  Address: string
-  Phone: string
-  Email: string
-  PaginationNumber: '1' | '2' | '3'
-  Currency: 'грн.' | 'руб.' | 'usd'
-  CatalogPage: 'grid' | 'grid4'
-  CategoryNumber: '1' | '2' | '3'
-  Copyright: string
-  SocialNetwork: string
-  CategoryCloudNumber: string
-  CardView: 'square' | 'vertical'
-  SiteGridView: 'square' | 'vertical'
-  SiteDetailView: 'square' | 'vertical'
-  SliderHeaders: string[]
-  DiscountCards: string[]
-  NewCards: string[]
+  base_link: string
+  address: string
+  phone: string
+  email: string
+  pagination_number: string
+  currency: string
+  catalog_page: string
+  category_number: string
+  copyright: string
+  social_network: string
+  category_cloud_number: string
+  card_view: string
+  site_grid_view: string
+  site_detail_view: string
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -141,7 +138,7 @@ export type TDBMDataBaseInfo = {
 //
 // Note: PostgreSQL not returned property names in camelCase hence I not use it
 
-export type TCproductGetOneData = {
+export type TCProductGetOneData = {
   image: string
   ispreview: boolean
   categoryname: string
@@ -159,7 +156,7 @@ export type TCproductGetOneData = {
   status: string
 }
 
-export type TCproductGetOneResult = {
+export type TCProductGetOneResult = {
   categories: TDBMDataCategories[]
   images: { preview: string; big: string[] }
   name: string

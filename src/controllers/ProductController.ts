@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
-import { TCproductGetOneResult } from '../types'
+import { TCProductGetOneResult } from '../types'
 import ProductService from '../services/ProductService'
 
 class ProductController {
   public async getOne(
     req: Request,
     res: Response
-  ): Promise<Response<TCproductGetOneResult | null>> {
-    const result: TCproductGetOneResult = {} as any
+  ): Promise<Response<TCProductGetOneResult | null>> {
+    const result: TCProductGetOneResult = {} as any
     const { id } = req.params
     const data = await ProductService.getOneProductDb(id)
 

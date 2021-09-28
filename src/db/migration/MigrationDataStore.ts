@@ -8,19 +8,20 @@ import {
   TDBMDataCategoriesItem,
   TDBMDataImages,
   TDBMJsonBaseInfo,
+  TDBMDataShopConfig,
 } from '../../types'
 import PrepareData from './PrepareData'
 
 class MigrationDataStore {
-  private _categories: TDBMDataCategoriesItem[]
-  private _units: TDBMDataUnits[]
-  private _suppliers: TDBMDataSuppliers[]
-  private _labels: TDBMDataLabels[]
-  private _products: TDBMJsonGoods[]
-  private _categoryToProduct: TDBMDataCategoryToProduct
-  private _images: TDBMDataImages
-  private _statuses: string[]
-  // private _baseInfo: TDBMJsonBaseInfo
+  private readonly _categories: TDBMDataCategoriesItem[]
+  private readonly _units: TDBMDataUnits[]
+  private readonly _suppliers: TDBMDataSuppliers[]
+  private readonly _labels: TDBMDataLabels[]
+  private readonly _products: TDBMJsonGoods[]
+  private readonly _categoryToProduct: TDBMDataCategoryToProduct
+  private readonly _images: TDBMDataImages
+  private readonly _statuses: string[]
+  private readonly _shopConfig: TDBMDataShopConfig
 
   constructor(jsonData: TDBMJson) {
     const { Goods, BaseInfo } = jsonData
@@ -32,39 +33,43 @@ class MigrationDataStore {
     this._categoryToProduct = PrepareData.categoryToProductTable(Goods)
     this._images = PrepareData.imagesTable(Goods)
     this._statuses = PrepareData.statusesTable(Goods)
-    // this._baseInfo = PrepareData.baseInfoTable(BaseInfo)
+    this._shopConfig = PrepareData.shopConfigTable(BaseInfo)
   }
 
-  public get categories() {
+  get categories(): TDBMDataCategoriesItem[] {
     return this._categories
   }
 
-  public get labels() {
-    return this._labels
-  }
-
-  public get units() {
+  get units(): TDBMDataUnits[] {
     return this._units
   }
 
-  public get suppliers() {
+  get suppliers(): TDBMDataSuppliers[] {
     return this._suppliers
   }
 
-  public get products() {
+  get labels(): TDBMDataLabels[] {
+    return this._labels
+  }
+
+  get products(): TDBMJsonGoods[] {
     return this._products
   }
 
-  public get categoryToProduct() {
+  get categoryToProduct(): TDBMDataCategoryToProduct {
     return this._categoryToProduct
   }
 
-  public get images() {
+  get images(): TDBMDataImages {
     return this._images
   }
 
-  public get statuses() {
+  get statuses(): string[] {
     return this._statuses
+  }
+
+  get shopConfig(): TDBMDataShopConfig {
+    return this._shopConfig
   }
 }
 

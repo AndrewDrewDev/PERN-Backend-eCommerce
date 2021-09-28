@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs-extra'
 
 import {
-  TDBMDataBaseInfo,
+  TDBMDataShopConfig,
   TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
   TDBMDataImages,
@@ -194,9 +194,27 @@ class PrepareData {
     return Array.from(new Set(result))
   }
 
-  // public baseInfoTable(baseInfo: TDBMJsonBaseInfo): TDBMDataBaseInfo {
-  //   return {}
-  // }
+  public shopConfigTable(baseInfo: TDBMJsonBaseInfo): TDBMDataShopConfig {
+    return {
+      title: baseInfo.d582_exShopSiteTitle,
+      sub_title: baseInfo.d583_exShopSiteSubTitle,
+      id: baseInfo.d580_exShopSiteID,
+      base_link: baseInfo.d581_exShopSiteBaseLink,
+      address: baseInfo.d584_exShopSiteAddress,
+      phone: baseInfo.d585_exShopSitePhone,
+      email: baseInfo.d586_exShopSiteEmail,
+      pagination_number: baseInfo.d587_exShopSitePaginationNumber,
+      currency: baseInfo.d589_exShopSiteCurrency,
+      catalog_page: baseInfo.d588_exShopSiteCatalogPage,
+      category_number: baseInfo.d590_exShopSiteCategoryNumber,
+      copyright: baseInfo.d591_exShopSiteCopyright,
+      social_network: baseInfo.d594_exShopSiteSocialNetwork,
+      category_cloud_number: baseInfo.d595_exShopSiteCategoryCloudNumber,
+      card_view: baseInfo.d601_exShopSiteCardView,
+      site_grid_view: baseInfo.d602_exShopSiteGridView,
+      site_detail_view: baseInfo.d603_exShopSiteDetailView,
+    }
+  }
 }
 
 const transliterateWord = (word: string): string => {

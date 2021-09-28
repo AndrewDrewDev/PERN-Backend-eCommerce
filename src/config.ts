@@ -1,6 +1,6 @@
-import { Tconfig } from '../src/types'
+import { TConfig } from '../src/types'
 
-const config: Tconfig = {
+const config: TConfig = {
   PORT: 5000,
   DBM_EXCEL_FILE_NAME: 'Demo-DataSet-Tupperware-150.xlsx',
   DBM_EXCEL_CONFIG_FILE_NAME: 'excelConfig.json',

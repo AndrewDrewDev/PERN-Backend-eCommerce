@@ -1,12 +1,12 @@
 import { QueryResult } from 'pg'
-import { TCproductGetOneData } from '../types'
+import { TCProductGetOneData } from '../types'
 import db from '../db/db'
 import logger from '../utils/logger'
 
 class ProductService {
   public async getOneProductDb(
     id: string
-  ): Promise<QueryResult<TCproductGetOneData>> {
+  ): Promise<QueryResult<TCProductGetOneData>> {
     try {
       return await db.query(
         `

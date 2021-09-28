@@ -27,6 +27,26 @@ CREATE TABLE IF NOT EXISTS categories
                     )
 );
 
+CREATE TABLE IF NOT EXISTS shop_config (
+  title VARCHAR,
+  sub_title VARCHAR,
+  id VARCHAR,
+  base_link VARCHAR,
+  address VARCHAR,
+  phone VARCHAR,
+  email VARCHAR,
+  pagination_number VARCHAR,
+  currency VARCHAR,
+  catalog_page VARCHAR,
+  category_number VARCHAR,
+  copyright VARCHAR,
+  social_network VARCHAR,
+  category_cloud_number VARCHAR,
+  card_view VARCHAR,
+  site_grid_view VARCHAR,
+  site_detail_view VARCHAR
+);
+
 CREATE TABLE IF NOT EXISTS tags
 (
     id

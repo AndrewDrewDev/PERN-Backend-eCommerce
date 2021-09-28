@@ -3,6 +3,7 @@ import path from 'path'
 import { v4 } from 'uuid'
 
 import {
+  TDBMDataShopConfig,
   TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
   TDBMDataImages,
@@ -278,6 +279,58 @@ class InsertToDB {
       return Promise.resolve()
     } catch (error) {
       logger.fatal(error, 'migration data to table: statuses!')
+      return Promise.reject()
+    }
+  }
+
+  public async shopConfigTable(shopConfig: TDBMDataShopConfig): Promise<void> {
+    try {
+      await db.query(
+        `
+        insert into shop_config (
+            title,
+            sub_title,
+            id,
+            base_link,
+            address,
+            phone,
+            email,
+            pagination_number,
+            currency,
+            catalog_page,
+            category_number,
+            copyright,
+            social_network,
+            category_cloud_number,
+            card_view,
+            site_grid_view,
+            site_detail_view
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
+      `,
+        [
+          shopConfig.title,
+          shopConfig.sub_title,
+          shopConfig.id,
+          shopConfig.base_link,
+          shopConfig.address,
+          shopConfig.phone,
+          shopConfig.email,
+          shopConfig.pagination_number,
+          shopConfig.currency,
+          shopConfig.catalog_page,
+          shopConfig.category_number,
+          shopConfig.copyright,
+          shopConfig.social_network,
+          shopConfig.category_cloud_number,
+          shopConfig.card_view,
+          shopConfig.site_grid_view,
+          shopConfig.site_detail_view,
+        ]
+      )
+      logger.info('migration data to table: shop_config!')
+      return Promise.resolve()
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: shop_config!')
       return Promise.reject()
     }
   }
