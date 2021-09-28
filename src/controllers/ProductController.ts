@@ -3,7 +3,7 @@ import { TCProductGetOneResult } from '../types'
 import ProductService from '../services/ProductService'
 
 class ProductController {
-  public async getOne(
+  public async getOneOrNullIfNotExist(
     req: Request,
     res: Response
   ): Promise<Response<TCProductGetOneResult | null>> {

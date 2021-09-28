@@ -7,7 +7,7 @@ import {
 } from '../types'
 
 class CategoryController {
-  public async getCategoryProducts(
+  public async getCategoryProductsOrNullIfNotExist(
     req: Request,
     res: Response
   ): Promise<Response<TProductsByCategoryData[] | null>> {
@@ -25,7 +25,7 @@ class CategoryController {
     return res.json(data)
   }
 
-  public async getCategoryInfoByLevel(
+  public async getCategoryInfoByLevelOrNullIfNotExist(
     req: Request,
     res: Response
   ): Promise<Response<TGetInfoByLevel[] | null>> {
@@ -34,7 +34,7 @@ class CategoryController {
     return res.json(data)
   }
 
-  public async getCategoryBreadcrumb(
+  public async getCategoryBreadcrumbOrNullIfNotExist(
     req: Request,
     res: Response
   ): Promise<Response<TGetBreadcrumb[] | null>> {
