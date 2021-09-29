@@ -5,6 +5,6 @@ const router = Router()
 router.get('/', CategoryController.getCategoryProductsOrNull)
 router.get('/cloud/:level', CategoryController.getCategoryInfoByLevelOrNull)
 router.get('/breadcrumb/:url', CategoryController.getCategoryBreadcrumbOrNull)
-router.get('/custom/:url', CategoryController.getCustomCategoryOrNull)
+router.get('/custom', CategoryController.getCustomCategoryOrNull)
 
 export default router

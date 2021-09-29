@@ -47,8 +47,17 @@ class CategoryController {
     req: Request,
     res: Response
   ): Promise<Response<TProductsByCategoryData[] | null>> {
-    const { url } = req.params
-    const data = await CategoryService.getCustomCategoryByUrlOrNull(url)
+    let { name, page, limit } = req.query as {
+      name: string
+      page: string
+      limit: string
+    }
+    const offset: string = ((Number(page) - 1) * Number(limit)).toString()
+    const data = await CategoryService.getCustomCategoryByUrlOrNull({
+      name,
+      limit,
+      offset,
+    })
     return res.json(data)
   }
 }

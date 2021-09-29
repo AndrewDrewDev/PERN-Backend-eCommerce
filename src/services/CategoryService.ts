@@ -7,7 +7,6 @@ import {
 import { QueryResult } from 'pg'
 import db from '../db/db'
 import logger from '../utils/logger'
-import { callbackify } from 'util'
 
 class CategoryService {
   public async getProductsByCategoryOrNull({
@@ -119,9 +118,38 @@ class CategoryService {
     }
   }
 
-  public getCustomCategoryByUrlOrNull(url: string): any {
+  public async getCustomCategoryByUrlOrNull({
+    name,
+    limit,
+    offset,
+  }: TGetProductsByCategory): Promise<
+    QueryResult<TProductsByCategoryData>[] | null
+  > {
     try {
-      return '12312'
+      const data = await db.query(
+        `
+      select
+        pp.name as name,
+        pp.productid as id,
+        pp.price as price,
+        pp.oldprice as oldprice,
+        st.name as status,
+        lb.name as label,
+        im.name as img
+      from
+        custom_categories_products ccp
+      left join custom_categories ct on ct.url=$1
+      left join products pp on pp.id=ccp.product_id
+      left join statuses st on pp.status_id=st.id
+      left join labels lb on pp.label_id=lb.id
+      left join images im on pp.id=im.product_id and im.preview=true
+      where
+        ct.id=ccp.custom_categories_id
+      group by pp.id, im.name, lb.name, st.name limit $2 offset $3
+      `,
+        [name, limit, offset]
+      )
+      return data.rows
     } catch (error) {
       throw logger.error(error, 'getCustomCategoryByUrlOrNull occurred error')
     }
