@@ -3,12 +3,12 @@ import { TDBMDataShopConfig } from '../types'
 import ShopService from '../services/ShopService'
 
 class ShopController {
-  public async getConfigOrNullIfNotExist(
+  public async getConfig(
     req: Request,
     res: Response
   ): Promise<Response<TDBMDataShopConfig | null>> {
-    const data = await ShopService.getConfig()
-    return res.json(...data)
+    const data = await ShopService.getConfigOrNull()
+    return res.json(data)
   }
 }
 

@@ -124,6 +124,9 @@ class InsertToDB {
           }
           return 'null'
         }
+        const status_id = (status: string): string => {
+          return `(SELECT id FROM statuses st WHERE st.name='${status}')`
+        }
 
         await db.query(`
         INSERT INTO products (
@@ -138,7 +141,8 @@ class InsertToDB {
           property_id,
           label_id,
           units_id,
-          supplier_id
+          supplier_id,
+          status_id
         ) VALUES
         (${productid},
          ${name},
@@ -154,7 +158,8 @@ class InsertToDB {
            product.d735_exProductDiscounts
          )},
          ${units_id(product.d781_exEd)},
-         ${supplier_id(product.d738_exProductManufacturer)}
+         ${supplier_id(product.d738_exProductManufacturer)},
+         ${status_id(product.d722_exProductInStock)}
         )`)
       }
       logger.info('migration data to table: products!')

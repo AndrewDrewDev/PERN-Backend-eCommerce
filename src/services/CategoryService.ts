@@ -7,9 +7,10 @@ import {
 import { QueryResult } from 'pg'
 import db from '../db/db'
 import logger from '../utils/logger'
+import { callbackify } from 'util'
 
 class CategoryService {
-  public async getProductsByCategory({
+  public async getProductsByCategoryOrNull({
     name,
     limit,
     offset,
@@ -61,11 +62,11 @@ class CategoryService {
       if (data.rows.length === 0) return null
       return data.rows
     } catch (error) {
-      throw logger.error(error, 'getProductsByCategory occurred error')
+      throw logger.error(error, 'getProductsByCategoryOrNull occurred error')
     }
   }
 
-  public async getInfoByLevel(
+  public async getInfoByLevelOrNull(
     level: string
   ): Promise<QueryResult<TGetInfoByLevel>[] | null> {
     try {
@@ -84,11 +85,11 @@ class CategoryService {
       if (result.rows.length === 0) return null
       return result.rows
     } catch (error) {
-      throw logger.error(error, 'getInfoByLevel occurred error')
+      throw logger.error(error, 'getInfoByLevelOrNull occurred error')
     }
   }
 
-  public async getBreadcrumb(
+  public async getBreadcrumbOrNull(
     categoryUrl: string
   ): Promise<TGetBreadcrumb[] | null> {
     try {
@@ -114,7 +115,15 @@ class CategoryService {
         return { name: i.name, url: i.url }
       })
     } catch (error) {
-      throw logger.error(error, 'getBreadcrumb occurred error')
+      throw logger.error(error, 'getBreadcrumbOrNull occurred error')
+    }
+  }
+
+  public getCustomCategoryByUrlOrNull(url: string): any {
+    try {
+      return '12312'
+    } catch (error) {
+      throw logger.error(error, 'getCustomCategoryByUrlOrNull occurred error')
     }
   }
 }

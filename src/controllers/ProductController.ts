@@ -3,13 +3,13 @@ import { TCProductGetOneResult } from '../types'
 import ProductService from '../services/ProductService'
 
 class ProductController {
-  public async getOneOrNullIfNotExist(
+  public async getOneOrNull(
     req: Request,
     res: Response
   ): Promise<Response<TCProductGetOneResult | null>> {
     const result: TCProductGetOneResult = {} as any
     const { id } = req.params
-    const data = await ProductService.getOneProductDb(id)
+    const data = await ProductService.getOneProductDbOrNull(id)
 
     // Preparation & Combine data
     result.categories = []
