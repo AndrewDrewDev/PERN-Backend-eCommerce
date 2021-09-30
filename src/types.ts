@@ -226,3 +226,10 @@ export type TGetBreadcrumb = {
   name: string
   url: string
 }
+
+export type TGetInfoDataOrNull = {
+  [key: string]: {
+    content: string
+    img: string[] | null
+  }
+}
