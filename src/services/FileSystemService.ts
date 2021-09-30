@@ -23,11 +23,14 @@ class FileSystemService {
     )
   }
 
-  public copyImgFileToStaticWithNewName(filePath: string): string {
+  public copyImgFileToStatic(
+    filePath: string,
+    hashName: boolean = false
+  ): string {
     try {
       const excludeFileName: string[] = ['000-nonePhoto.jpg']
-      const fileName: string | undefined = filePath.split('/').pop()
-      const newFileName = v4() + '.jpg'
+      const fileName: string | any = filePath.split('/').pop()
+      const newFileName = hashName ? v4() + '.jpg' : fileName
 
       if (fileName && excludeFileName.includes(fileName)) return fileName
 

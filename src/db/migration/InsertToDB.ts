@@ -1,6 +1,4 @@
 import fs from 'fs-extra'
-import path from 'path'
-import { v4 } from 'uuid'
 
 import {
   TDBMDataShopConfig,
@@ -237,14 +235,18 @@ class InsertToDB {
         const img = images[id]
 
         for (const imgPath of img.preview) {
-          const newFileName =
-            FileSystemService.copyImgFileToStaticWithNewName(imgPath)
+          const newFileName = FileSystemService.copyImgFileToStatic(
+            imgPath,
+            true
+          )
           await writeToDB(id, newFileName, true)
         }
 
         for (const imgPath of img.big) {
-          const newFileName =
-            FileSystemService.copyImgFileToStaticWithNewName(imgPath)
+          const newFileName = FileSystemService.copyImgFileToStatic(
+            imgPath,
+            true
+          )
           await writeToDB(id, newFileName, false)
         }
       }
@@ -409,11 +411,10 @@ class InsertToDB {
         const { img } = pageNames[pageName]
         if (img) {
           for (const item of img) {
-            const newFileName =
-              StaticFolderService.copyImgFileToStaticWithNewName(item.path)
+            const fileName = FileSystemService.copyImgFileToStatic(item.path)
             await db.query(
               `insert into info_pages_images (name, info_page_id) values ($1, (select id from info_pages ip where ip.name=$2))`,
-              [newFileName, pageName]
+              [fileName, pageName]
             )
           }
         }
