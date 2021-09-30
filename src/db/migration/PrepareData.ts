@@ -14,6 +14,8 @@ import {
   TDBMJsonGoods,
   TDBMDataCustomCategories,
   TDBMDataCustomCategoriesProducts,
+  TDBMDataInfoPagesImg,
+  TDBMDataInfoPages,
 } from '../../types'
 
 class PrepareData {
@@ -242,6 +244,54 @@ class PrepareData {
       discount: discountProductsId,
       New: newProductsId,
     }
+  }
+
+  public infoPages(): TDBMDataInfoPages {
+    const result: TDBMDataInfoPages = {} as any
+    const pathToContent = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'data',
+      'page-content'
+    )
+    const pageNames = fs.readdirSync(pathToContent)
+    const contentFileNames = ['index.md', 'index.html']
+
+    for (const pageName of pageNames) {
+      const pagePath = path.resolve(pathToContent, pageName)
+      const imgPath = path.resolve(pathToContent, pageName, 'img')
+
+      let content: string = ''
+      let img: TDBMDataInfoPagesImg[] | null = []
+
+      // Get file content
+      for (const contentFileName of contentFileNames) {
+        const filePath = path.resolve(pagePath, contentFileName)
+        if (fs.existsSync(filePath)) {
+          content = fs.readFileSync(filePath, 'utf8')
+        }
+      }
+
+      // Get images
+      if (fs.existsSync(imgPath)) {
+        const imgNames = fs.readdirSync(imgPath)
+        for (const imgName of imgNames) {
+          img.push({
+            name: imgName,
+            path: path.resolve(imgPath, imgName),
+          })
+        }
+      }
+
+      result[pageName] = {
+        content,
+        img: img.length > 0 ? img : null,
+      }
+    }
+
+    return result
   }
 }
 

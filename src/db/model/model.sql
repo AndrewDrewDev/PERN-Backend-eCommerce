@@ -133,6 +133,23 @@ CREATE TABLE IF NOT EXISTS custom_categories_products (
     -- product_id INT,
 );
 
+CREATE TABLE IF NOT EXISTS info_pages (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS info_pages_images (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR
+    -- info_page_id INT
+);
+
+-- FK info_pages_images
+ALTER TABLE
+    info_pages_images
+    ADD
+        COLUMN IF NOT EXISTS info_page_id INTEGER REFERENCES info_pages (id);
+
 -- FK to custom_categories
 ALTER TABLE
     custom_categories_products

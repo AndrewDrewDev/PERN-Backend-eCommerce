@@ -140,6 +140,18 @@ export type TDBMDataCustomCategoriesProducts = {
   New: string[]
 }
 
+export type TDBMDataInfoPagesImg = {
+  name: string
+  path: string
+}
+
+export type TDBMDataInfoPages = {
+  [key: string]: {
+    content: string
+    img: TDBMDataInfoPagesImg[] | null
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Controllers types
