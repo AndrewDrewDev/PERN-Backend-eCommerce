@@ -17,6 +17,7 @@ import {
   TDBMDataInfoPagesImg,
   TDBMDataInfoPages,
 } from '../../types'
+import StaticFolderService from '../../services/FileSystemService'
 
 class PrepareData {
   public categoriesTable(goods: TDBMJsonGoods[]): TDBMDataCategoriesItem[] {
@@ -152,19 +153,10 @@ class PrepareData {
 
   // TODO Refactor withoud any type
   public imagesTable(products: TDBMJsonGoods[]): TDBMDataImages {
-    const datasetPath = path.resolve(
-      __dirname,
-      '..',
-      '..',
-      '..',
-      'data',
-      'img-goods'
-    )
-
     const result: TDBMDataImages = {} as any
 
     const allImgNameStr = fs
-      .readdirSync(datasetPath)
+      .readdirSync(StaticFolderService.datasetImgGoodsFolderPath)
       .toString()
       .replace(/,/gm, '\n')
 
@@ -182,6 +174,14 @@ class PrepareData {
       result[id] = {} as any
       result[id].preview = previewImgArr || [bigImgArr[0]]
       result[id].big = bigImgArr
+
+      // make absolute path to images
+      result[id].preview = result[id].preview.map(imgName =>
+        path.resolve(StaticFolderService.datasetImgGoodsFolderPath, imgName)
+      )
+      result[id].big = result[id].big.map(imgName =>
+        path.resolve(StaticFolderService.datasetImgGoodsFolderPath, imgName)
+      )
     }
 
     return result

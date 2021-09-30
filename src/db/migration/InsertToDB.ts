@@ -13,10 +13,13 @@ import {
   TDBMJsonGoods,
   TDBMDataCustomCategories,
   TDBMDataCustomCategoriesProducts,
+  TDBMDataInfoPages,
 } from '../../types'
 
 import db from '../db'
 import logger from '../../utils/logger'
+import StaticFolderService from '../../services/FileSystemService'
+import FileSystemService from '../../services/FileSystemService'
 
 class InsertToDB {
   public async categoriesTable(data: TDBMDataCategoriesItem[]): Promise<void> {
@@ -202,16 +205,6 @@ class InsertToDB {
 
   public async imagesTable(images: TDBMDataImages): Promise<void> {
     try {
-      const staticPath = path.resolve(__dirname, '..', '..', 'static')
-      const datasetPath = path.resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        'data',
-        'img-goods'
-      )
-
       const writeToDB = async (
         productId: string,
         imgName: string,
@@ -233,39 +226,27 @@ class InsertToDB {
         return Promise.resolve()
       }
 
-      const copyFile = (
-        imgName: string,
-        newFileName?: string
-      ): void | undefined => {
-        if (imgName === '000-nonePhoto.jpg') return
-
-        const srcPath = path.resolve(datasetPath, imgName)
-        const destPath = path.resolve(staticPath, newFileName ?? imgName)
-        fs.copySync(srcPath, destPath)
-      }
-
       // Always copy nonePhoto image
       fs.copySync(
-        datasetPath + '/000-nonePhoto.jpg',
-        staticPath + '/000-nonePhoto.jpg'
+        StaticFolderService.datasetImgGoodsFolderPath + '/000-nonePhoto.jpg',
+        StaticFolderService.srcStaticFolderPath + '/000-nonePhoto.jpg'
       )
 
       // Write to db new image name and copy to express static folder
       for (const id in images) {
         const img = images[id]
-        img.preview.forEach(async i => {
-          const newFileName = v4() + '.jpg'
-          await writeToDB(id, newFileName, true).then(() =>
-            copyFile(i, newFileName)
-          )
-        })
 
-        img.big.forEach(async i => {
-          const newFileName = v4() + '.jpg'
-          await writeToDB(id, newFileName, false).then(() =>
-            copyFile(i, newFileName)
-          )
-        })
+        for (const imgPath of img.preview) {
+          const newFileName =
+            FileSystemService.copyImgFileToStaticWithNewName(imgPath)
+          await writeToDB(id, newFileName, true)
+        }
+
+        for (const imgPath of img.big) {
+          const newFileName =
+            FileSystemService.copyImgFileToStaticWithNewName(imgPath)
+          await writeToDB(id, newFileName, false)
+        }
       }
 
       logger.info('migration data to table: images!')
@@ -398,6 +379,50 @@ class InsertToDB {
         error,
         'migration data to table: custom_categories_products!'
       )
+      return Promise.resolve()
+    }
+  }
+
+  public async infoPagesTable(pageNames: TDBMDataInfoPages): Promise<void> {
+    try {
+      for (const pageName in pageNames) {
+        const { content } = pageNames[pageName]
+        await db.query(
+          `insert into info_pages (name, content) values ($1, $2)`,
+          [pageName, content]
+        )
+      }
+
+      logger.info('migration data to table: info_pages!')
+      return Promise.resolve()
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: info_pages!')
+      return Promise.resolve()
+    }
+  }
+
+  public async infoPagesImagesTable(
+    pageNames: TDBMDataInfoPages
+  ): Promise<void> {
+    try {
+      for (const pageName in pageNames) {
+        const { img } = pageNames[pageName]
+        if (img) {
+          for (const item of img) {
+            const newFileName =
+              StaticFolderService.copyImgFileToStaticWithNewName(item.path)
+            await db.query(
+              `insert into info_pages_images (name, info_page_id) values ($1, (select id from info_pages ip where ip.name=$2))`,
+              [newFileName, pageName]
+            )
+          }
+        }
+      }
+
+      logger.info('migration data to table: info_pages_images!')
+      return Promise.resolve()
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: info_pages_images!')
       return Promise.resolve()
     }
   }

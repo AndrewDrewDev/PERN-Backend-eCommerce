@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS tags
 CREATE TABLE IF NOT EXISTS category_to_product
 (
     id    SERIAL PRIMARY KEY,
-    -- category_id INT,
-    -- product_id INT,
+    -- FK category_id INT,
+    -- FK product_id INT,
     level INT
 );
 
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS labels
 CREATE TABLE IF NOT EXISTS tag_to_product
 (
     id SERIAL PRIMARY KEY -- tag_id INT,
-    -- product_id INT,
+    -- FK product_id INT,
 );
 
 CREATE TABLE IF NOT EXISTS units
@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS statuses
 CREATE TABLE IF NOT EXISTS products
 (
     id          SERIAL PRIMARY KEY,
+    -- FK:
     -- info_id INT,
     -- label_id INT,
     -- tag_id INT,
@@ -88,6 +89,7 @@ CREATE TABLE IF NOT EXISTS products
     -- units_id INT,
     -- supplier_id INT,
     -- vendor_id INT,
+    -- status_id INT,
     productId   VARCHAR,
     name        VARCHAR UNIQUE NOT NULL,
     description TEXT,
@@ -100,7 +102,7 @@ CREATE TABLE IF NOT EXISTS products
 CREATE TABLE IF NOT EXISTS info
 (
     id          SERIAL PRIMARY KEY,
-    -- product_id INT,
+    -- FK product_id INT,
     title       VARCHAR,
     description TEXT
 );
@@ -108,7 +110,7 @@ CREATE TABLE IF NOT EXISTS info
 CREATE TABLE IF NOT EXISTS properties
 (
     id    SERIAL PRIMARY KEY,
-    -- product_id INT,
+    -- FK product_id INT,
     key   VARCHAR,
     value VARCHAR
 );
@@ -116,7 +118,7 @@ CREATE TABLE IF NOT EXISTS properties
 CREATE TABLE IF NOT EXISTS images
 (
     id      SERIAL PRIMARY KEY,
-    -- product_id INT,
+    -- FK product_id INT,
     name    VARCHAR UNIQUE NOT NULL,
     preview BOOLEAN
 );
@@ -129,19 +131,20 @@ CREATE TABLE IF NOT EXISTS custom_categories (
 
 CREATE TABLE IF NOT EXISTS custom_categories_products (
     id SERIAL PRIMARY KEY
-    -- custom_categories_id INT,
-    -- product_id INT,
+    -- FK custom_categories_id INT,
+    -- FK product_id INT,
 );
 
 CREATE TABLE IF NOT EXISTS info_pages (
     id SERIAL PRIMARY KEY,
-    name VARCHAR
+    name VARCHAR,
+    content TEXT
 );
 
 CREATE TABLE IF NOT EXISTS info_pages_images (
     id SERIAL PRIMARY KEY,
     name VARCHAR
-    -- info_page_id INT
+    -- FK info_page_id INT
 );
 
 -- FK info_pages_images

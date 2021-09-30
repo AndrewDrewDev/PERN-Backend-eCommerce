@@ -51,28 +51,30 @@ const startMigrate = () => {
   })
   const migrationData: MigrationDataStore = new MigrationDataStore(jsonData)
 
-  // initModel()
-  //   .then(() => InsertToDB.shopConfigTable(migrationData.shopConfig))
-  //   .then(() => InsertToDB.categoriesTable(migrationData.categories))
-  //   .then(() => InsertToDB.labelsTable(migrationData.labels))
-  //   .then(() => InsertToDB.statusesTable(migrationData.statuses))
-  //   .then(() => InsertToDB.unitsTable(migrationData.units))
-  //   .then(() => InsertToDB.suppliersTable(migrationData.suppliers))
-  //   .then(() => InsertToDB.productsTable(migrationData.products))
-  //   .then(() =>
-  //     InsertToDB.categoryToProductTable(migrationData.categoryToProduct)
-  //   )
-  //   .then(() =>
-  //     InsertToDB.customCategoriesTable(migrationData.customCategories)
-  //   )
-  //   .then(() =>
-  //     InsertToDB.customCategoriesProductsTable(
-  //       migrationData.customCategoriesProducts
-  //     )
-  //   )
-  //   .then(() => InsertToDB.imagesTable(migrationData.images))
-  //   .then(() => logger.info('MIGRATE TO DATABASE'))
-  //   .catch(() => logger.fatal('MIGRATE TO DATABASE'))
+  initModel()
+    .then(() => InsertToDB.infoPagesTable(migrationData.infoPages))
+    .then(() => InsertToDB.infoPagesImagesTable(migrationData.infoPages))
+    .then(() => InsertToDB.shopConfigTable(migrationData.shopConfig))
+    .then(() => InsertToDB.categoriesTable(migrationData.categories))
+    .then(() => InsertToDB.labelsTable(migrationData.labels))
+    .then(() => InsertToDB.statusesTable(migrationData.statuses))
+    .then(() => InsertToDB.unitsTable(migrationData.units))
+    .then(() => InsertToDB.suppliersTable(migrationData.suppliers))
+    .then(() => InsertToDB.productsTable(migrationData.products))
+    .then(() =>
+      InsertToDB.categoryToProductTable(migrationData.categoryToProduct)
+    )
+    .then(() =>
+      InsertToDB.customCategoriesTable(migrationData.customCategories)
+    )
+    .then(() =>
+      InsertToDB.customCategoriesProductsTable(
+        migrationData.customCategoriesProducts
+      )
+    )
+    .then(() => InsertToDB.imagesTable(migrationData.images))
+    .then(() => logger.info('MIGRATE TO DATABASE'))
+    .catch(() => logger.fatal('MIGRATE TO DATABASE'))
 }
 
 startMigrate()
