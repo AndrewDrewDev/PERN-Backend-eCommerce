@@ -101,6 +101,25 @@ class CategoryController {
       )
     }
   }
+
+  public async getCustomCategoryInfoOrNull(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TGetInfoByLevel | null> | void> {
+    try {
+      const { id } = req.params
+      const data = await CategoryService.getCustomCategoryInfoOrNull(id)
+      return res.json(data)
+    } catch (error) {
+      next(
+        logger.error(
+          error,
+          'CategoryController.getCustomCategoryInfoOrNull occurred error'
+        )
+      )
+    }
+  }
 }
 
 export default new CategoryController()

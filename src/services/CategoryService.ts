@@ -61,7 +61,10 @@ class CategoryService {
       if (data.rows.length === 0) return null
       return data.rows
     } catch (error) {
-      throw logger.error(error, 'getProductsByCategoryOrNull occurred error')
+      throw logger.error(
+        error,
+        'CategoryService.getProductsByCategoryOrNull occurred error'
+      )
     }
   }
 
@@ -84,7 +87,10 @@ class CategoryService {
       if (result.rows.length === 0) return null
       return result.rows
     } catch (error) {
-      throw logger.error(error, 'getInfoByLevelOrNull occurred error')
+      throw logger.error(
+        error,
+        'CategoryService.getInfoByLevelOrNull occurred error'
+      )
     }
   }
 
@@ -114,7 +120,10 @@ class CategoryService {
         return { name: i.name, url: i.url }
       })
     } catch (error) {
-      throw logger.error(error, 'getBreadcrumbOrNull occurred error')
+      throw logger.error(
+        error,
+        'CategoryService.getBreadcrumbOrNull occurred error'
+      )
     }
   }
 
@@ -151,7 +160,40 @@ class CategoryService {
       )
       return data.rows
     } catch (error) {
-      throw logger.error(error, 'getCustomCategoryByUrlOrNull occurred error')
+      throw logger.error(
+        error,
+        'CategoryService.getCustomCategoryByUrlOrNull occurred error'
+      )
+    }
+  }
+
+  public async getCustomCategoryInfoOrNull(
+    id: string
+  ): Promise<TGetInfoByLevel | null> {
+    try {
+      const data = await db.query(
+        `select
+             (select count(ccp.id) as count
+              from custom_categories cc
+                       left join custom_categories_products ccp on cc.id=ccp.custom_categories_id
+              where cc.url=$1),
+             cc.name,
+             cc.url
+             from
+             custom_categories cc
+             where
+             cc.url=$1`,
+        [id]
+      )
+
+      if (data.rows.length === 0) return null
+
+      return data.rows[0]
+    } catch (error) {
+      throw logger.error(
+        error,
+        'CategoryService.getCustomCategoryInfoOrNull occurred error'
+      )
     }
   }
 }
