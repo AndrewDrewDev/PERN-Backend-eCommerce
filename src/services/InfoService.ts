@@ -4,20 +4,29 @@ import db from '../db/db'
 
 type TGetInfoDataOrNullQueryResult = {
   name: string
+  url: string
   content: string
   img: string
 }
 
 class InfoService {
-  public async getInfoDataOrNull(): Promise<TGetInfoDataOrNull | null> {
+  public async getInfoDataOrNull(
+    id: string
+  ): Promise<TGetInfoDataOrNull | null> {
     try {
-      const data = await db.query(`
-      select
-        ip.name as name,
-        ip.content as content,
-        ipi.name as img
-      from info_pages ip
-      left join info_pages_images ipi on ipi.info_page_id=ip.id`)
+      const data = await db.query(
+        `
+          select
+              ip.name as name,
+              ip.url as url,
+              ip.content as content,
+              ipi.name as img
+          from info_pages ip
+                   left join info_pages_images ipi on ipi.info_page_id=ip.id
+          where
+              ip.url=$1`,
+        [id]
+      )
 
       if (data.rows.length === 0) return null
 
@@ -31,17 +40,17 @@ class InfoService {
 function combineInfoData(
   array: TGetInfoDataOrNullQueryResult[]
 ): TGetInfoDataOrNull {
-  const result: any = {}
+  const result: TGetInfoDataOrNull = {} as any
+  result.img = []
   for (const elem of array) {
-    if (!result[elem.name]) {
-      result[elem.name] = {}
-      result[elem.name].img = []
-    }
-    result[elem.name].content = elem.content
-    if (elem.img) {
-      result[elem.name].img.push(elem.img)
+    result.name = elem.name
+    result.url = elem.url
+    result.content = elem.content
+
+    if (elem.img && result.img) {
+      result.img.push(elem.img)
     } else {
-      result[elem.name].img = null
+      result.img = null
     }
   }
   return result

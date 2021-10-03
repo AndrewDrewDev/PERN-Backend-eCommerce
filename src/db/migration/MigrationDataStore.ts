@@ -48,7 +48,6 @@ class MigrationDataStore {
       New: BaseInfo.d600_exShopSiteNewCards,
     })
     this._infoPages = PrepareData.infoPages()
-    console.log(this._infoPages)
   }
 
   get infoPages(): TDBMDataInfoPages[] {
