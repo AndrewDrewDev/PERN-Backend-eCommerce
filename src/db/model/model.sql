@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS custom_categories_products (
 CREATE TABLE IF NOT EXISTS info_pages (
     id SERIAL PRIMARY KEY,
     name VARCHAR,
+    url VARCHAR,
     content TEXT
 );
 

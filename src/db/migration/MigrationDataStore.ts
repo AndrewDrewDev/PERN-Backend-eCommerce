@@ -26,7 +26,7 @@ class MigrationDataStore {
   private readonly _shopConfig: TDBMDataShopConfig
   private readonly _customCategories: TDBMDataCustomCategories[]
   private readonly _customCategoriesProducts: TDBMDataCustomCategoriesProducts
-  private readonly _infoPages: TDBMDataInfoPages
+  private readonly _infoPages: TDBMDataInfoPages[]
 
   constructor(jsonData: TDBMJson) {
     const { Goods, BaseInfo } = jsonData
@@ -48,9 +48,10 @@ class MigrationDataStore {
       New: BaseInfo.d600_exShopSiteNewCards,
     })
     this._infoPages = PrepareData.infoPages()
+    console.log(this._infoPages)
   }
 
-  get infoPages(): TDBMDataInfoPages {
+  get infoPages(): TDBMDataInfoPages[] {
     return this._infoPages
   }
 

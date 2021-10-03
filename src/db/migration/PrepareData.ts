@@ -246,8 +246,8 @@ class PrepareData {
     }
   }
 
-  public infoPages(): TDBMDataInfoPages {
-    const result: TDBMDataInfoPages = {} as any
+  public infoPages(): TDBMDataInfoPages[] {
+    const result: TDBMDataInfoPages[] = []
     const pathToContent = path.resolve(
       __dirname,
       '..',
@@ -256,15 +256,37 @@ class PrepareData {
       'data',
       'page-content'
     )
-    const pageNames = fs.readdirSync(pathToContent)
+
+    type TPageNames =
+      | {
+          about: string
+          delivery: string
+          faqs: string
+          main: string
+          payment: string
+          'public-offer': string
+          warranty: string
+        }
+      | any
+
+    const pageNames: TPageNames = {
+      about: 'О магазине',
+      delivery: 'Доставка',
+      faqs: 'FAQs :: Вопросы-Ответы',
+      main: '',
+      payment: 'Оплата',
+      'public-offer': 'Договор публичной оферты',
+      warranty: 'Гарантия',
+    }
     const contentFileNames = ['index.md', 'index.html']
 
-    for (const pageName of pageNames) {
-      const pagePath = path.resolve(pathToContent, pageName)
-      const imgPath = path.resolve(pathToContent, pageName, 'img')
+    for (const pageUrl in pageNames) {
+      const pageName = pageNames[pageUrl]
+      const pagePath = path.resolve(pathToContent, pageUrl)
+      const imgPath = path.resolve(pathToContent, pageUrl, 'img')
 
       let content: string = ''
-      let img: TDBMDataInfoPagesImg[] | null = []
+      const img: TDBMDataInfoPagesImg[] | null = []
 
       // Get file content
       for (const contentFileName of contentFileNames) {
@@ -285,10 +307,12 @@ class PrepareData {
         }
       }
 
-      result[pageName] = {
-        content,
+      result.push({
+        name: pageName,
+        url: pageUrl,
         img: img.length > 0 ? img : null,
-      }
+        content,
+      })
     }
 
     return result

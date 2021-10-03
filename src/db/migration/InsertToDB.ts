@@ -385,13 +385,15 @@ class InsertToDB {
     }
   }
 
-  public async infoPagesTable(pageNames: TDBMDataInfoPages): Promise<void> {
+  public async infoPagesTable(
+    infoPageData: TDBMDataInfoPages[]
+  ): Promise<void> {
     try {
-      for (const pageName in pageNames) {
-        const { content } = pageNames[pageName]
+      for (const infoPageItem of infoPageData) {
+        const { name, url, content } = infoPageItem
         await db.query(
-          `insert into info_pages (name, content) values ($1, $2)`,
-          [pageName, content]
+          `insert into info_pages (name, url, content) values ($1, $2, $3)`,
+          [name, url, content]
         )
       }
 
@@ -404,17 +406,17 @@ class InsertToDB {
   }
 
   public async infoPagesImagesTable(
-    pageNames: TDBMDataInfoPages
+    infoPagesData: TDBMDataInfoPages[]
   ): Promise<void> {
     try {
-      for (const pageName in pageNames) {
-        const { img } = pageNames[pageName]
+      for (const infoPageItem of infoPagesData) {
+        const { url, img } = infoPageItem
         if (img) {
           for (const item of img) {
             const fileName = FileSystemService.copyImgFileToStatic(item.path)
             await db.query(
-              `insert into info_pages_images (name, info_page_id) values ($1, (select id from info_pages ip where ip.name=$2))`,
-              [fileName, pageName]
+              `insert into info_pages_images (name, info_page_id) values ($1, (select id from info_pages ip where ip.url=$2))`,
+              [fileName, url]
             )
           }
         }

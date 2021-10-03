@@ -146,10 +146,10 @@ export type TDBMDataInfoPagesImg = {
 }
 
 export type TDBMDataInfoPages = {
-  [key: string]: {
-    content: string
-    img: TDBMDataInfoPagesImg[] | null
-  }
+  name: string
+  url: string
+  content: string
+  img: TDBMDataInfoPagesImg[] | null
 }
 
 ///////////////////////////////////////////////////////////////////////////////
