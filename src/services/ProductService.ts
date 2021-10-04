@@ -4,7 +4,7 @@ import db from '../db/db'
 import logger from '../utils/logger'
 
 class ProductService {
-  public async getOneProductDbOrNull(
+  public async getOneById(
     id: string
   ): Promise<QueryResult<TCProductGetOneData>> {
     try {

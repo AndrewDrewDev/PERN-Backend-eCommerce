@@ -10,7 +10,7 @@ class ShopController {
     next: NextFunction
   ): Promise<Response<TDBMDataShopConfig | null> | void> {
     try {
-      const data = await ShopService.getConfigOrNull()
+      const data = await ShopService.getConfig()
       return res.status(200).json(data)
     } catch (error) {
       next(logger.error(error, 'ProductController.getOneOrNull occurred error'))

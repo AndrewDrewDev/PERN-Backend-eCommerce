@@ -9,7 +9,7 @@ import db from '../db/db'
 import logger from '../utils/logger'
 
 class CategoryService {
-  public async getProductsByCategoryOrNull({
+  public async getProductsById({
     name,
     limit,
     offset,
@@ -68,7 +68,7 @@ class CategoryService {
     }
   }
 
-  public async getInfoByLevelOrNull(
+  public async getInfoByLevel(
     level: string
   ): Promise<QueryResult<TGetInfoByLevel>[] | null> {
     try {
@@ -94,7 +94,7 @@ class CategoryService {
     }
   }
 
-  public async getBreadcrumbOrNull(
+  public async getBreadcrumb(
     categoryUrl: string
   ): Promise<TGetBreadcrumb[] | null> {
     try {
@@ -127,7 +127,7 @@ class CategoryService {
     }
   }
 
-  public async getCustomCategoryByUrlOrNull({
+  public async getCustomProductsById({
     name,
     limit,
     offset,
@@ -158,6 +158,8 @@ class CategoryService {
       `,
         [name, limit, offset]
       )
+
+      if (data.rows.length === 0) return null
 
       return data.rows
     } catch (error) {

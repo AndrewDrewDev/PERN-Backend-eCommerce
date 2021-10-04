@@ -11,7 +11,7 @@ class InfoController {
   ): Promise<Response<TGetInfoDataOrNull | null> | void> {
     try {
       const { id } = req.params
-      const data = await InfoService.getInfoDataOrNull(id)
+      const data = await InfoService.getById(id)
       return res.status(200).json(data)
     } catch (error) {
       next(logger.error(error, 'InfoController.getInfoData occurred error'))

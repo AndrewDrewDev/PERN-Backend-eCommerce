@@ -4,9 +4,7 @@ import logger from '../utils/logger'
 import db from '../db/db'
 
 class ShopService {
-  public async getConfigOrNull(): Promise<
-    QueryResult<TDBMDataShopConfig>[] | null
-  > {
+  public async getConfig(): Promise<QueryResult<TDBMDataShopConfig>[] | null> {
     try {
       const data = await db.query(`select * from shop_config`)
       if (data.rows.length === 0) return null

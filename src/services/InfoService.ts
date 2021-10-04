@@ -10,9 +10,7 @@ type TGetInfoDataOrNullQueryResult = {
 }
 
 class InfoService {
-  public async getInfoDataOrNull(
-    id: string
-  ): Promise<TGetInfoDataOrNull | null> {
+  public async getById(id: string): Promise<TGetInfoDataOrNull | null> {
     try {
       const data = await db.query(
         `

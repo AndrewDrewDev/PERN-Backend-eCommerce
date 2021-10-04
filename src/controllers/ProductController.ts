@@ -12,7 +12,7 @@ class ProductController {
     try {
       const result: TCProductGetOneResult = {} as any
       const { id } = req.params
-      const data = await ProductService.getOneProductDbOrNull(id)
+      const data = await ProductService.getOneById(id)
 
       // Preparation & Combine data
       result.categories = []
@@ -48,7 +48,6 @@ class ProductController {
         result.oldPrice = item.oldprice
         result.amount = item.amount
         result.status = item.status
-        result.images.big.reverse()
       }
 
       // Check if product not founded in db
