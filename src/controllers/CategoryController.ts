@@ -106,7 +106,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetInfoByLevel | null> | void> {
+  ): Promise<Response<TGetInfoByLevel[] | null> | void> {
     try {
       const { id } = req.params
       const data = await CategoryService.getCustomCategoryInfoOrNull(id)

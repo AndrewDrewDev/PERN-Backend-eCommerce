@@ -158,6 +158,7 @@ class CategoryService {
       `,
         [name, limit, offset]
       )
+
       return data.rows
     } catch (error) {
       throw logger.error(
@@ -169,7 +170,7 @@ class CategoryService {
 
   public async getCustomCategoryInfoOrNull(
     id: string
-  ): Promise<TGetInfoByLevel | null> {
+  ): Promise<TGetInfoByLevel[] | null> {
     try {
       const data = await db.query(
         `select
@@ -188,7 +189,7 @@ class CategoryService {
 
       if (data.rows.length === 0) return null
 
-      return data.rows[0]
+      return data.rows
     } catch (error) {
       throw logger.error(
         error,
