@@ -11,6 +11,7 @@ import {
   TDBMDataCustomCategories,
   TDBMDataCustomCategoriesProducts,
   TDBMDataInfoPages,
+  TDBMDataSlider,
 } from '../../types'
 import PrepareData from './PrepareData'
 
@@ -27,6 +28,7 @@ class MigrationDataStore {
   private readonly _customCategories: TDBMDataCustomCategories[]
   private readonly _customCategoriesProducts: TDBMDataCustomCategoriesProducts
   private readonly _infoPages: TDBMDataInfoPages[]
+  private readonly _slider: TDBMDataSlider[]
 
   constructor(jsonData: TDBMJson) {
     const { Goods, BaseInfo } = jsonData
@@ -43,11 +45,16 @@ class MigrationDataStore {
       'Акции',
       'Новинки',
     ])
-    this._customCategoriesProducts = PrepareData.customCategoriesProducts({
+    this._customCategoriesProducts = PrepareData.customCategoriesProductsTable({
       discount: BaseInfo.d599_exShopSiteDiscountCards,
       New: BaseInfo.d600_exShopSiteNewCards,
     })
-    this._infoPages = PrepareData.infoPages()
+    this._infoPages = PrepareData.infoPagesTable()
+    this._slider = PrepareData.sliderTable(BaseInfo)
+  }
+
+  get slider(): TDBMDataSlider[] {
+    return this._slider
   }
 
   get infoPages(): TDBMDataInfoPages[] {

@@ -123,29 +123,41 @@ CREATE TABLE IF NOT EXISTS images
     preview BOOLEAN
 );
 
-CREATE TABLE IF NOT EXISTS custom_categories (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS custom_categories
+(
+    id   SERIAL PRIMARY KEY,
     name VARCHAR,
-    url VARCHAR
+    url  VARCHAR
 );
 
-CREATE TABLE IF NOT EXISTS custom_categories_products (
+CREATE TABLE IF NOT EXISTS custom_categories_products
+(
     id SERIAL PRIMARY KEY
     -- FK custom_categories_id INT,
     -- FK product_id INT,
 );
 
-CREATE TABLE IF NOT EXISTS info_pages (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR,
-    url VARCHAR,
+CREATE TABLE IF NOT EXISTS info_pages
+(
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR,
+    url     VARCHAR,
     content TEXT
 );
 
-CREATE TABLE IF NOT EXISTS info_pages_images (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS info_pages_images
+(
+    id   SERIAL PRIMARY KEY,
     name VARCHAR
     -- FK info_page_id INT
+);
+
+CREATE TABLE IF NOT EXISTS slider
+(
+    id   SERIAL PRIMARY KEY,
+    title VARCHAR,
+    img VARCHAR,
+    order_index INT
 );
 
 -- FK info_pages_images

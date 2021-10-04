@@ -5,6 +5,7 @@ import { v4 } from 'uuid'
 class FileSystemService {
   private readonly _srcStaticFolderPath: string
   private readonly _datasetImgGoodsFolderPath: string
+  private readonly _datasetSliderFolderPath: string
 
   constructor() {
     this._srcStaticFolderPath = path.resolve(
@@ -21,28 +22,29 @@ class FileSystemService {
       'data',
       'img-goods'
     )
+
+    this._datasetSliderFolderPath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      'data',
+      'img-slider'
+    )
   }
 
   public copyImgFileToStatic(
     filePath: string,
     hashName: boolean = false
   ): string {
-    try {
-      const excludeFileName: string[] = ['000-nonePhoto.jpg']
-      const fileName: string | any = filePath.split('/').pop()
-      const newFileName = hashName ? v4() + '.jpg' : fileName
+    const excludeFileName: string[] = ['000-nonePhoto.jpg']
+    const fileName: string | any = filePath.split('/').pop()
+    const newFileName = hashName ? v4() + '.jpg' : fileName
 
-      if (fileName && excludeFileName.includes(fileName)) return fileName
+    if (fileName && excludeFileName.includes(fileName)) return fileName
 
-      fs.copySync(
-        filePath,
-        path.resolve(this._srcStaticFolderPath, newFileName)
-      )
+    fs.copySync(filePath, path.resolve(this._srcStaticFolderPath, newFileName))
 
-      return newFileName
-    } catch (error) {
-      return error
-    }
+    return newFileName
   }
 
   get srcStaticFolderPath() {
@@ -51,6 +53,10 @@ class FileSystemService {
 
   get datasetImgGoodsFolderPath() {
     return this._datasetImgGoodsFolderPath
+  }
+
+  get datasetSliderFolderPath() {
+    return this._datasetSliderFolderPath
   }
 }
 

@@ -12,6 +12,7 @@ import {
   TDBMDataCustomCategories,
   TDBMDataCustomCategoriesProducts,
   TDBMDataInfoPages,
+  TDBMDataSlider,
 } from '../../types'
 
 import db from '../db'
@@ -426,6 +427,25 @@ class InsertToDB {
       return Promise.resolve()
     } catch (error) {
       logger.fatal(error, 'migration data to table: info_pages_images!')
+      return Promise.resolve()
+    }
+  }
+
+  public async sliderTable(sliderData: TDBMDataSlider[]): Promise<void> {
+    try {
+      for (const sliderItem of sliderData) {
+        const fileName = FileSystemService.copyImgFileToStatic(
+          sliderItem.imgPath
+        )
+        await db.query(
+          `INSERT INTO slider (title, img, order_index) VALUES ($1, $2, $3)`,
+          [sliderItem.title, fileName, sliderItem.order_index]
+        )
+      }
+      logger.info('migration data to table: slider!')
+      return Promise.resolve()
+    } catch (error) {
+      logger.fatal(error, 'migration data to table: slider!')
       return Promise.resolve()
     }
   }

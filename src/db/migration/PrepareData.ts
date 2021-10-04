@@ -16,8 +16,10 @@ import {
   TDBMDataCustomCategoriesProducts,
   TDBMDataInfoPagesImg,
   TDBMDataInfoPages,
+  TDBMDataSlider,
 } from '../../types'
 import StaticFolderService from '../../services/FileSystemService'
+import FileSystemService from '../../services/FileSystemService'
 
 class PrepareData {
   public categoriesTable(goods: TDBMJsonGoods[]): TDBMDataCategoriesItem[] {
@@ -231,7 +233,7 @@ class PrepareData {
     })
   }
 
-  public customCategoriesProducts({
+  public customCategoriesProductsTable({
     discount,
     New,
   }: {
@@ -246,7 +248,7 @@ class PrepareData {
     }
   }
 
-  public infoPages(): TDBMDataInfoPages[] {
+  public infoPagesTable(): TDBMDataInfoPages[] {
     const result: TDBMDataInfoPages[] = []
     const pathToContent = path.resolve(
       __dirname,
@@ -312,6 +314,25 @@ class PrepareData {
         url: pageUrl,
         img: img.length > 0 ? img : null,
         content,
+      })
+    }
+
+    return result
+  }
+
+  public sliderTable(baseInfo: TDBMJsonBaseInfo): TDBMDataSlider[] {
+    const result: TDBMDataSlider[] = []
+    const sliderTitles = baseInfo.d592_exShopSiteSliderHeader.split(';\n')
+    const pathToImages = FileSystemService.datasetSliderFolderPath
+    const sliderImages = fs.readdirSync(pathToImages)
+
+    for (const key in sliderTitles) {
+      const sliderTitle = sliderTitles[key]
+      const sliderImage = sliderImages[key]
+      result.push({
+        title: sliderTitle,
+        imgPath: path.resolve(pathToImages, sliderImage),
+        order_index: Number(key) + 1,
       })
     }
 

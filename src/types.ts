@@ -152,6 +152,12 @@ export type TDBMDataInfoPages = {
   img: TDBMDataInfoPagesImg[] | null
 }
 
+export type TDBMDataSlider = {
+  title: string
+  imgPath: string
+  order_index: number
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Controllers types
