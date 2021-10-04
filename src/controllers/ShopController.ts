@@ -11,7 +11,7 @@ class ShopController {
   ): Promise<Response<TDBMDataShopConfig | null> | void> {
     try {
       const data = await ShopService.getConfigOrNull()
-      return res.json(data)
+      return res.status(200).json(data)
     } catch (error) {
       next(logger.error(error, 'ProductController.getOneOrNull occurred error'))
     }

@@ -1,4 +1,4 @@
-import express, { Application } from 'express'
+import express, { Application, NextFunction, Response } from 'express'
 
 import cors from 'cors'
 import config from './config'

@@ -4,7 +4,7 @@ import { TGetInfoDataOrNull } from '../types'
 import logger from '../utils/logger'
 
 class InfoController {
-  public async getInfoData(
+  public async getById(
     req: Request,
     res: Response,
     next: NextFunction
@@ -12,7 +12,7 @@ class InfoController {
     try {
       const { id } = req.params
       const data = await InfoService.getInfoDataOrNull(id)
-      return res.json(data)
+      return res.status(200).json(data)
     } catch (error) {
       next(logger.error(error, 'InfoController.getInfoData occurred error'))
     }

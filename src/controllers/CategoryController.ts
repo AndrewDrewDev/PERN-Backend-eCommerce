@@ -8,7 +8,7 @@ import {
 import logger from '../utils/logger'
 
 class CategoryController {
-  public async getCategoryProductsOrNull(
+  public async getProductsById(
     req: Request,
     res: Response,
     next: NextFunction
@@ -25,7 +25,7 @@ class CategoryController {
         limit,
         offset,
       })
-      return res.json(data)
+      return res.status(200).json(data)
     } catch (error) {
       next(
         logger.error(
@@ -36,7 +36,7 @@ class CategoryController {
     }
   }
 
-  public async getCategoryInfoByLevelOrNull(
+  public async getInfoByLevel(
     req: Request,
     res: Response,
     next: NextFunction
@@ -44,7 +44,7 @@ class CategoryController {
     try {
       const { level } = req.params
       const data = await CategoryService.getInfoByLevelOrNull(level)
-      return res.json(data)
+      return res.status(200).json(data)
     } catch (error) {
       next(
         logger.error(
@@ -55,7 +55,7 @@ class CategoryController {
     }
   }
 
-  public async getCategoryBreadcrumbOrNull(
+  public async getBreadcrumb(
     req: Request,
     res: Response,
     next: NextFunction
@@ -74,7 +74,7 @@ class CategoryController {
     }
   }
 
-  public async getCustomCategoryOrNull(
+  public async getCustomProductsById(
     req: Request,
     res: Response,
     next: NextFunction
@@ -91,7 +91,7 @@ class CategoryController {
         limit,
         offset,
       })
-      return res.json(data)
+      return res.status(200).json(data)
     } catch (error) {
       next(
         logger.error(
@@ -102,7 +102,7 @@ class CategoryController {
     }
   }
 
-  public async getCustomCategoryInfoOrNull(
+  public async getCustomProductsInfo(
     req: Request,
     res: Response,
     next: NextFunction
@@ -110,7 +110,7 @@ class CategoryController {
     try {
       const { id } = req.params
       const data = await CategoryService.getCustomCategoryInfoOrNull(id)
-      return res.json(data)
+      return res.status(200).json(data)
     } catch (error) {
       next(
         logger.error(

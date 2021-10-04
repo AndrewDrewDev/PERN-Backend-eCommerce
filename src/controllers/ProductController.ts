@@ -4,7 +4,7 @@ import ProductService from '../services/ProductService'
 import logger from '../utils/logger'
 
 class ProductController {
-  public async getOneOrNull(
+  public async getOneById(
     req: Request,
     res: Response,
     next: NextFunction
@@ -53,7 +53,7 @@ class ProductController {
 
       // Check if product not founded in db
       if (!result.name) return res.json(null)
-      return res.json(result)
+      return res.status(200).json(result)
     } catch (error) {
       next(logger.error(error, 'ProductController.getOneOrNull occurred error'))
     }
