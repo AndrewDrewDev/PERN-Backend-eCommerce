@@ -178,8 +178,7 @@ class CategoryService {
                        left join custom_categories_products ccp on cc.id=ccp.custom_categories_id
               where cc.url=$1),
              cc.name,
-             cc.url,
-             cc.img
+             cc.url
              from
              custom_categories cc
              where
