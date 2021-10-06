@@ -74,12 +74,12 @@ class CategoryService {
     try {
       const result = await db.query(
         `
-      select count(pp) as count, cc.name, cc.url from categories cc
+      select count(pp) as count, cc.name, cc.url, cc.img from categories cc
         left join category_to_product cp on cp.category_id=cc.id and cp.level=$1
         left join products pp on cp.product_id=pp.id
       where 
       cp.level is not null
-      group by cc.name, cc.url, cp.level    
+      group by cc.name, cc.url, cp.level, cc.img    
       `,
         [level]
       )
@@ -178,7 +178,8 @@ class CategoryService {
                        left join custom_categories_products ccp on cc.id=ccp.custom_categories_id
               where cc.url=$1),
              cc.name,
-             cc.url
+             cc.url,
+             cc.img
              from
              custom_categories cc
              where

@@ -6,6 +6,7 @@ class FileSystemService {
   private readonly _srcStaticFolderPath: string
   private readonly _datasetImgGoodsFolderPath: string
   private readonly _datasetSliderFolderPath: string
+  private readonly _datasetImgCategoryFolderPath: string
 
   constructor() {
     this._srcStaticFolderPath = path.resolve(
@@ -29,6 +30,14 @@ class FileSystemService {
       '..',
       'data',
       'img-slider'
+    )
+
+    this._datasetImgCategoryFolderPath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      'data',
+      'img-category'
     )
   }
 
@@ -57,6 +66,10 @@ class FileSystemService {
 
   get datasetSliderFolderPath() {
     return this._datasetSliderFolderPath
+  }
+
+  get datasetImgCategoryFolderPath() {
+    return this._datasetImgCategoryFolderPath
   }
 }
 

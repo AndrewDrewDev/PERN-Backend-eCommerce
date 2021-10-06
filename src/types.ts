@@ -20,7 +20,7 @@ export type TConfig = {
 
 export type TDBMJson = {
   BaseInfo: TDBMJsonBaseInfo
-  Categories: TDBMJsonCatefories
+  Categories: TDBMJsonCategories
   Goods: TDBMJsonGoods[]
 }
 
@@ -70,13 +70,14 @@ export type TDBMJsonBaseInfo = {
   d600_exShopSiteNewCards: string
 }
 
-export type TDBMJsonCatefories = {
+export type TDBMJsonCategories = {
   [key: string]: string
 }
 
 export type TDBMDataCategories = {
   name: string
   url: string
+  img?: string
 }
 
 export type TDBMDataCategoriesItem = {
@@ -231,6 +232,7 @@ export type TGetInfoByLevel = {
   count: number
   name: string
   url: string
+  img: string | null
 }
 
 export type TGetBreadcrumb = {

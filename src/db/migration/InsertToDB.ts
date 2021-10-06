@@ -24,15 +24,22 @@ class InsertToDB {
   public async categoriesTable(data: TDBMDataCategoriesItem[]): Promise<void> {
     try {
       for (const item of data) {
-        const parentName: string = item.parent
+        const parentName: string | null = item.parent
           ? `(select id from categories where name='${item.parent.name}')`
           : 'null'
+        let img: string | null = null
+
+        if (item.category.img) {
+          img = FileSystemService.copyImgFileToStatic(item.category.img, true)
+        }
+
         await db.query(
-          `insert into categories (name, url, parentId) values ('${item.category.name}', '${item.category.url}', ${parentName})`
+          `insert into categories (name, url, img, parentId) values ($1, $2, $3, ${parentName})`,
+          [item.category.name, item.category.url, img]
         )
       }
-      logger.info('migration data to table: categories!')
 
+      logger.info('migration data to table: categories!')
       return Promise.resolve()
     } catch (error) {
       logger.fatal(error, 'migration data to table: categories!')

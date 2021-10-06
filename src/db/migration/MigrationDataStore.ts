@@ -31,9 +31,9 @@ class MigrationDataStore {
   private readonly _slider: TDBMDataSlider[]
 
   constructor(jsonData: TDBMJson) {
-    const { Goods, BaseInfo } = jsonData
+    const { Goods, Categories, BaseInfo } = jsonData
     this._products = Goods
-    this._categories = PrepareData.categoriesTable(Goods)
+    this._categories = PrepareData.categoriesTable(Goods, Categories)
     this._labels = PrepareData.labelsTable(['Акции', 'Новинки'])
     this._units = PrepareData.unitsTable(Goods)
     this._suppliers = PrepareData.suppliersTable(Goods)

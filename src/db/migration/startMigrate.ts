@@ -49,6 +49,7 @@ const startMigrate = () => {
       },
     ],
   })
+
   const migrationData: MigrationDataStore = new MigrationDataStore(jsonData)
 
   initModel()

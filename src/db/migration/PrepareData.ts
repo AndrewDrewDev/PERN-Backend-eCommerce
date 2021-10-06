@@ -17,12 +17,16 @@ import {
   TDBMDataInfoPagesImg,
   TDBMDataInfoPages,
   TDBMDataSlider,
+  TDBMJsonCategories,
 } from '../../types'
 import StaticFolderService from '../../services/FileSystemService'
 import FileSystemService from '../../services/FileSystemService'
 
 class PrepareData {
-  public categoriesTable(goods: TDBMJsonGoods[]): TDBMDataCategoriesItem[] {
+  public categoriesTable(
+    goods: TDBMJsonGoods[],
+    categories: TDBMJsonCategories
+  ): TDBMDataCategoriesItem[] {
     const result: TDBMDataCategoriesItem[] = []
     const tempArray: string[] = []
 
@@ -38,6 +42,11 @@ class PrepareData {
           name: category1,
           url: transliterateWord(category1),
         }
+        if (categories[category1])
+          categoryItem.category.img = path.resolve(
+            FileSystemService.datasetImgCategoryFolderPath,
+            categories[category1] + '.jpg'
+          )
 
         tempArray.push(category1)
         result.push(categoryItem)
