@@ -89,7 +89,7 @@ class CategoryController {
   ): Promise<Response<TGetInfoByLevel[] | null> | void> {
     try {
       const { id } = req.params
-      const data = await CategoryService.getCustomCategoryInfoOrNull(id)
+      const data = await CategoryService.getCustomCategoryInfo(id)
       return res.status(200).json(data)
     } catch (error) {
       next(

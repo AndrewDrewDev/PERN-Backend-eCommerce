@@ -211,6 +211,11 @@ export type TProductsByCategoryData = {
   img: string
 }
 
+export type TShopControllerGetSlider = {
+  title: string
+  img: string
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Services types

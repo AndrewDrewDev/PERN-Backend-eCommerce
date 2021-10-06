@@ -63,7 +63,7 @@ class CategoryService {
     } catch (error) {
       throw logger.error(
         error,
-        'CategoryService.getProductsByCategoryOrNull occurred error'
+        'CategoryService.getProductsByCategory occurred error'
       )
     }
   }
@@ -87,10 +87,7 @@ class CategoryService {
       if (result.rows.length === 0) return null
       return result.rows
     } catch (error) {
-      throw logger.error(
-        error,
-        'CategoryService.getInfoByLevelOrNull occurred error'
-      )
+      throw logger.error(error, 'CategoryService.getInfoByLevel occurred error')
     }
   }
 
@@ -165,12 +162,12 @@ class CategoryService {
     } catch (error) {
       throw logger.error(
         error,
-        'CategoryService.getCustomCategoryByUrlOrNull occurred error'
+        'CategoryService.getCustomCategoryById occurred error'
       )
     }
   }
 
-  public async getCustomCategoryInfoOrNull(
+  public async getCustomCategoryInfo(
     id: string
   ): Promise<TGetInfoByLevel[] | null> {
     try {
@@ -195,7 +192,7 @@ class CategoryService {
     } catch (error) {
       throw logger.error(
         error,
-        'CategoryService.getCustomCategoryInfoOrNull occurred error'
+        'CategoryService.getCustomCategoryInfo occurred error'
       )
     }
   }

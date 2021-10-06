@@ -63,7 +63,7 @@ class ProductService {
         [id]
       )
     } catch (error) {
-      throw logger.error(error, 'getOneProductDb occurred error')
+      throw logger.error(error, 'ProductService.getOneById occurred error')
     }
   }
 }

@@ -30,7 +30,7 @@ class InfoService {
 
       return combineInfoData(data.rows)
     } catch (error) {
-      throw logger.error(error, 'getInfoDataOrNull occurred error')
+      throw logger.error(error, 'InfoService.getById occurred error')
     }
   }
 }
