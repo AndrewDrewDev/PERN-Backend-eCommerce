@@ -167,7 +167,7 @@ export type TDBMDataSlider = {
 //
 // Note: PostgreSQL not returned property names in camelCase hence I not use it
 
-export type TCProductGetOneData = {
+export type TCProductGetOneService = {
   image: string
   ispreview: boolean
   categoryname: string

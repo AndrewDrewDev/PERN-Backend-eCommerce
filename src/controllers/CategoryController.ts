@@ -21,18 +21,22 @@ class CategoryController {
         type: 'custom' | 'common'
       }
       const offset: string = ((Number(page) - 1) * Number(limit)).toString()
-      const data =
-        type === 'common'
-          ? await CategoryService.getProductsById({
-              name,
-              limit,
-              offset,
-            })
-          : await CategoryService.getCustomProductsById({
-              name,
-              limit,
-              offset,
-            })
+      let data = null
+
+      if (type === 'common') {
+        data = await CategoryService.getProductsById({
+          name,
+          limit,
+          offset,
+        })
+      } else if (type === 'custom') {
+        data = await CategoryService.getCustomProductsById({
+          name,
+          limit,
+          offset,
+        })
+      }
+
       return res.status(200).json(data)
     } catch (error) {
       next(
