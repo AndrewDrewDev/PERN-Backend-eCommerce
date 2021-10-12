@@ -52,7 +52,7 @@ class CategoryController {
       next(
         logger.error(
           error,
-          'CategoryController.getCategoryProductsOrNull occurred error'
+          'CategoryController.getCategoryProducts occurred error'
         )
       )
     }
@@ -71,7 +71,7 @@ class CategoryController {
       next(
         logger.error(
           error,
-          'CategoryController.getCategoryInfoByLevelOrNull occurred error'
+          'CategoryController.getCategoryInfoByLevel occurred error'
         )
       )
     }
@@ -90,7 +90,7 @@ class CategoryController {
       next(
         logger.error(
           error,
-          'CategoryController.getCategoryBreadcrumbOrNull occurred error'
+          'CategoryController.getCategoryBreadcrumb occurred error'
         )
       )
     }
@@ -109,7 +109,24 @@ class CategoryController {
       next(
         logger.error(
           error,
-          'CategoryController.getCustomCategoryInfoOrNull occurred error'
+          'CategoryController.getCustomProductsInfo occurred error'
+        )
+      )
+    }
+  }
+  public async getAllProductsInfo(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TGetInfoByLevel[] | null> | void> {
+    try {
+      const data = await CategoryService.getAllCategoryInfo()
+      return res.status(200).json(data)
+    } catch (error) {
+      next(
+        logger.error(
+          error,
+          'CategoryController.getAllProductsInfo occurred error'
         )
       )
     }

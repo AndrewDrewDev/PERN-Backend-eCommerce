@@ -14,7 +14,7 @@ class InfoController {
       const data = await InfoService.getById(id)
       return res.status(200).json(data)
     } catch (error) {
-      next(logger.error(error, 'InfoController.getInfoData occurred error'))
+      next(logger.error(error, 'InfoController.getById occurred error'))
     }
   }
 }

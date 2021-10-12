@@ -220,9 +220,30 @@ class CategoryService {
       )
     }
   }
+
+  public async getAllCategoryInfo(): Promise<TGetInfoByLevel[] | null> {
+    try {
+      const data = await db.query(`select count(*) from products`)
+
+      if (data.rows.length === 0) return null
+      return [
+        {
+          name: 'Каталог :: Все категории :: Все товары',
+          url: 'all',
+          img: null,
+          count: data.rows[0].count,
+        },
+      ]
+    } catch (error) {
+      throw logger.error(
+        error,
+        'CategoryService.getAllCategoryInfo occurred error'
+      )
+    }
+  }
 }
 
-// TODO: WIP
+// TODO: filters will add later
 type TMakeFilter = { whereBody: string | null; orderByBody: string | null }
 const makeFilter = (filter: TGetProductFilter): TMakeFilter => {
   let whereBody: string | null = ''

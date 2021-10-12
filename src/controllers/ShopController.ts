@@ -4,7 +4,7 @@ import ShopService from '../services/ShopService'
 import logger from '../utils/logger'
 
 class ShopController {
-  public async getConfigOrNull(
+  public async getConfig(
     req: Request,
     res: Response,
     next: NextFunction
@@ -13,11 +13,11 @@ class ShopController {
       const data = await ShopService.getConfig()
       return res.status(200).json(data)
     } catch (error) {
-      next(logger.error(error, 'ShopController.getConfigOrNull occurred error'))
+      next(logger.error(error, 'ShopController.getConfig occurred error'))
     }
   }
 
-  public async getSliderOrNull(
+  public async getSlider(
     req: Request,
     res: Response,
     next: NextFunction
@@ -26,7 +26,7 @@ class ShopController {
       const data = await ShopService.getSlider()
       return res.status(200).json(data)
     } catch (error) {
-      next(logger.error(error, 'ShopController.getSliderOrNull occurred error'))
+      next(logger.error(error, 'ShopController.getSlider occurred error'))
     }
   }
 }

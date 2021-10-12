@@ -16,7 +16,7 @@ class ProductController {
 
       return res.status(200).json(data)
     } catch (error) {
-      next(logger.error(error, 'ProductController.getOneOrNull occurred error'))
+      next(logger.error(error, 'ProductController.getOneById occurred error'))
     }
   }
 }
