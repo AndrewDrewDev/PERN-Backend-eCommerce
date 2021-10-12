@@ -1,4 +1,6 @@
 // Main server config
+import exp from 'constants'
+
 export type TConfig = {
   readonly PORT: number
   readonly DBM_EXCEL_FILE_NAME: string
@@ -222,10 +224,20 @@ export type TShopControllerGetSlider = {
 // Services types
 //
 
-export type TGetProductsByCategory = {
+export type TGetProductFilter = {
+  price?: { min: string; max: string }
+}
+
+export type TGetProduct = {
   name: string
   limit: string
   offset: string
+}
+
+export type TGetAllProducts = {
+  limit: string
+  offset: string
+  filter?: TGetProductFilter
 }
 
 export type TGetInfoByLevel = {
