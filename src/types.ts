@@ -187,7 +187,7 @@ export type TCProductGetOneService = {
   status: string
 }
 
-export type TCProductGetOneResult = {
+export type TCProductFullInfo = {
   categories: TDBMDataCategories[]
   images: { preview: string; big: string[] }
   name: string
@@ -219,10 +219,12 @@ export type TShopControllerGetSlider = {
   img: string
 }
 
-////////////////////////////////////////////////////////////////////////////////
-//
-// Services types
-//
+export type TGetSearchProductsByName = {
+  name: string
+  id: string
+  price: string
+  img: string
+}
 
 export type TGetProductFilter = {
   price?: { min: string; max: string }

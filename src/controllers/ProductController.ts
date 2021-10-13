@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { TCProductGetOneResult } from '../types'
+import { TCProductFullInfo, TGetSearchProductsByName } from '../types'
 import ProductService from '../services/ProductService'
 import logger from '../utils/logger'
 
@@ -8,15 +8,35 @@ class ProductController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TCProductGetOneResult | null> | void> {
+  ): Promise<Response<TCProductFullInfo | null> | void> {
     try {
-      const result: TCProductGetOneResult = {} as any
+      const result: TCProductFullInfo = {} as any
       const { id } = req.params
       const data = await ProductService.getOneById(id)
 
       return res.status(200).json(data)
     } catch (error) {
       next(logger.error(error, 'ProductController.getOneById occurred error'))
+    }
+  }
+
+  public async getSearchProductsByName(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TGetSearchProductsByName[] | null> | void> {
+    try {
+      const { name } = req.params
+      const data = await ProductService.getSearchProductsByName(name)
+
+      return res.status(200).json(data)
+    } catch (error) {
+      next(
+        logger.error(
+          error,
+          'ProductController.getProductsByName occurred error'
+        )
+      )
     }
   }
 }
