@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import InfoService from '../services/InfoService'
-import { TGetInfoDataOrNull } from '../types'
+import { TGetInfoData } from '../types'
 import logger from '../utils/logger'
 
 class InfoController {
@@ -8,7 +8,7 @@ class InfoController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetInfoDataOrNull | null> | void> {
+  ): Promise<Response<TGetInfoData | null> | void> {
     try {
       const { id } = req.params
       const data = await InfoService.getById(id)

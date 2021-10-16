@@ -7,6 +7,7 @@ import MigrationDataStore from './MigrationDataStore'
 import initModel from '../model/initModel'
 import InsertToDB from './InsertToDB'
 import logger from '../../utils/logger'
+import FileSystemService from '../../services/FileSystemService'
 
 const startMigrate = () => {
   const excelFilePath: string = path.resolve(
@@ -26,6 +27,8 @@ const startMigrate = () => {
     'data',
     config.DBM_EXCEL_CONFIG_FILE_NAME
   )
+
+  FileSystemService.clearStaticFolder()
 
   const jsonData = excelValidator<TDBMJson>({
     setting: {

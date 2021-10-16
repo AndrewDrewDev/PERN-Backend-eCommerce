@@ -154,10 +154,18 @@ CREATE TABLE IF NOT EXISTS info_pages_images
 
 CREATE TABLE IF NOT EXISTS slider
 (
-    id   SERIAL PRIMARY KEY,
-    title VARCHAR,
-    img VARCHAR,
+    id          SERIAL PRIMARY KEY,
+    title       VARCHAR,
+    img         VARCHAR,
     order_index INT
+);
+
+CREATE TABLE IF NOT EXISTS users
+(
+    id       SERIAL PRIMARY KEY,
+    email    VARCHAR,
+    password VARCHAR,
+    role     VARCHAR
 );
 
 -- FK info_pages_images

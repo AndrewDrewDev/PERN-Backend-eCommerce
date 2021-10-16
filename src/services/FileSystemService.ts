@@ -56,6 +56,12 @@ class FileSystemService {
     return newFileName
   }
 
+  public clearStaticFolder(): void {
+    const name = this.srcStaticFolderPath
+    fs.removeSync(name)
+    fs.mkdirSync(name)
+  }
+
   get srcStaticFolderPath() {
     return this._srcStaticFolderPath
   }

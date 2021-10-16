@@ -254,9 +254,15 @@ export type TGetBreadcrumb = {
   url: string
 }
 
-export type TGetInfoDataOrNull = {
+export type TGetInfoData = {
   name: string
   url: string
   content: string
   img: string[] | null
+}
+
+export type TGetUsers = {
+  email: string
+  password: string
+  role: string
 }

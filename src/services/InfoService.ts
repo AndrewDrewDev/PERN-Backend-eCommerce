@@ -1,4 +1,4 @@
-import { TGetInfoDataOrNull } from '../types'
+import { TGetInfoData } from '../types'
 import logger from '../utils/logger'
 import db from '../db/db'
 
@@ -10,7 +10,7 @@ type TGetInfoDataOrNullQueryResult = {
 }
 
 class InfoService {
-  public async getById(id: string): Promise<TGetInfoDataOrNull | null> {
+  public async getById(id: string): Promise<TGetInfoData | null> {
     try {
       const data = await db.query(
         `
@@ -35,10 +35,8 @@ class InfoService {
   }
 }
 
-function combineInfoData(
-  array: TGetInfoDataOrNullQueryResult[]
-): TGetInfoDataOrNull {
-  const result: TGetInfoDataOrNull = {} as any
+function combineInfoData(array: TGetInfoDataOrNullQueryResult[]): TGetInfoData {
+  const result: TGetInfoData = {} as any
   result.img = []
   for (const elem of array) {
     result.name = elem.name
