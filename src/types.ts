@@ -1,5 +1,4 @@
 // Main server config
-import exp from 'constants'
 
 export type TConfig = {
   readonly PORT: number
@@ -264,5 +263,7 @@ export type TGetInfoData = {
 export type TGetUsers = {
   email: string
   password: string
-  role: string
+  role: TUserAuthType
 }
+
+export type TUserAuthType = 'ADMIN' | 'USER'

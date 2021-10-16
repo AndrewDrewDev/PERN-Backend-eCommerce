@@ -10,7 +10,6 @@ class ProductController {
     next: NextFunction
   ): Promise<Response<TCProductFullInfo | null> | void> {
     try {
-      const result: TCProductFullInfo = {} as any
       const { id } = req.params
       const data = await ProductService.getOneById(id)
 

@@ -14,9 +14,9 @@ const authMiddleware: RequestHandler = async (
 
     if (!token) return res.status(401).json({ message: 'User not auth!' })
 
-    const decode = jwt.verify(token, config.SECRET_KEY)
+    const decoded = jwt.verify(token, config.SECRET_KEY)
 
-    req.user = decode
+    req.user = decoded
 
     next()
   } catch (error) {
