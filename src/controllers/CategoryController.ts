@@ -5,7 +5,7 @@ import {
   TGetInfoByLevel,
   TProductsByCategoryData,
 } from '../types'
-import logger from '../utils/logger'
+import ErrorHandler from '../error/ErrorHandler'
 
 class CategoryController {
   public async getProductsById(
@@ -44,12 +44,7 @@ class CategoryController {
 
       return res.status(200).json(data)
     } catch (error) {
-      next(
-        logger.error(
-          error,
-          'CategoryController.getCategoryProducts occurred error'
-        )
-      )
+      next(new ErrorHandler(500, error.message))
     }
   }
 
@@ -63,12 +58,7 @@ class CategoryController {
       const data = await CategoryService.getInfoByLevel(level)
       return res.status(200).json(data)
     } catch (error) {
-      next(
-        logger.error(
-          error,
-          'CategoryController.getCategoryInfoByLevel occurred error'
-        )
-      )
+      next(new ErrorHandler(500, error.message))
     }
   }
 
@@ -82,12 +72,7 @@ class CategoryController {
       const data = await CategoryService.getBreadcrumb(url)
       return res.json(data)
     } catch (error) {
-      next(
-        logger.error(
-          error,
-          'CategoryController.getCategoryBreadcrumb occurred error'
-        )
-      )
+      next(next(new ErrorHandler(500, error.message)))
     }
   }
 
@@ -101,12 +86,7 @@ class CategoryController {
       const data = await CategoryService.getCustomCategoryInfo(id)
       return res.status(200).json(data)
     } catch (error) {
-      next(
-        logger.error(
-          error,
-          'CategoryController.getCustomProductsInfo occurred error'
-        )
-      )
+      next(new ErrorHandler(500, error.message))
     }
   }
   public async getAllProductsInfo(
@@ -118,12 +98,7 @@ class CategoryController {
       const data = await CategoryService.getAllCategoryInfo()
       return res.status(200).json(data)
     } catch (error) {
-      next(
-        logger.error(
-          error,
-          'CategoryController.getAllProductsInfo occurred error'
-        )
-      )
+      next(new ErrorHandler(500, error.message))
     }
   }
 }

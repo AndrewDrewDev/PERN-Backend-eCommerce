@@ -4,8 +4,7 @@ import jwt from 'jsonwebtoken'
 
 import UserService from '../services/UserService'
 import config from '../config'
-import { TGetUsers } from '../types'
-import logger from '../utils/logger'
+import ErrorHandler from '../error/ErrorHandler'
 
 type TGenerateJwt = {
   email: string
@@ -53,7 +52,7 @@ class UserController {
 
       return res.json({ token })
     } catch (error) {
-      next(logger.error(error, 'UserController.registration occurred error'))
+      next(new ErrorHandler(500, error.message))
     }
   }
 
@@ -81,11 +80,11 @@ class UserController {
 
       return res.json({ token })
     } catch (error) {
-      next(logger.error(error, 'UserController.login occurred error'))
+      next(new ErrorHandler(500, error.message))
     }
   }
 
-  public async check(req: Request | any, res: Response, next: NextFunction) {
+  public async check(req: Request | any, res: Response) {
     const token = generateJwt({ email: req.user.email, role: req.user.role })
     return res.json({ token })
   }

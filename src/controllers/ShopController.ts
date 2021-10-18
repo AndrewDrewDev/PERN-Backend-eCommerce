@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { TDBMDataShopConfig, TShopControllerGetSlider } from '../types'
 import ShopService from '../services/ShopService'
-import logger from '../utils/logger'
+import ErrorHandler from '../error/ErrorHandler'
 
 class ShopController {
   public async getConfig(
@@ -13,7 +13,7 @@ class ShopController {
       const data = await ShopService.getConfig()
       return res.status(200).json(data)
     } catch (error) {
-      next(logger.error(error, 'ShopController.getConfig occurred error'))
+      next(new ErrorHandler(500, error.message))
     }
   }
 
@@ -26,7 +26,7 @@ class ShopController {
       const data = await ShopService.getSlider()
       return res.status(200).json(data)
     } catch (error) {
-      next(logger.error(error, 'ShopController.getSlider occurred error'))
+      next(new ErrorHandler(500, error.message))
     }
   }
 }

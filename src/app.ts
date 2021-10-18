@@ -1,9 +1,10 @@
-import express, { Application, NextFunction, Response } from 'express'
+import express, { Application } from 'express'
 
 import cors from 'cors'
 import config from './config'
 import routes from './routes'
 import path from 'path'
+import errorResponseHandler from './error/errorResponseHandler'
 
 const PORT = config.PORT
 
@@ -22,5 +23,7 @@ const start = async () => {
     console.log(e)
   }
 }
+
+app.use(errorResponseHandler)
 
 start()

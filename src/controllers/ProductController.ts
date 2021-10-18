@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { TCProductFullInfo, TGetSearchProductsByName } from '../types'
 import ProductService from '../services/ProductService'
-import logger from '../utils/logger'
+import ErrorHandler from '../error/ErrorHandler'
 
 class ProductController {
   public async getOneById(
@@ -15,7 +15,7 @@ class ProductController {
 
       return res.status(200).json(data)
     } catch (error) {
-      next(logger.error(error, 'ProductController.getOneById occurred error'))
+      next(new ErrorHandler(500, error.message))
     }
   }
 
@@ -30,12 +30,7 @@ class ProductController {
 
       return res.status(200).json(data)
     } catch (error) {
-      next(
-        logger.error(
-          error,
-          'ProductController.getProductsByName occurred error'
-        )
-      )
+      next(new ErrorHandler(500, error.message))
     }
   }
 }
