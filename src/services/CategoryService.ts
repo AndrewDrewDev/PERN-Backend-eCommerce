@@ -4,11 +4,9 @@ import {
   TGetInfoByLevel,
   TGetBreadcrumb,
   TGetAllProducts,
-  TGetProductFilter,
 } from '../types'
 import { QueryResult } from 'pg'
 import db from '../db/db'
-import logger from '../utils/logger'
 
 class CategoryService {
   public async getProductsById({
@@ -16,9 +14,8 @@ class CategoryService {
     limit,
     offset,
   }: TGetProduct): Promise<QueryResult<TProductsByCategoryData>[] | null> {
-    try {
-      const data = await db.query(
-        `
+    const data = await db.query(
+      `
             select pp.name      as name,
                    pp.productid as id,
                    pp.price     as price,
@@ -52,24 +49,17 @@ class CategoryService {
             group by pp.id, im.name, lb.name
             limit $2 offset $3
         `,
-        [name, limit, offset]
-      )
-      if (data.rows.length === 0) return null
-      return data.rows
-    } catch (error) {
-      throw logger.error(
-        error,
-        'CategoryService.getProductsByCategory occurred error'
-      )
-    }
+      [name, limit, offset]
+    )
+    if (data.rows.length === 0) return null
+    return data.rows
   }
 
   public async getInfoByLevel(
     level: string
   ): Promise<QueryResult<TGetInfoByLevel>[] | null> {
-    try {
-      const result = await db.query(
-        `
+    const result = await db.query(
+      `
             select count(pp) as count, cc.name, cc.url, cc.img
             from categories cc
                      left join category_to_product cp on cp.category_id = cc.id and cp.level = $1
@@ -77,22 +67,18 @@ class CategoryService {
             where cp.level is not null
             group by cc.name, cc.url, cp.level, cc.img
         `,
-        [level]
-      )
+      [level]
+    )
 
-      if (result.rows.length === 0) return null
-      return result.rows
-    } catch (error) {
-      throw logger.error(error, 'CategoryService.getInfoByLevel occurred error')
-    }
+    if (result.rows.length === 0) return null
+    return result.rows
   }
 
   public async getBreadcrumb(
     categoryUrl: string
   ): Promise<TGetBreadcrumb[] | null> {
-    try {
-      const data: QueryResult<TGetBreadcrumb> = await db.query(
-        `
+    const data: QueryResult<TGetBreadcrumb> = await db.query(
+      `
             with recursive tree(id, name, url, parentid) as (
                 select n.id, n.name, n.url, n.parentid
                 from categories n
@@ -105,20 +91,14 @@ class CategoryService {
             select *
             from tree t
             ORDER BY t.parentid ASC nulls FIRST`,
-        [categoryUrl]
-      )
+      [categoryUrl]
+    )
 
-      if (data.rows.length === 0) return null
+    if (data.rows.length === 0) return null
 
-      return data.rows.map(i => {
-        return { name: i.name, url: i.url }
-      })
-    } catch (error) {
-      throw logger.error(
-        error,
-        'CategoryService.getBreadcrumbOrNull occurred error'
-      )
-    }
+    return data.rows.map(i => {
+      return { name: i.name, url: i.url }
+    })
   }
 
   public async getCustomProductsById({
@@ -126,9 +106,8 @@ class CategoryService {
     limit,
     offset,
   }: TGetProduct): Promise<QueryResult<TProductsByCategoryData>[] | null> {
-    try {
-      const data = await db.query(
-        `
+    const data = await db.query(
+      `
             select pp.name      as name,
                    pp.productid as id,
                    pp.price     as price,
@@ -146,28 +125,20 @@ class CategoryService {
             group by pp.id, im.name, lb.name, st.name
             limit $2 offset $3
         `,
-        [name, limit, offset]
-      )
+      [name, limit, offset]
+    )
 
-      if (data.rows.length === 0) return null
+    if (data.rows.length === 0) return null
 
-      return data.rows
-    } catch (error) {
-      throw logger.error(
-        error,
-        'CategoryService.getCustomCategoryById occurred error'
-      )
-    }
+    return data.rows
   }
 
   public async getAllProducts({
     limit,
     offset,
-    filter,
   }: TGetAllProducts): Promise<QueryResult<TProductsByCategoryData>[] | null> {
-    try {
-      const data = await db.query(
-        `
+    const data = await db.query(
+      `
             select pp.name      as name,
                    pp.productid as id,
                    pp.price     as price,
@@ -180,26 +151,19 @@ class CategoryService {
                      left join images im on pp.id = im.product_id and im.preview = true 
             limit $1 offset $2 
                      `,
-        [limit, offset]
-      )
+      [limit, offset]
+    )
 
-      if (data.rows.length === 0) return null
+    if (data.rows.length === 0) return null
 
-      return data.rows
-    } catch (error) {
-      throw logger.error(
-        error,
-        'CategoryService.getCustomCategoryById occurred error'
-      )
-    }
+    return data.rows
   }
 
   public async getCustomCategoryInfo(
     id: string
   ): Promise<TGetInfoByLevel[] | null> {
-    try {
-      const data = await db.query(
-        `select (select count(ccp.id) as count
+    const data = await db.query(
+      `select (select count(ccp.id) as count
                  from custom_categories cc
                           left join custom_categories_products ccp on cc.id = ccp.custom_categories_id
                  where cc.url = $1),
@@ -207,61 +171,26 @@ class CategoryService {
                 cc.url
          from custom_categories cc
          where cc.url = $1`,
-        [id]
-      )
+      [id]
+    )
 
-      if (data.rows.length === 0) return null
+    if (data.rows.length === 0) return null
 
-      return data.rows
-    } catch (error) {
-      throw logger.error(
-        error,
-        'CategoryService.getCustomCategoryInfo occurred error'
-      )
-    }
+    return data.rows
   }
 
   public async getAllCategoryInfo(): Promise<TGetInfoByLevel[] | null> {
-    try {
-      const data = await db.query(`select count(*) from products`)
+    const data = await db.query(`select count(*) from products`)
 
-      if (data.rows.length === 0) return null
-      return [
-        {
-          name: 'Каталог :: Все категории :: Все товары',
-          url: 'all',
-          img: null,
-          count: data.rows[0].count,
-        },
-      ]
-    } catch (error) {
-      throw logger.error(
-        error,
-        'CategoryService.getAllCategoryInfo occurred error'
-      )
-    }
-  }
-}
-
-// TODO: filters will add later
-type TMakeFilter = { whereBody: string | null; orderByBody: string | null }
-const makeFilter = (filter: TGetProductFilter): TMakeFilter => {
-  let whereBody: string | null = ''
-  let orderByBody: string | null = ''
-
-  if (filter.price) {
-    const min = filter.price.min
-    const max = filter.price.max
-
-    whereBody += `cast(pp.price as double precision) BETWEEN ${min} AND ${max}`
-  }
-
-  if (!whereBody) whereBody = null
-  if (!orderByBody) orderByBody = null
-
-  return {
-    whereBody,
-    orderByBody,
+    if (data.rows.length === 0) return null
+    return [
+      {
+        name: 'Каталог :: Все категории :: Все товары',
+        url: 'all',
+        img: null,
+        count: data.rows[0].count,
+      },
+    ]
   }
 }
 

@@ -17,8 +17,8 @@ import {
 
 import db from '../db'
 import logger from '../../utils/logger'
-import StaticFolderService from '../../services/FileSystemService'
-import FileSystemService from '../../services/FileSystemService'
+import StaticFolderService from '../../utils/FileSystemUtils'
+import FileSystemService from '../../utils/FileSystemUtils'
 
 class InsertToDB {
   public async categoriesTable(data: TDBMDataCategoriesItem[]): Promise<void> {

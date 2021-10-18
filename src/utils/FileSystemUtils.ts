@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import { v4 } from 'uuid'
 
-class FileSystemService {
+class FileSystemUtils {
   private readonly _srcStaticFolderPath: string
   private readonly _datasetImgGoodsFolderPath: string
   private readonly _datasetSliderFolderPath: string
@@ -79,4 +79,4 @@ class FileSystemService {
   }
 }
 
-export default new FileSystemService()
+export default new FileSystemUtils()

@@ -3,7 +3,6 @@ import CategoryService from '../services/CategoryService'
 import {
   TGetBreadcrumb,
   TGetInfoByLevel,
-  TGetProductFilter,
   TProductsByCategoryData,
 } from '../types'
 import logger from '../utils/logger'
@@ -37,13 +36,9 @@ class CategoryController {
           offset,
         })
       } else if (type === 'all') {
-        const filter: TGetProductFilter = {
-          price: { min: '800', max: '1000' },
-        }
         data = await CategoryService.getAllProducts({
           limit,
           offset,
-          filter,
         })
       }
 

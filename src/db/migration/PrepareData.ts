@@ -19,8 +19,8 @@ import {
   TDBMDataSlider,
   TDBMJsonCategories,
 } from '../../types'
-import StaticFolderService from '../../services/FileSystemService'
-import FileSystemService from '../../services/FileSystemService'
+import StaticFolderService from '../../utils/FileSystemUtils'
+import FileSystemService from '../../utils/FileSystemUtils'
 
 class PrepareData {
   public categoriesTable(

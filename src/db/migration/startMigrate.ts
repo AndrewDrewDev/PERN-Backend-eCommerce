@@ -7,7 +7,7 @@ import MigrationDataStore from './MigrationDataStore'
 import initModel from '../model/initModel'
 import InsertToDB from './InsertToDB'
 import logger from '../../utils/logger'
-import FileSystemService from '../../services/FileSystemService'
+import FileSystemService from '../../utils/FileSystemUtils'
 
 const startMigrate = () => {
   const excelFilePath: string = path.resolve(

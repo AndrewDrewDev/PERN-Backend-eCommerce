@@ -225,10 +225,6 @@ export type TGetSearchProductsByName = {
   img: string
 }
 
-export type TGetProductFilter = {
-  price?: { min: string; max: string }
-}
-
 export type TGetProduct = {
   name: string
   limit: string
@@ -238,7 +234,6 @@ export type TGetProduct = {
 export type TGetAllProducts = {
   limit: string
   offset: string
-  filter?: TGetProductFilter
 }
 
 export type TGetInfoByLevel = {
