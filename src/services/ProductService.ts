@@ -92,7 +92,7 @@ class ProductService {
       result.description = item.description
       result.price = item.price
       result.oldPrice = item.oldprice
-      result.amount = item.amount
+      result.amount = `${item.amount}`
       result.status = item.status
     }
 

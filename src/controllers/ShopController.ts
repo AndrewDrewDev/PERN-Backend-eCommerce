@@ -17,6 +17,20 @@ class ShopController {
     }
   }
 
+  public async updateConfig(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TDBMDataShopConfig | null> | void> {
+    try {
+      const updateData: TDBMDataShopConfig = req.body
+      const data = await ShopService.updateConfig(updateData)
+      return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
   public async getSlider(
     req: Request,
     res: Response,
