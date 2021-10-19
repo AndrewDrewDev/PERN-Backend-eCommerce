@@ -262,3 +262,7 @@ export type TGetUsers = {
 }
 
 export type TUserAuthType = 'ADMIN' | 'USER'
+
+export type TResponseErrorMessage = {
+  message: string
+}

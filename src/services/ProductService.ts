@@ -11,52 +11,52 @@ class ProductService {
     let result: TCProductFullInfo = {} as any
     const data: QueryResult<TCProductGetOneService> = await db.query(
       `
-            select im.name        as image,
-                   im.preview     as ispreview,
-                   cc.name        as categoryname,
-                   cc.url         as categoryurl,
-                   pp.name        as name,
-                   lb.name        as label,
-                   un.name        as unit,
-                   su.name        as supplier,
-                   pp.productId   as id,
-                   pp.description as description,
-                   pp.price       as price,
-                   pp.oldPrice    as oldPrice,
-                   pp.amount      as amount,
-                   pp.vendorid    as vendorid,
-                   st.name        as status
-            from category_to_product cp
-                     left join
-                 categories cc
-                 on
-                     cc.id = cp.category_id
-                     left join
-                 products pp
-                 on
-                     pp.productId = $1
-                     left join
-                 labels lb
-                 on
-                     lb.id = pp.label_id
-                     left join
-                 units un
-                 on
-                     un.id = pp.units_id
-                     left join
-                 suppliers su
-                 on
-                     su.id = pp.supplier_id
-                     left join
-                 images im
-                 on
-                     im.product_id = pp.id
-                     left join
-                 statuses st
-                 on
-                     st.id = pp.id
-            where cp.product_id = (select id from products pp where pp.productId = $1)
-            ORDER BY cp.level ASC`,
+          select im.name        as image,
+                 im.preview     as ispreview,
+                 cc.name        as categoryname,
+                 cc.url         as categoryurl,
+                 pp.name        as name,
+                 lb.name        as label,
+                 un.name        as unit,
+                 su.name        as supplier,
+                 pp.productId   as id,
+                 pp.description as description,
+                 pp.price       as price,
+                 pp.oldPrice    as oldPrice,
+                 pp.amount      as amount,
+                 pp.vendorid    as vendorid,
+                 st.name        as status
+          from category_to_product cp
+                   left join
+               categories cc
+               on
+                   cc.id = cp.category_id
+                   left join
+               products pp
+               on
+                   pp.productId = $1
+                   left join
+               labels lb
+               on
+                   lb.id = pp.label_id
+                   left join
+               units un
+               on
+                   un.id = pp.units_id
+                   left join
+               suppliers su
+               on
+                   su.id = pp.supplier_id
+                   left join
+               images im
+               on
+                   im.product_id = pp.id
+                   left join
+               statuses st
+               on
+                   st.id = pp.id
+          where cp.product_id = (select id from products pp where pp.productId = $1)
+          ORDER BY cp.level ASC`,
       [id]
     )
 
@@ -100,6 +100,41 @@ class ProductService {
     if (!result.name) return null
 
     return result
+  }
+  // TCProductFullInfo | TResponseErrorMessage
+  public async updateOneById(
+    id: string,
+    updateProduct: TCProductFullInfo
+  ): Promise<TCProductFullInfo | null> {
+    const currentProduct = await this.getOneById(id)
+
+    if (currentProduct && updateProduct) {
+      // update products table
+      await db.query(
+        `update
+             products
+         set name=$1,
+             price=$2,
+             oldPrice=$3,
+             vendorId=$4,
+             description=$5,
+             amount=$6
+         where productId = $7`,
+        [
+          updateProduct.name,
+          updateProduct.price,
+          updateProduct.oldPrice,
+          updateProduct.vendorId,
+          updateProduct.description,
+          updateProduct.amount,
+          id,
+        ]
+      )
+    } else {
+      return null
+    }
+    // return updated product
+    return await this.getOneById(id)
   }
 
   public async getSearchProductsByName(

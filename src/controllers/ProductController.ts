@@ -19,7 +19,27 @@ class ProductController {
     }
   }
 
-  public async getSearchProductsByName(
+  public async updateOneById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TCProductFullInfo> | void> {
+    try {
+      const { id } = req.params
+      const updateData: TCProductFullInfo = req.body
+      const updatedProduct = await ProductService.updateOneById(id, updateData)
+
+      if (!updatedProduct) {
+        return res.status(400).json({ message: 'Wrong data format.' })
+      }
+
+      return res.status(200).json(updatedProduct)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async getSearchByName(
     req: Request,
     res: Response,
     next: NextFunction
