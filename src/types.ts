@@ -263,6 +263,13 @@ export type TGetUsers = {
 
 export type TUserAuthType = 'ADMIN' | 'USER'
 
-export type TResponseErrorMessage = {
-  message: string
+export type TGetCustomCategoryProductsItem = {
+  category_name: string
+  name: string
+  id: string
+  img: string
+}
+
+export type TGetCustomCategoryProducts = {
+  [x: string]: TGetCustomCategoryProductsItem[]
 }

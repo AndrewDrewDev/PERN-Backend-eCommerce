@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { TDBMDataShopConfig, TShopControllerGetSlider } from '../types'
+import {
+  TDBMDataShopConfig,
+  TGetCustomCategoryProducts,
+  TShopControllerGetSlider,
+} from '../types'
 import ShopService from '../services/ShopService'
 import ErrorHandler from '../error/ErrorHandler'
 
@@ -38,6 +42,19 @@ class ShopController {
   ): Promise<Response<TShopControllerGetSlider[] | null> | void> {
     try {
       const data = await ShopService.getSlider()
+      return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async getCustomCategoryProducts(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TGetCustomCategoryProducts | null> | void> {
+    try {
+      const data = await ShopService.getCustomCategoryProducts()
       return res.status(200).json(data)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
