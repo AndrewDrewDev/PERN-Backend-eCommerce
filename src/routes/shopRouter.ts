@@ -10,6 +10,16 @@ router.get(
   '/custom_category_products/:name',
   ShopController.getCustomCategoryProductsByName
 )
+router.post(
+  '/custom_category_products/:name',
+  checkRoleMiddleware('ADMIN'),
+  ShopController.createCustomCategoryProductsByName
+)
+router.delete(
+  '/custom_category_products/:name',
+  checkRoleMiddleware('ADMIN'),
+  ShopController.deleteCustomCategoryProductsByName
+)
 
 router.get('/slider', ShopController.getSlider)
 

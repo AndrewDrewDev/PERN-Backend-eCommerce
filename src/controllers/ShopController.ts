@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import {
   TDBMDataShopConfig,
   TGetCustomCategoryProducts,
+  TResponceMessage,
   TShopControllerGetSlider,
 } from '../types'
 import ShopService from '../services/ShopService'
@@ -57,6 +58,46 @@ class ShopController {
       const { name } = req.params
       const data = await ShopService.getCustomCategoryProductsByName(name)
       return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async createCustomCategoryProductsByName(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponceMessage> | void> {
+    try {
+      const { name } = req.params
+      const { data } = req.body
+
+      const result = await ShopService.createCustomCategoryProductsByName(
+        name,
+        data
+      )
+
+      return res.status(200).json(result)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async deleteCustomCategoryProductsByName(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponceMessage> | void> {
+    try {
+      const { name } = req.params
+      const { data } = req.body
+
+      const result = await ShopService.deleteCustomCategoryProductsByName(
+        name,
+        data
+      )
+
+      return res.status(200).json(result)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
     }

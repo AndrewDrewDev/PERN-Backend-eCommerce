@@ -168,6 +168,12 @@ export type TDBMDataSlider = {
 //
 // Note: PostgreSQL not returned property names in camelCase hence I not use it
 
+export type TResponceMessage = {
+  code?: number
+  status: 'OK' | 'Error'
+  message?: string
+}
+
 export type TCProductGetOneService = {
   image: string
   ispreview: boolean

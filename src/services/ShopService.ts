@@ -2,6 +2,7 @@ import { QueryResult } from 'pg'
 import {
   TDBMDataShopConfig,
   TGetCustomCategoryProducts,
+  TResponceMessage,
   TShopControllerGetSlider,
 } from '../types'
 import db from '../db/db'
@@ -102,6 +103,67 @@ class ShopService {
 
     if (data.rowCount === 0) return null
     return data.rows
+  }
+
+  public async createCustomCategoryProductsByName(
+    categoryName: string,
+    updateValue: string
+  ): Promise<TResponceMessage> {
+    const checkProductIdIfExist = await db.query(
+      `select * from products pp where pp.productid=$1`,
+      [updateValue]
+    )
+
+    if (checkProductIdIfExist.rowCount === 0)
+      return {
+        status: 'Error',
+        message: `Продукта с id: ${updateValue} - не найдено!`,
+      }
+
+    await db.query(
+      `insert into
+          custom_categories_products
+          (custom_categories_id, product_id)
+          values
+          (
+           (select id from custom_categories cc where cc.name=$1),
+           (select id from products pp where pp.productId=$2)
+          )
+          `,
+      [categoryName, updateValue]
+    )
+
+    return { status: 'OK' }
+  }
+
+  public async deleteCustomCategoryProductsByName(
+    categoryName: string,
+    updateValue: string
+  ): Promise<TResponceMessage> {
+    const result = await db.query(
+      `
+      delete  from
+        custom_categories_products ccp
+      using custom_categories cc, products pp
+      where
+        pp.id=ccp.product_id
+      and
+        ccp.custom_categories_id=cc.id
+      and
+        cc.name=$1
+      and
+        pp.productid=$2
+      returning *`,
+      [categoryName, updateValue]
+    )
+
+    if (result.rowCount === 0)
+      return {
+        status: 'Error',
+        message: `Ошибка удаления продукта с id: ${updateValue}!`,
+      }
+
+    return { status: 'OK' }
   }
 }
 
