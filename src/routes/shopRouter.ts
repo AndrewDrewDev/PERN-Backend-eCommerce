@@ -7,8 +7,8 @@ router.get('/config', ShopController.getConfig)
 router.put('/config', checkRoleMiddleware('ADMIN'), ShopController.updateConfig)
 
 router.get(
-  '/custom_category_products',
-  ShopController.getCustomCategoryProducts
+  '/custom_category_products/:name',
+  ShopController.getCustomCategoryProductsByName
 )
 
 router.get('/slider', ShopController.getSlider)

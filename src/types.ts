@@ -263,13 +263,10 @@ export type TGetUsers = {
 
 export type TUserAuthType = 'ADMIN' | 'USER'
 
-export type TGetCustomCategoryProductsItem = {
+export type TGetCustomCategoryProducts = {
   category_name: string
+  category_url: string
   name: string
   id: string
   img: string
-}
-
-export type TGetCustomCategoryProducts = {
-  [x: string]: TGetCustomCategoryProductsItem[]
-}
+}[]

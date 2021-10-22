@@ -2,7 +2,6 @@ import { QueryResult } from 'pg'
 import {
   TDBMDataShopConfig,
   TGetCustomCategoryProducts,
-  TGetCustomCategoryProductsItem,
   TShopControllerGetSlider,
 } from '../types'
 import db from '../db/db'
@@ -82,40 +81,27 @@ class ShopService {
     return data.rows
   }
 
-  public async getCustomCategoryProducts(): Promise<TGetCustomCategoryProducts | null> {
-    const result: TGetCustomCategoryProducts = {}
-
-    type TCategoryNames = { name: string }
-    const categoriesNames: QueryResult<TCategoryNames> = await db.query(
-      `select cc.name
-       from custom_categories cc`
+  public async getCustomCategoryProductsByName(
+    name: string
+  ): Promise<TGetCustomCategoryProducts | null> {
+    const data = await db.query(
+      `
+          select cc.name      as category_name,
+                 cc.url       as category_url,
+                 pp.name,
+                 pp.productid as id,
+                 im.name      as img
+          from custom_categories cc
+                   left join custom_categories_products ccp on cc.id = ccp.custom_categories_id
+                   left join products pp on pp.id = ccp.product_id
+                   left join images im on pp.id = im.product_id and im.preview = true
+          where cc.name = $1
+      `,
+      [name]
     )
 
-    if (categoriesNames.rows.length === 0) return null
-
-    for (const categoryName of categoriesNames.rows) {
-      const categoryData: QueryResult<TGetCustomCategoryProductsItem> =
-        await db.query(
-          `
-              select cc.name      as category_name,
-                     pp.name,
-                     pp.productid as id,
-                     im.name      as img
-              from custom_categories cc
-                       left join custom_categories_products ccp on cc.id = ccp.custom_categories_id
-                       left join products pp on pp.id = ccp.product_id
-                       left join images im on pp.id = im.product_id and im.preview = true
-              where cc.name = $1
-          `,
-          [categoryName.name]
-        )
-      if (categoryData.rows.length !== 0)
-        result[categoryData.rows[0].category_name] = categoryData.rows
-    }
-
-    if (Object.keys(result).length === 0) return null
-
-    return result
+    if (data.rowCount === 0) return null
+    return data.rows
   }
 }
 

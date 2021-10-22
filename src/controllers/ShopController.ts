@@ -48,13 +48,14 @@ class ShopController {
     }
   }
 
-  public async getCustomCategoryProducts(
+  public async getCustomCategoryProductsByName(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response<TGetCustomCategoryProducts | null> | void> {
     try {
-      const data = await ShopService.getCustomCategoryProducts()
+      const { name } = req.params
+      const data = await ShopService.getCustomCategoryProductsByName(name)
       return res.status(200).json(data)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
