@@ -20,6 +20,11 @@ router.delete(
   checkRoleMiddleware('ADMIN'),
   ShopController.deleteCustomCategoryProductsByName
 )
+router.put(
+  '/custom_category_products/:name',
+  checkRoleMiddleware('ADMIN'),
+  ShopController.updateCustomCategoryProductsByName
+)
 
 router.get('/slider', ShopController.getSlider)
 

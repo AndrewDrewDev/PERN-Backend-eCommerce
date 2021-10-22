@@ -156,6 +156,19 @@ class ProductService {
 
     return data.rows
   }
+
+  public isProductExist = async (id: string): Promise<boolean> => {
+    const isProductExist = await db.query(
+      `select * from products pp where pp.productid=$1`,
+      [id]
+    )
+
+    if (isProductExist.rowCount === 0) {
+      return false
+    }
+
+    return true
+  }
 }
 
 export default new ProductService()

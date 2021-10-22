@@ -7,6 +7,7 @@ import {
 } from '../types'
 import db from '../db/db'
 import { log } from 'util'
+import ProductService from './ProductService'
 
 class ShopService {
   public async getConfig(): Promise<QueryResult<TDBMDataShopConfig>[] | null> {
@@ -97,6 +98,7 @@ class ShopService {
                    left join products pp on pp.id = ccp.product_id
                    left join images im on pp.id = im.product_id and im.preview = true
           where cc.name = $1
+          order by ccp.id asc
       `,
       [name]
     )
@@ -162,6 +164,52 @@ class ShopService {
         status: 'Error',
         message: `Ошибка удаления продукта с id: ${updateValue}!`,
       }
+
+    return { status: 'OK' }
+  }
+
+  public async updateCustomCategoryProductsByName(
+    categoryName: string,
+    updateProductsIDs: string[]
+  ): Promise<TResponceMessage> {
+    // clear all product by custom category name
+    await db.query(
+      `
+      delete  from
+        custom_categories_products ccp
+      using custom_categories cc, products pp
+      where
+        pp.id=ccp.product_id
+      and
+        ccp.custom_categories_id=cc.id
+      and
+        cc.name=$1
+      returning *`,
+      [categoryName]
+    )
+
+    for (const productId of updateProductsIDs) {
+      const isProductExist = await ProductService.isProductExist(productId)
+
+      if (!isProductExist) {
+        return {
+          status: 'Error',
+          message: `Продукт с id - ${productId} не найден!`,
+        }
+      }
+
+      await db.query(
+        `
+        insert into
+          custom_categories_products (custom_categories_id, product_id)
+        values
+          (
+            (select id from custom_categories cc where cc.name=$1),
+            (select id from products pp where pp.productid=$2)
+          )`,
+        [categoryName, productId]
+      )
+    }
 
     return { status: 'OK' }
   }

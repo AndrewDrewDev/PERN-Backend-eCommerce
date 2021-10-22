@@ -102,6 +102,26 @@ class ShopController {
       next(new ErrorHandler(500, error.message))
     }
   }
+
+  public async updateCustomCategoryProductsByName(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponceMessage> | void> {
+    try {
+      const { name } = req.params
+      const { data } = req.body
+
+      const result = await ShopService.updateCustomCategoryProductsByName(
+        name,
+        data
+      )
+
+      return res.status(200).json(result)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
 }
 
 export default new ShopController()
