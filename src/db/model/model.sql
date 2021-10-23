@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS products
     -- label_id INT,
     -- tag_id INT,
     -- property_id INT,
-    -- units_id INT,
+    -- unit_id INT,
     -- supplier_id INT,
     -- vendor_id INT,
     -- status_id INT,
@@ -217,7 +217,7 @@ ALTER TABLE
 ALTER TABLE
     products
     ADD
-        COLUMN IF NOT EXISTS units_id INTEGER REFERENCES units (id);
+        COLUMN IF NOT EXISTS unit_id INTEGER REFERENCES units (id);
 ALTER TABLE
     products
     ADD

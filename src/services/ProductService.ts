@@ -42,7 +42,7 @@ class ProductService {
                    left join
                units un
                on
-                   un.id = pp.units_id
+                   un.id = pp.unit_id
                    left join
                suppliers su
                on
@@ -54,7 +54,7 @@ class ProductService {
                    left join
                statuses st
                on
-                   st.id = pp.id
+                   st.id = pp.status_id
           where cp.product_id = (select id from products pp where pp.productId = $1)
           ORDER BY cp.level ASC`,
       [id]
@@ -109,7 +109,7 @@ class ProductService {
     const currentProduct = await this.getOneById(id)
 
     if (currentProduct && updateProduct) {
-      // update products table
+      // update "products" table
       await db.query(
         `update
              products
@@ -129,6 +129,38 @@ class ProductService {
           updateProduct.amount,
           id,
         ]
+      )
+
+      // update FK form "labels" table
+      await db.query(
+        `update products
+           set label_id=( select id from labels l where l.name=$1 )
+           where productid=$2`,
+        [updateProduct.label, id]
+      )
+
+      // update FK form "statuses" table
+      await db.query(
+        `update products
+           set status_id=( select id from statuses s where s.name=$1 )
+           where productid=$2`,
+        [updateProduct.status, id]
+      )
+
+      // update FK form "suppliers" table
+      await db.query(
+        `update products
+           set supplier_id=( select id from suppliers s where s.name=$1 )
+           where productid=$2`,
+        [updateProduct.supplier, id]
+      )
+
+      // update FK form "units" table
+      await db.query(
+        `update products
+           set unit_id=( select id from units u where u.name=$1 )
+           where productid=$2`,
+        [updateProduct.unit, id]
       )
     } else {
       return null

@@ -124,7 +124,7 @@ class InsertToDB {
             return 'null'
           }
         }
-        const units_id = (unit: string): string => {
+        const unit_id = (unit: string): string => {
           return `(SELECT id from units WHERE units.name='${unit}')`
         }
         const supplier_id = (supplier: string): string => {
@@ -149,7 +149,7 @@ class InsertToDB {
           info_id,
           property_id,
           label_id,
-          units_id,
+          unit_id,
           supplier_id,
           status_id
         ) VALUES
@@ -166,7 +166,7 @@ class InsertToDB {
            product.d734_exProductNew,
            product.d735_exProductDiscounts
          )},
-         ${units_id(product.d781_exEd)},
+         ${unit_id(product.d781_exEd)},
          ${supplier_id(product.d738_exProductManufacturer)},
          ${status_id(product.d722_exProductInStock)}
         )`)

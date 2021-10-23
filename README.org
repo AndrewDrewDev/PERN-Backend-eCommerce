@@ -96,7 +96,7 @@ lb.id=pp.label_id
 left join
 units un
 on
-un.id=pp.units_id
+un.id=pp.unit_id
 left join
 suppliers su
 on
