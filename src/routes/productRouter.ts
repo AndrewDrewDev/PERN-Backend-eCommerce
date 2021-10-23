@@ -10,10 +10,10 @@ router.put(
   ProductController.updateOneById
 )
 router.get('/search/:name', ProductController.getSearchByName)
-// TODO: Add
-// router.get('/labels/:id', ProductController.getLabelsById)
-// router.get('/statuses/:id', ProductController.getStatusesById)
-// router.get('/suppliers/:id', ProductController.getSuppliersById)
-// router.get('/units/:id', ProductController.getunitsById)
+
+router.get('/info/labels', ProductController.getLabels)
+router.get('/info/statuses', ProductController.getStatuses)
+router.get('/info/suppliers', ProductController.getSuppliers)
+router.get('/info/units', ProductController.getUnits)
 
 export default router

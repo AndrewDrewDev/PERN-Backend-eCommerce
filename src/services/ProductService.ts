@@ -169,6 +169,46 @@ class ProductService {
 
     return true
   }
+
+  public getLabels = async (): Promise<string[] | null> => {
+    const data = await db.query(`select l.name from labels l`)
+
+    if (data.rowCount === 0) {
+      return null
+    }
+
+    return data.rows.map(i => i.name)
+  }
+
+  public getStatuses = async (): Promise<string[] | null> => {
+    const data = await db.query(`select s.name from statuses s`)
+
+    if (data.rowCount === 0) {
+      return null
+    }
+
+    return data.rows.map(i => i.name)
+  }
+
+  public getSuppliers = async (): Promise<string[] | null> => {
+    const data = await db.query(`select s.name from suppliers s`)
+
+    if (data.rowCount === 0) {
+      return null
+    }
+
+    return data.rows.map(i => i.name)
+  }
+
+  public getUnits = async (): Promise<string[] | null> => {
+    const data = await db.query(`select u.name from units u`)
+
+    if (data.rowCount === 0) {
+      return null
+    }
+
+    return data.rows.map(i => i.name)
+  }
 }
 
 export default new ProductService()

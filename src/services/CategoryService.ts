@@ -122,7 +122,7 @@ class CategoryService {
                      left join labels lb on pp.label_id = lb.id
                      left join images im on pp.id = im.product_id and im.preview = true
             where ct.id = ccp.custom_categories_id
-            group by pp.id, im.name, lb.name, st.name
+            order by ccp.id asc
             limit $2 offset $3
         `,
       [name, limit, offset]

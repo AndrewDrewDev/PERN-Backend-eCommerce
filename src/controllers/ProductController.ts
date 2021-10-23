@@ -53,6 +53,62 @@ class ProductController {
       next(new ErrorHandler(500, error.message))
     }
   }
+
+  public async getLabels(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<string[] | null> | void> {
+    try {
+      const data = await ProductService.getLabels()
+
+      return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async getStatuses(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<string[] | null> | void> {
+    try {
+      const data = await ProductService.getStatuses()
+
+      return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async getSuppliers(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<string[] | null> | void> {
+    try {
+      const data = await ProductService.getSuppliers()
+
+      return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async getUnits(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<string[] | null> | void> {
+    try {
+      const data = await ProductService.getUnits()
+
+      return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
 }
 
 export default new ProductController()
