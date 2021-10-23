@@ -143,23 +143,20 @@ class CategoryService {
     offset,
   }: TGetLabelProduct): Promise<QueryResult<TProductsByCategoryData>[] | null> {
     const data = await db.query(
-      `
-            select pp.name      as name,
-                   pp.productid as id,
-                   pp.price     as price,
-                   pp.oldprice  as oldprice,
-                   st.name      as status,
-                   lb.name      as label,
-                   im.name      as img
-            from custom_categories_products ccp
-                     left join custom_categories ct on ct.url = $1
-                     left join products pp on pp.id = ccp.product_id
-                     left join statuses st on pp.status_id = st.id
-                     left join labels lb on pp.label_id = lb.id
-                     left join images im on pp.id = im.product_id and im.preview = true
-            where lb.id = pp.label_id and lb.url=$1
-            limit $2 offset $3
-        `,
+      `select
+        pp.name      as name,
+        pp.productid as id,
+        pp.price     as price,
+        pp.oldprice  as oldprice,
+        st.name      as status,
+        ll.name      as label,
+        im.name      as img
+      from products pp
+        left join labels ll on ll.url=$1
+        left join statuses st on st.id=pp.status_id
+        left join images im on pp.id = im.product_id and im.preview = true
+      where pp.label_id=ll.id
+      limit $2 offset $3`,
       [labelUrl, limit, offset]
     )
 
