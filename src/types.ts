@@ -231,8 +231,20 @@ export type TGetSearchProductsByName = {
   img: string
 }
 
-export type TGetProduct = {
-  name: string
+export type TGetProductById = {
+  categoryUrl: string
+  limit: string
+  offset: string
+}
+
+export type TGetLabelProduct = {
+  labelUrl: string
+  limit: string
+  offset: string
+}
+
+export type TGetCustomProduct = {
+  categoryUrl: string
   limit: string
   offset: string
 }

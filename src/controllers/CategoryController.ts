@@ -18,20 +18,26 @@ class CategoryController {
         name: string
         page: string
         limit: string
-        type: 'custom' | 'common' | 'all'
+        type: 'custom' | 'common' | 'label' | 'all'
       }
       const offset: string = ((Number(page) - 1) * Number(limit)).toString()
       let data = null
 
       if (type === 'common') {
         data = await CategoryService.getProductsById({
-          name,
+          categoryUrl: name,
           limit,
           offset,
         })
       } else if (type === 'custom') {
         data = await CategoryService.getCustomProductsById({
-          name,
+          categoryUrl: name,
+          limit,
+          offset,
+        })
+      } else if (type === 'label') {
+        data = await CategoryService.getLabelProductsById({
+          labelUrl: name,
           limit,
           offset,
         })
@@ -40,6 +46,8 @@ class CategoryController {
           limit,
           offset,
         })
+      } else {
+        return res.status(400).json({ message: 'Wrong type!' })
       }
 
       return res.status(200).json(data)

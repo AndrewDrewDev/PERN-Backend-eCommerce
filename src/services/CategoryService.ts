@@ -1,19 +1,21 @@
 import {
   TProductsByCategoryData,
-  TGetProduct,
+  TGetProductById,
   TGetInfoByLevel,
   TGetBreadcrumb,
   TGetAllProducts,
+  TGetCustomProduct,
+  TGetLabelProduct,
 } from '../types'
 import { QueryResult } from 'pg'
 import db from '../db/db'
 
 class CategoryService {
   public async getProductsById({
-    name,
+    categoryUrl,
     limit,
     offset,
-  }: TGetProduct): Promise<QueryResult<TProductsByCategoryData>[] | null> {
+  }: TGetProductById): Promise<QueryResult<TProductsByCategoryData>[] | null> {
     const data = await db.query(
       `
             select pp.name      as name,
@@ -49,7 +51,7 @@ class CategoryService {
             group by pp.id, im.name, lb.name
             limit $2 offset $3
         `,
-      [name, limit, offset]
+      [categoryUrl, limit, offset]
     )
     if (data.rows.length === 0) return null
     return data.rows
@@ -102,10 +104,12 @@ class CategoryService {
   }
 
   public async getCustomProductsById({
-    name,
+    categoryUrl,
     limit,
     offset,
-  }: TGetProduct): Promise<QueryResult<TProductsByCategoryData>[] | null> {
+  }: TGetCustomProduct): Promise<
+    QueryResult<TProductsByCategoryData>[] | null
+  > {
     const data = await db.query(
       `
             select pp.name      as name,
@@ -125,7 +129,38 @@ class CategoryService {
             order by ccp.id asc
             limit $2 offset $3
         `,
-      [name, limit, offset]
+      [categoryUrl, limit, offset]
+    )
+
+    if (data.rows.length === 0) return null
+
+    return data.rows
+  }
+
+  public async getLabelProductsById({
+    labelUrl,
+    limit,
+    offset,
+  }: TGetLabelProduct): Promise<QueryResult<TProductsByCategoryData>[] | null> {
+    const data = await db.query(
+      `
+            select pp.name      as name,
+                   pp.productid as id,
+                   pp.price     as price,
+                   pp.oldprice  as oldprice,
+                   st.name      as status,
+                   lb.name      as label,
+                   im.name      as img
+            from custom_categories_products ccp
+                     left join custom_categories ct on ct.url = $1
+                     left join products pp on pp.id = ccp.product_id
+                     left join statuses st on pp.status_id = st.id
+                     left join labels lb on pp.label_id = lb.id
+                     left join images im on pp.id = im.product_id and im.preview = true
+            where lb.id = pp.label_id and lb.url=$1
+            limit $2 offset $3
+        `,
+      [labelUrl, limit, offset]
     )
 
     if (data.rows.length === 0) return null
