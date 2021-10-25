@@ -170,7 +170,7 @@ export type TDBMDataSlider = {
 
 export type TResponceMessage = {
   code?: number
-  status: 'OK' | 'Error'
+  status: 'OK' | 'FAILED'
   message?: string
 }
 

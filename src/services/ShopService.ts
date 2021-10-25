@@ -118,7 +118,7 @@ class ShopService {
 
     if (checkProductIdIfExist.rowCount === 0)
       return {
-        status: 'Error',
+        status: 'FAILED',
         message: `Продукта с id: ${updateValue} - не найдено!`,
       }
 
@@ -161,7 +161,7 @@ class ShopService {
 
     if (result.rowCount === 0)
       return {
-        status: 'Error',
+        status: 'FAILED',
         message: `Ошибка удаления продукта с id: ${updateValue}!`,
       }
 
@@ -193,7 +193,7 @@ class ShopService {
 
       if (!isProductExist) {
         return {
-          status: 'Error',
+          status: 'FAILED',
           message: `Продукт с id - ${productId} не найден!`,
         }
       }

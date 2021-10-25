@@ -1,4 +1,5 @@
 import express, { Application } from 'express'
+import fileUpload from 'express-fileupload'
 
 import cors from 'cors'
 import config from './config'
@@ -11,6 +12,8 @@ const PORT = config.PORT
 const app: Application = express()
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(fileUpload({}))
 app.use('/api', routes)
 app.use(express.static(path.resolve(__dirname, 'static')))
 

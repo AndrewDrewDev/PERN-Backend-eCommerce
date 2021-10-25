@@ -1,3 +1,5 @@
+import { v4 } from 'uuid'
+
 import {
   TProductsByCategoryData,
   TGetProductById,
@@ -6,9 +8,13 @@ import {
   TGetAllProducts,
   TGetCustomProduct,
   TGetLabelProduct,
+  TResponceMessage,
 } from '../types'
 import { QueryResult } from 'pg'
 import db from '../db/db'
+import FileSystemUtils from '../utils/FileSystemUtils'
+import { UploadedFile } from 'express-fileupload'
+import path from 'path/posix'
 
 class CategoryService {
   public async getProductsById({
@@ -55,6 +61,30 @@ class CategoryService {
     )
     if (data.rows.length === 0) return null
     return data.rows
+  }
+
+  public async updateCategoryById(
+    oldName: string,
+    newName: string,
+    img: UploadedFile
+  ): Promise<TResponceMessage> {
+    // update img if exist
+    if (img) {
+      const fileName = v4() + '.jpg'
+      img.mv(path.resolve(FileSystemUtils.srcStaticFolderPath, fileName))
+      await db.query(`update categories cc set img=$1 where cc.name=$2`, [
+        fileName,
+        oldName,
+      ])
+    }
+
+    // update category name
+    await db.query(`update categories cc set name=$1 where cc.name=$2 `, [
+      newName,
+      oldName,
+    ])
+
+    return { status: 'OK' }
   }
 
   public async getInfoByLevel(

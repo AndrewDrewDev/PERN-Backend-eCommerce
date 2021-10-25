@@ -4,8 +4,10 @@ import {
   TGetBreadcrumb,
   TGetInfoByLevel,
   TProductsByCategoryData,
+  TResponceMessage,
 } from '../types'
 import ErrorHandler from '../error/ErrorHandler'
+import { FileArray, UploadedFile } from 'express-fileupload'
 
 class CategoryController {
   public async getProductsById(
@@ -51,6 +53,24 @@ class CategoryController {
       }
 
       return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async updateCategoryById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponceMessage> | void> {
+    try {
+      const { id } = req.params
+      const { name } = req.body
+      const { img }: any = req.files
+
+      const result = await CategoryService.updateCategoryById(id, name, img)
+
+      return res.json(result)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
     }
