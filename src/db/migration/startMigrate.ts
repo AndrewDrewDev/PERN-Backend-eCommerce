@@ -78,8 +78,8 @@ const startMigrate = () => {
       )
     )
     .then(() => InsertToDB.imagesTable(migrationData.images))
-    .then(() => logger.info('MIGRATE TO DATABASE'))
-    .catch(() => logger.fatal('MIGRATE TO DATABASE'))
+    .then(() => logger.info('SUCCESS: MIGRATE TO DATABASE'))
+    .catch(() => logger.fatal('FAILED: MIGRATE TO DATABASE'))
 }
 
 startMigrate()

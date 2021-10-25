@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS categories
     url         VARCHAR UNIQUE NOT NULL,
     description VARCHAR,
     img         VARCHAR,
-    parentId    INT REFERENCES categories (id)
+    parent_id   INT REFERENCES categories (id),
+    order_index INT
 );
 
 CREATE TABLE IF NOT EXISTS shop_config
@@ -90,13 +91,13 @@ CREATE TABLE IF NOT EXISTS products
     -- supplier_id INT,
     -- vendor_id INT,
     -- status_id INT,
-    productId   VARCHAR,
+    product_id  VARCHAR,
     name        VARCHAR UNIQUE NOT NULL,
     description TEXT,
     price       VARCHAR,
-    oldPrice    VARCHAR,
+    old_price   VARCHAR,
     amount      INT,
-    vendorId    VARCHAR
+    vendor_id   VARCHAR
 );
 
 CREATE TABLE IF NOT EXISTS info

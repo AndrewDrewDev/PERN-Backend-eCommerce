@@ -186,9 +186,9 @@ export type TCProductGetOneService = {
   id: string
   description: string
   price: string
-  oldprice: string
+  old_price: string
   amount: string
-  vendorid: string
+  vendor_id: string
   status: string
 }
 
@@ -202,9 +202,9 @@ export type TCProductFullInfo = {
   id: string
   description: string
   price: string
-  oldPrice: string
+  old_price: string
   amount: string
-  vendorId: string
+  vendor_id: string
   status: string
 }
 
@@ -213,7 +213,7 @@ export type TProductsByCategoryData = {
   name: string
   id: string
   price: string
-  oldprice: string
+  old_price: string
   status: string
   label: string
   img: string

@@ -19,12 +19,12 @@ class ProductService {
                  lb.name        as label,
                  un.name        as unit,
                  su.name        as supplier,
-                 pp.productId   as id,
+                 pp.product_id   as id,
                  pp.description as description,
                  pp.price       as price,
-                 pp.oldPrice    as oldPrice,
+                 pp.old_price    as old_price,
                  pp.amount      as amount,
-                 pp.vendorid    as vendorid,
+                 pp.vendor_id    as vendor_id,
                  st.name        as status
           from category_to_product cp
                    left join
@@ -34,7 +34,7 @@ class ProductService {
                    left join
                products pp
                on
-                   pp.productId = $1
+                   pp.product_id = $1
                    left join
                labels lb
                on
@@ -55,7 +55,7 @@ class ProductService {
                statuses st
                on
                    st.id = pp.status_id
-          where cp.product_id = (select id from products pp where pp.productId = $1)
+          where cp.product_id = (select id from products pp where pp.product_id = $1)
           ORDER BY cp.level ASC`,
       [id]
     )
@@ -88,10 +88,10 @@ class ProductService {
       result.unit = item.unit
       result.supplier = item.supplier
       result.id = item.id
-      result.vendorId = item.vendorid
+      result.vendor_id = item.vendor_id
       result.description = item.description
       result.price = item.price
-      result.oldPrice = item.oldprice
+      result.old_price = item.old_price
       result.amount = `${item.amount}`
       result.status = item.status
     }
@@ -115,16 +115,16 @@ class ProductService {
              products
          set name=$1,
              price=$2,
-             oldPrice=$3,
-             vendorId=$4,
+             old_price=$3,
+             vendor_id=$4,
              description=$5,
              amount=$6
-         where productId = $7`,
+         where product_id = $7`,
         [
           updateProduct.name,
           updateProduct.price,
-          updateProduct.oldPrice,
-          updateProduct.vendorId,
+          updateProduct.old_price,
+          updateProduct.vendor_id,
           updateProduct.description,
           updateProduct.amount,
           id,
@@ -135,7 +135,7 @@ class ProductService {
       await db.query(
         `update products
            set label_id=( select id from labels l where l.name=$1 )
-           where productid=$2`,
+           where product_id=$2`,
         [updateProduct.label, id]
       )
 
@@ -143,7 +143,7 @@ class ProductService {
       await db.query(
         `update products
            set status_id=( select id from statuses s where s.name=$1 )
-           where productid=$2`,
+           where product_id=$2`,
         [updateProduct.status, id]
       )
 
@@ -151,7 +151,7 @@ class ProductService {
       await db.query(
         `update products
            set supplier_id=( select id from suppliers s where s.name=$1 )
-           where productid=$2`,
+           where product_id=$2`,
         [updateProduct.supplier, id]
       )
 
@@ -159,7 +159,7 @@ class ProductService {
       await db.query(
         `update products
            set unit_id=( select id from units u where u.name=$1 )
-           where productid=$2`,
+           where product_id=$2`,
         [updateProduct.unit, id]
       )
     } else {
@@ -175,7 +175,7 @@ class ProductService {
     const data = await db.query(
       `
           select pp.name      as name,
-                 pp.productid as id,
+                 pp.product_id as id,
                  pp.price     as price,
                  im.name      as img
           from products pp
@@ -191,7 +191,7 @@ class ProductService {
 
   public isProductExist = async (id: string): Promise<boolean> => {
     const isProductExist = await db.query(
-      `select * from products pp where pp.productid=$1`,
+      `select * from products pp where pp.product_id=$1`,
       [id]
     )
 

@@ -91,7 +91,7 @@ class ShopService {
           select cc.name      as category_name,
                  cc.url       as category_url,
                  pp.name,
-                 pp.productid as id,
+                 pp.product_id as id,
                  im.name      as img
           from custom_categories cc
                    left join custom_categories_products ccp on cc.id = ccp.custom_categories_id
@@ -112,7 +112,7 @@ class ShopService {
     updateValue: string
   ): Promise<TResponceMessage> {
     const checkProductIdIfExist = await db.query(
-      `select * from products pp where pp.productid=$1`,
+      `select * from products pp where pp.product_id=$1`,
       [updateValue]
     )
 
@@ -129,7 +129,7 @@ class ShopService {
           values
           (
            (select id from custom_categories cc where cc.name=$1),
-           (select id from products pp where pp.productId=$2)
+           (select id from products pp where pp.product_id=$2)
           )
           `,
       [categoryName, updateValue]
@@ -154,7 +154,7 @@ class ShopService {
       and
         cc.name=$1
       and
-        pp.productid=$2
+        pp.product_id=$2
       returning *`,
       [categoryName, updateValue]
     )
@@ -188,13 +188,13 @@ class ShopService {
       [categoryName]
     )
 
-    for (const productId of updateProductsIDs) {
-      const isProductExist = await ProductService.isProductExist(productId)
+    for (const product_id of updateProductsIDs) {
+      const isProductExist = await ProductService.isProductExist(product_id)
 
       if (!isProductExist) {
         return {
           status: 'FAILED',
-          message: `Продукт с id - ${productId} не найден!`,
+          message: `Продукт с id - ${product_id} не найден!`,
         }
       }
 
@@ -205,9 +205,9 @@ class ShopService {
         values
           (
             (select id from custom_categories cc where cc.name=$1),
-            (select id from products pp where pp.productid=$2)
+            (select id from products pp where pp.product_id=$2)
           )`,
-        [categoryName, productId]
+        [categoryName, product_id]
       )
     }
 

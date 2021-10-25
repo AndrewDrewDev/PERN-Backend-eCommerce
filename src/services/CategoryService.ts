@@ -25,9 +25,9 @@ class CategoryService {
     const data = await db.query(
       `
             select pp.name      as name,
-                   pp.productid as id,
+                   pp.product_id as id,
                    pp.price     as price,
-                   pp.oldprice  as oldprice,
+                   pp.old_price  as old_price,
                    lb.name      as label,
                    im.name      as img
             from products pp
@@ -111,18 +111,18 @@ class CategoryService {
   ): Promise<TGetBreadcrumb[] | null> {
     const data: QueryResult<TGetBreadcrumb> = await db.query(
       `
-            with recursive tree(id, name, url, parentid) as (
-                select n.id, n.name, n.url, n.parentid
+            with recursive tree(id, name, url, parent_id) as (
+                select n.id, n.name, n.url, n.parent_id
                 from categories n
                 where n.url = $1
                 union all
-                select n.id, n.name, n.url, n.parentid
+                select n.id, n.name, n.url, n.parent_id
                 from categories n
-                         join tree t on (n.id = t.parentid)
+                         join tree t on (n.id = t.parent_id)
             )
             select *
             from tree t
-            ORDER BY t.parentid ASC nulls FIRST`,
+            ORDER BY t.parent_id ASC nulls FIRST`,
       [categoryUrl]
     )
 
@@ -143,9 +143,9 @@ class CategoryService {
     const data = await db.query(
       `
             select pp.name      as name,
-                   pp.productid as id,
+                   pp.product_id as id,
                    pp.price     as price,
-                   pp.oldprice  as oldprice,
+                   pp.old_price  as old_price,
                    st.name      as status,
                    lb.name      as label,
                    im.name      as img
@@ -175,9 +175,9 @@ class CategoryService {
     const data = await db.query(
       `select
         pp.name      as name,
-        pp.productid as id,
+        pp.product_id as id,
         pp.price     as price,
-        pp.oldprice  as oldprice,
+        pp.old_price  as old_price,
         st.name      as status,
         ll.name      as label,
         im.name      as img
@@ -202,9 +202,9 @@ class CategoryService {
     const data = await db.query(
       `
             select pp.name      as name,
-                   pp.productid as id,
+                   pp.product_id as id,
                    pp.price     as price,
-                   pp.oldprice  as oldprice,
+                   pp.old_price  as old_price,
                    lb.name      as label,
                    im.name      as img
             from products pp

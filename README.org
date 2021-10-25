@@ -50,14 +50,14 @@ cp.level ASC
 
 #+begin_src sql
 
-with recursive tree(id, name, parentId) as (
-select n.name, n.parentId
+with recursive tree(id, name, parent_id) as (
+select n.name, n.parent_id
 from categories n
 where n.name = 'Овощечистки'
 union all
-select n.id, n.name, n.parentId
+select n.id, n.name, n.parent_id
 from categories n
-join tree t on (n.id = t.parentId)
+join tree t on (n.id = t.parent_id)
 )
 select * from tree;
 
@@ -74,13 +74,13 @@ pp.name as name,
 lb.name as label,
 un.name as unit,
 su.name as supplier,
-pp.productId as id,
+pp.product_id as id,
 pp.name as name,
 pp.description as description,
 pp.price as price,
-pp.oldPrice as oldPrice,
+pp.old_price as old_price,
 pp.amount as amount,
-pp.vendorId as vendorId
+pp.vendor_id as vendor_id
 from
 category_to_product cp
 left join
@@ -88,7 +88,7 @@ categories cc
 on cc.id=cp.category_id
 left join
 products pp
-on pp.productId='A03'
+on pp.product_id='A03'
 left join
 labels lb
 on
@@ -102,7 +102,7 @@ suppliers su
 on
 su.id=pp.supplier_id
 where
-cp.product_id=(select id from products pp where pp.productId='A03')
+cp.product_id=(select id from products pp where pp.product_id='A03')
 ORDER BY
 cp.level ASC
 

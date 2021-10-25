@@ -34,7 +34,7 @@ class InsertToDB {
         }
 
         await db.query(
-          `insert into categories (name, url, img, parentId) values ($1, $2, $3, ${parentName})`,
+          `insert into categories (name, url, img, parent_id) values ($1, $2, $3, ${parentName})`,
           [item.category.name, item.category.url, img]
         )
       }
@@ -102,17 +102,17 @@ class InsertToDB {
       const VPT = new ValidateProductsTable()
 
       for (const product of products) {
-        const productid: string = VPT.valueOrNull(product.d720_exProductID)
+        const product_id: string = VPT.valueOrNull(product.d720_exProductID)
         const name: string = VPT.valueOrNull(product.d721_exProductName)
         const description: string = VPT.descriptionOrNull(
           product.d723_exProductDescription
         )
         const price: string = VPT.valueOrNull(product.d802_exPriceSell)
-        const oldPrice: string = VPT.valueOrNull(product.d803_exPriceOldSell)
+        const old_price: string = VPT.valueOrNull(product.d803_exPriceOldSell)
         const amount: string = VPT.valueOrNull(
           product.d748_exProductAmountRemaind
         )
-        const vendorId: string = VPT.valueOrNull(
+        const vendor_id: string = VPT.valueOrNull(
           product.d747_exProductCodeVender
         )
         const label_id = (New: string, discount: string): string => {
@@ -139,13 +139,13 @@ class InsertToDB {
 
         await db.query(`
         INSERT INTO products (
-          productid,
+          product_id,
           name,
           description,
           price,
-          oldprice,
+          old_price,
           amount,
-          vendorId,
+          vendor_id,
           info_id,
           property_id,
           label_id,
@@ -153,13 +153,13 @@ class InsertToDB {
           supplier_id,
           status_id
         ) VALUES
-        (${productid},
+        (${product_id},
          ${name},
          ${description},
          ${price},
-         ${oldPrice},
+         ${old_price},
          ${amount},
-         ${vendorId},
+         ${vendor_id},
          null,
          null,
          ${label_id(
@@ -212,7 +212,7 @@ class InsertToDB {
   public async imagesTable(images: TDBMDataImages): Promise<void> {
     try {
       const writeToDB = async (
-        productId: string,
+        product_id: string,
         imgName: string,
         preview?: boolean
       ) => {
@@ -222,12 +222,12 @@ class InsertToDB {
             (product_id, name, preview)
           values
           (
-            (select id from products pp where pp.productId=$1),
+            (select id from products pp where pp.product_id=$1),
             $2,
             $3
           )
           `,
-          [productId, imgName, preview]
+          [product_id, imgName, preview]
         )
         return Promise.resolve()
       }
@@ -357,7 +357,7 @@ class InsertToDB {
   }: TDBMDataCustomCategoriesProducts): Promise<void> {
     const queryExpression = async (
       categoryName: 'Акции' | 'Новинки',
-      productId: string
+      product_id: string
     ): Promise<void> => {
       await db.query(
         `insert into 
@@ -366,20 +366,20 @@ class InsertToDB {
             values 
             (
              (select id from custom_categories cc where cc.name=$1),
-             (select id from products pp where pp.productId=$2)
+             (select id from products pp where pp.product_id=$2)
             )
             `,
-        [categoryName, productId]
+        [categoryName, product_id]
       )
     }
 
     try {
-      for (const productId of discount) {
-        await queryExpression('Акции', productId)
+      for (const product_id of discount) {
+        await queryExpression('Акции', product_id)
       }
 
-      for (const productId of New) {
-        await queryExpression('Новинки', productId)
+      for (const product_id of New) {
+        await queryExpression('Новинки', product_id)
       }
 
       logger.info('migration data to table: custom_categories_products!')
