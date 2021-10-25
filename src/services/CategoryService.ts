@@ -66,7 +66,7 @@ class CategoryService {
   public async updateCategoryById(
     oldName: string,
     newName: string,
-    img: UploadedFile
+    img: UploadedFile | null
   ): Promise<TResponceMessage> {
     // update img if exist
     if (img) {

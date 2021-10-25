@@ -7,7 +7,7 @@ import {
   TResponceMessage,
 } from '../types'
 import ErrorHandler from '../error/ErrorHandler'
-import { FileArray, UploadedFile } from 'express-fileupload'
+import { UploadedFile } from 'express-fileupload'
 
 class CategoryController {
   public async getProductsById(
@@ -66,7 +66,10 @@ class CategoryController {
     try {
       const { id } = req.params
       const { name } = req.body
-      const { img }: any = req.files
+      const files = req.files
+      // Extract img if exist
+      let img: UploadedFile | null | any = null
+      if (files) img = files.img
 
       const result = await CategoryService.updateCategoryById(id, name, img)
 
