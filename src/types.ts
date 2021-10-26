@@ -168,6 +168,11 @@ export type TDBMDataSlider = {
 //
 // Note: PostgreSQL not returned property names in camelCase hence I not use it
 
+export type TCUpdateCategories = {
+  name: string
+  index: number
+}[]
+
 export type TResponceMessage = {
   code?: number
   status: 'OK' | 'FAILED'

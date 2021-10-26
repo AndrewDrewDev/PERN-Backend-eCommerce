@@ -79,6 +79,22 @@ class CategoryController {
     }
   }
 
+  public async updateOrder(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponceMessage> | void> {
+    try {
+      const { data } = req.body
+
+      const result = await CategoryService.updateOrder(data)
+
+      return res.json(result)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
   public async getInfoByLevel(
     req: Request,
     res: Response,

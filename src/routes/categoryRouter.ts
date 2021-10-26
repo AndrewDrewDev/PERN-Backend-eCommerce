@@ -4,6 +4,7 @@ const router = Router()
 
 router.get('/', CategoryController.getProductsById)
 router.put('/:id', CategoryController.updateCategoryById)
+router.put('/order', CategoryController.updateOrder)
 router.get('/info/cloud/:level', CategoryController.getInfoByLevel)
 router.get('/breadcrumb/:url', CategoryController.getBreadcrumb)
 router.get('/info/custom/:id', CategoryController.getCustomProductsInfo)
