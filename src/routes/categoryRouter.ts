@@ -2,8 +2,8 @@ import { Router } from 'express'
 import CategoryController from '../controllers/CategoryController'
 const router = Router()
 
-router.get('/', CategoryController.getProductsById)
-router.put('/:id', CategoryController.updateCategoryById)
+router.get('/products', CategoryController.getProductsById)
+router.put('/item/:id', CategoryController.updateCategoryById)
 router.put('/order', CategoryController.updateOrder)
 router.get('/info/cloud/:level', CategoryController.getInfoByLevel)
 router.get('/breadcrumb/:url', CategoryController.getBreadcrumb)
