@@ -173,7 +173,7 @@ export type TCUpdateCategories = {
   index: number
 }[]
 
-export type TResponceMessage = {
+export type TResponseMessage = {
   code?: number
   status: 'OK' | 'FAILED'
   message?: string

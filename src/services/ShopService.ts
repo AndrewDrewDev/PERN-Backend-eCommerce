@@ -2,11 +2,10 @@ import { QueryResult } from 'pg'
 import {
   TDBMDataShopConfig,
   TGetCustomCategoryProducts,
-  TResponceMessage,
+  TResponseMessage,
   TShopControllerGetSlider,
 } from '../types'
 import db from '../db/db'
-import { log } from 'util'
 import ProductService from './ProductService'
 
 class ShopService {
@@ -110,7 +109,7 @@ class ShopService {
   public async createCustomCategoryProductsByName(
     categoryName: string,
     updateValue: string
-  ): Promise<TResponceMessage> {
+  ): Promise<TResponseMessage> {
     const checkProductIdIfExist = await db.query(
       `select * from products pp where pp.product_id=$1`,
       [updateValue]
@@ -141,7 +140,7 @@ class ShopService {
   public async deleteCustomCategoryProductsByName(
     categoryName: string,
     updateValue: string
-  ): Promise<TResponceMessage> {
+  ): Promise<TResponseMessage> {
     const result = await db.query(
       `
       delete  from
@@ -171,7 +170,7 @@ class ShopService {
   public async updateCustomCategoryProductsByName(
     categoryName: string,
     updateProductsIDs: string[]
-  ): Promise<TResponceMessage> {
+  ): Promise<TResponseMessage> {
     // clear all product by custom category name
     await db.query(
       `

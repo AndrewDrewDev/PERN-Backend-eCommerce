@@ -4,7 +4,7 @@ import {
   TGetBreadcrumb,
   TGetInfoByLevel,
   TProductsByCategoryData,
-  TResponceMessage,
+  TResponseMessage,
 } from '../types'
 import ErrorHandler from '../error/ErrorHandler'
 import { UploadedFile } from 'express-fileupload'
@@ -62,7 +62,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponceMessage> | void> {
+  ): Promise<Response<TResponseMessage> | void> {
     try {
       const { id } = req.params
       const { name } = req.body
@@ -83,7 +83,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponceMessage> | void> {
+  ): Promise<Response<TResponseMessage> | void> {
     try {
       const { data } = req.body
 

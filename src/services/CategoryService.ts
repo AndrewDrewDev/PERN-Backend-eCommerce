@@ -8,7 +8,7 @@ import {
   TGetAllProducts,
   TGetCustomProduct,
   TGetLabelProduct,
-  TResponceMessage,
+  TResponseMessage,
   TCUpdateCategories,
 } from '../types'
 import { QueryResult } from 'pg'
@@ -68,7 +68,7 @@ class CategoryService {
     oldName: string,
     newName: string,
     img: UploadedFile | null
-  ): Promise<TResponceMessage> {
+  ): Promise<TResponseMessage> {
     // update img if exist
     if (img) {
       const fileName = v4() + '.jpg'
@@ -94,7 +94,7 @@ class CategoryService {
 
   public async updateOrder(
     updateData: TCUpdateCategories
-  ): Promise<TResponceMessage> {
+  ): Promise<TResponseMessage> {
     for (const updateItem of updateData) {
       const { name, index } = updateItem
 

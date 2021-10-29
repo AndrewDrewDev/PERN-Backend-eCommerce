@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import {
   TDBMDataShopConfig,
   TGetCustomCategoryProducts,
-  TResponceMessage,
+  TResponseMessage,
   TShopControllerGetSlider,
 } from '../types'
 import ShopService from '../services/ShopService'
@@ -67,7 +67,7 @@ class ShopController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponceMessage> | void> {
+  ): Promise<Response<TResponseMessage> | void> {
     try {
       const { name } = req.params
       const { data } = req.body
@@ -87,7 +87,7 @@ class ShopController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponceMessage> | void> {
+  ): Promise<Response<TResponseMessage> | void> {
     try {
       const { name } = req.params
       const { data } = req.body
@@ -107,7 +107,7 @@ class ShopController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponceMessage> | void> {
+  ): Promise<Response<TResponseMessage> | void> {
     try {
       const { name } = req.params
       const { data } = req.body

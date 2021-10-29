@@ -1,12 +1,17 @@
 import { TGetInfoData } from '../types'
-import logger from '../utils/logger'
 import db from '../db/db'
+import { QueryResult } from 'pg'
 
 type TGetInfoDataOrNullQueryResult = {
   name: string
   url: string
   content: string
   img: string
+}
+
+type TUpdateByIdData = {
+  name: string
+  content: string
 }
 
 class InfoService {
@@ -47,6 +52,21 @@ class InfoService {
     if (data.rows.length === 0) return null
 
     return combineInfoData(data.rows)
+  }
+
+  public async updateById(
+    id: string,
+    updateData: TUpdateByIdData
+  ): Promise<QueryResult<any> | null> {
+    const { name, content } = updateData
+    const result = await db.query(
+      `update info_pages ip set name=$1, content=$2 where ip.url=$3`,
+      [name, content, id]
+    )
+
+    if (result.rowCount === 0) return null
+
+    return result
   }
 }
 
