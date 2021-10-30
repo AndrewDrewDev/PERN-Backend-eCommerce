@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { TCProductFullInfo, TGetSearchProductsByName } from '../types'
-import ProductService from '../services/ProductService'
+import ProductService from '../model/ProductService'
 import ErrorHandler from '../error/ErrorHandler'
 
 class ProductController {

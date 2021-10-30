@@ -1,7 +1,7 @@
 import { Pool } from 'pg'
 import config from '../config'
 
-// Connected to PorsgresSQL
+// Connected to PostgreSQL
 class Database {
   private _pool: Pool
 

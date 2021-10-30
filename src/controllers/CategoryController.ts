@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import CategoryService from '../services/CategoryService'
+import CategoryService from '../model/CategoryService'
 import {
   TGetBreadcrumb,
   TGetInfoByLevel,
