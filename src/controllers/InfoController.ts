@@ -26,6 +26,8 @@ class InfoController {
     try {
       const { id } = req.params
       const updateData = req.body
+      console.log(id)
+      console.log(updateData)
       const result = await InfoService.updateById(id, updateData)
       if (!result) {
         return res.status(400).json({

@@ -60,7 +60,7 @@ class InfoModel {
   ): Promise<QueryResult<any> | null> {
     const { name, content } = updateData
     const result = await db.query(
-      `update info_pages ip set name=$1, content=$2 where ip.url=$3`,
+      `update info_pages ip set name=$1, content=$2 where ip.url=$3 returning *`,
       [name, content, id]
     )
 

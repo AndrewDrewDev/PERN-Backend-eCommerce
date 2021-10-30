@@ -208,14 +208,44 @@ class ProductController {
       const result = await ProductModel.addImageById(id, img)
 
       if (!result)
-        res.status(500).send({
+        res.status(422).send({
           code: 422,
           status: 'FAILED',
-          message:
-            'Failed write attempt! Logical error in request. Try check request data, please ;)',
+          message: 'Failed write attempt! Logical error in request.',
         })
 
       return res.status(200).json({ status: 'OK' })
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async deleteImageByName(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponseMessage> | void> {
+    try {
+      const { imgName } = req.params
+
+      if (!imgName) {
+        return res.status(400).send({
+          code: 400,
+          status: 'FAILED',
+          message: 'Wrong request parameter, imgName not fount!',
+        })
+      }
+
+      const result = await ProductModel.deleteImageByName(imgName)
+
+      if (!result)
+        res.status(422).send({
+          code: 422,
+          status: 'FAILED',
+          message: 'Failed write attempt! Logical error in request.',
+        })
+
+      return res.status(200).send({ status: 'OK' })
     } catch (error) {
       next(new ErrorHandler(500, error.message))
     }

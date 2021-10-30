@@ -310,7 +310,18 @@ class ProductModel {
       [id, newImgFileName]
     )
 
-    if (!result) return null
+    if (result.rowCount === 0) return null
+
+    return result
+  }
+
+  public async deleteImageByName(imgName: string) {
+    const result = await db.query(
+      `delete from product_images im where im.name=$1`,
+      [imgName]
+    )
+
+    if (result.rowCount === 0) return null
 
     return result
   }

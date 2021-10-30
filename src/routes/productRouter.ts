@@ -16,11 +16,18 @@ router.post(
   ProductController.addImageById
 )
 
+router.delete(
+  '/delete/img/:imgName',
+  checkRoleMiddleware('ADMIN'),
+  ProductController.deleteImageByName
+)
+
 router.put(
   '/update/img',
   checkRoleMiddleware('ADMIN'),
   ProductController.updateImage
 )
+
 router.put(
   '/update/order-img',
   checkRoleMiddleware('ADMIN'),
