@@ -1,10 +1,15 @@
 import { QueryResult } from 'pg'
+import { v4 } from 'uuid'
+
 import {
   TCProductGetOneService,
   TCProductFullInfo,
   TGetSearchProductsByName,
 } from '../types'
 import db from '../db/db'
+import { UploadedFile } from 'express-fileupload'
+import path from 'path/posix'
+import FileSystemUtils from '../utils/FileSystemUtils'
 
 class ProductService {
   public async getOneById(id: string): Promise<TCProductFullInfo | null> {
@@ -19,12 +24,12 @@ class ProductService {
                  lb.name        as label,
                  un.name        as unit,
                  su.name        as supplier,
-                 pp.product_id   as id,
+                 pp.product_id  as id,
                  pp.description as description,
                  pp.price       as price,
-                 pp.old_price    as old_price,
+                 pp.old_price   as old_price,
                  pp.amount      as amount,
-                 pp.vendor_id    as vendor_id,
+                 pp.vendor_id   as vendor_id,
                  st.name        as status
           from category_to_product cp
                    left join
@@ -101,8 +106,9 @@ class ProductService {
 
     return result
   }
+
   // TCProductFullInfo | TResponseErrorMessage
-  public async updateOneById(
+  public async updateOneInfoById(
     id: string,
     updateProduct: TCProductFullInfo
   ): Promise<TCProductFullInfo | null> {
@@ -134,32 +140,32 @@ class ProductService {
       // update FK form "labels" table
       await db.query(
         `update products
-           set label_id=( select id from labels l where l.name=$1 )
-           where product_id=$2`,
+         set label_id=(select id from labels l where l.name = $1)
+         where product_id = $2`,
         [updateProduct.label, id]
       )
 
       // update FK form "statuses" table
       await db.query(
         `update products
-           set status_id=( select id from statuses s where s.name=$1 )
-           where product_id=$2`,
+         set status_id=(select id from statuses s where s.name = $1)
+         where product_id = $2`,
         [updateProduct.status, id]
       )
 
       // update FK form "suppliers" table
       await db.query(
         `update products
-           set supplier_id=( select id from suppliers s where s.name=$1 )
-           where product_id=$2`,
+         set supplier_id=(select id from suppliers s where s.name = $1)
+         where product_id = $2`,
         [updateProduct.supplier, id]
       )
 
       // update FK form "units" table
       await db.query(
         `update products
-           set unit_id=( select id from units u where u.name=$1 )
-           where product_id=$2`,
+         set unit_id=(select id from units u where u.name = $1)
+         where product_id = $2`,
         [updateProduct.unit, id]
       )
     } else {
@@ -174,36 +180,37 @@ class ProductService {
   ): Promise<QueryResult<TGetSearchProductsByName>[] | null> {
     const data = await db.query(
       `
-          select pp.name      as name,
+          select pp.name       as name,
                  pp.product_id as id,
-                 pp.price     as price,
-                 im.name      as img
+                 pp.price      as price,
+                 im.name       as img
           from products pp
                    left join images im on im.product_id = pp.id and im.preview = true
           where pp.name ilike '%${name}%' limit 10
       `
     )
 
-    if (data.rows.length === 0) return null
+    if (data.rowCount === 0) return null
 
     return data.rows
   }
 
   public isProductExist = async (id: string): Promise<boolean> => {
     const isProductExist = await db.query(
-      `select * from products pp where pp.product_id=$1`,
+      `select *
+       from products pp
+       where pp.product_id = $1`,
       [id]
     )
 
-    if (isProductExist.rowCount === 0) {
-      return false
-    }
+    if (isProductExist.rowCount === 0) return false
 
     return true
   }
 
   public getLabels = async (): Promise<string[] | null> => {
-    const data = await db.query(`select l.name from labels l`)
+    const data = await db.query(`select l.name
+                                 from labels l`)
 
     if (data.rowCount === 0) {
       return null
@@ -213,7 +220,8 @@ class ProductService {
   }
 
   public getStatuses = async (): Promise<string[] | null> => {
-    const data = await db.query(`select s.name from statuses s`)
+    const data = await db.query(`select s.name
+                                 from statuses s`)
 
     if (data.rowCount === 0) {
       return null
@@ -223,7 +231,8 @@ class ProductService {
   }
 
   public getSuppliers = async (): Promise<string[] | null> => {
-    const data = await db.query(`select s.name from suppliers s`)
+    const data = await db.query(`select s.name
+                                 from suppliers s`)
 
     if (data.rowCount === 0) {
       return null
@@ -233,13 +242,40 @@ class ProductService {
   }
 
   public getUnits = async (): Promise<string[] | null> => {
-    const data = await db.query(`select u.name from units u`)
+    const data = await db.query(`select u.name
+                                 from units u`)
 
     if (data.rowCount === 0) {
       return null
     }
 
     return data.rows.map(i => i.name)
+  }
+
+  public async updateOneImgById(
+    imgOldName: string,
+    preview: 'true' | 'false',
+    img: UploadedFile
+  ) {
+    const isPreview = preview === 'true' || null
+
+    const newImgFileName = v4() + '.jpg'
+    await img.mv(
+      path.resolve(FileSystemUtils.srcStaticFolderPath, newImgFileName)
+    )
+
+    const result = await db.query(
+      `update images im
+       set name=$1,
+           preview=$2
+       where im.name = $3
+       returning *`,
+      [newImgFileName, isPreview, imgOldName]
+    )
+
+    if (result.rowCount === 0) return null
+
+    return result
   }
 }
 

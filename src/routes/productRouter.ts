@@ -5,15 +5,19 @@ const router = Router()
 
 router.get('/:id', ProductController.getOneById)
 router.put(
-  '/:id',
+  '/update/info/:id',
   checkRoleMiddleware('ADMIN'),
-  ProductController.updateOneById
+  ProductController.updateOneInfoById
 )
-router.get('/search/:name', ProductController.getSearchByName)
-
-router.get('/info/labels', ProductController.getLabels)
-router.get('/info/statuses', ProductController.getStatuses)
-router.get('/info/suppliers', ProductController.getSuppliers)
-router.get('/info/units', ProductController.getUnits)
+router.put(
+  '/update/img',
+  checkRoleMiddleware('ADMIN'),
+  ProductController.updateOneImgById
+)
+router.get('/list/search/:name', ProductController.getSearchByName)
+router.get('/list/info/labels', ProductController.getLabels)
+router.get('/list/info/statuses', ProductController.getStatuses)
+router.get('/list/info/suppliers', ProductController.getSuppliers)
+router.get('/list/info/units', ProductController.getUnits)
 
 export default router

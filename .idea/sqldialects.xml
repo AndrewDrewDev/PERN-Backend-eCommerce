@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/db/model/model.sql" dialect="H2" />
-    <file url="file://$PROJECT_DIR$/src/services/ProductService.ts" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/model/ProductService.ts" dialect="GenericSQL" />
     <file url="PROJECT" dialect="PostgreSQL" />
   </component>
 </project>

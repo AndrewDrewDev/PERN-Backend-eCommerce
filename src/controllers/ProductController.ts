@@ -1,7 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
-import { TCProductFullInfo, TGetSearchProductsByName } from '../types'
+import {
+  TCProductFullInfo,
+  TGetSearchProductsByName,
+  TResponseMessage,
+  TUpdateOneImgByIdBody,
+} from '../types'
 import ProductService from '../model/ProductService'
 import ErrorHandler from '../error/ErrorHandler'
+import { UploadedFile } from 'express-fileupload'
 
 class ProductController {
   public async getOneById(
@@ -19,7 +25,7 @@ class ProductController {
     }
   }
 
-  public async updateOneById(
+  public async updateOneInfoById(
     req: Request,
     res: Response,
     next: NextFunction
@@ -27,13 +33,55 @@ class ProductController {
     try {
       const { id } = req.params
       const updateData: TCProductFullInfo = req.body
-      const updatedProduct = await ProductService.updateOneById(id, updateData)
+      const updatedProduct = await ProductService.updateOneInfoById(
+        id,
+        updateData
+      )
 
       if (!updatedProduct) {
         return res.status(400).json({ message: 'Wrong data format.' })
       }
 
       return res.status(200).json(updatedProduct)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async updateOneImgById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponseMessage> | void> {
+    try {
+      const { oldName, preview }: TUpdateOneImgByIdBody = req.body
+      const files = req.files
+
+      // Extract img if exist
+      let img: UploadedFile | null | any = null
+      if (files) {
+        img = files.img
+      } else {
+        return res.status(404).json({
+          code: 404,
+          status: 'FAILED',
+          message: 'Upload img not found!',
+        })
+      }
+
+      const result = await ProductService.updateOneImgById(
+        oldName,
+        preview,
+        img
+      )
+
+      if (!result) {
+        return res
+          .status(422)
+          .json({ code: 422, status: 'FAILED', message: 'Incorrect data!' })
+      }
+
+      return res.status(200).json({ status: 'OK' })
     } catch (error) {
       next(new ErrorHandler(500, error.message))
     }

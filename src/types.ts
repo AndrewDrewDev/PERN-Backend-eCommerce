@@ -173,6 +173,11 @@ export type TCUpdateCategories = {
   index: number
 }[]
 
+export type TUpdateOneImgByIdBody = {
+  oldName: string
+  preview: 'true' | 'false'
+}
+
 export type TResponseMessage = {
   code?: number
   status: 'OK' | 'FAILED'
