@@ -6,9 +6,9 @@ import {
   TShopControllerGetSlider,
 } from '../types'
 import db from '../db/db'
-import ProductService from './ProductService'
+import ProductService from './ProductModel'
 
-class ShopService {
+class ShopModel {
   public async getConfig(): Promise<QueryResult<TDBMDataShopConfig>[] | null> {
     const data = await db.query(
       `select *
@@ -214,4 +214,4 @@ class ShopService {
   }
 }
 
-export default new ShopService()
+export default new ShopModel()

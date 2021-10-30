@@ -5,7 +5,7 @@ import {
   TResponseMessage,
   TUpdateOneImgByIdBody,
 } from '../types'
-import ProductService from '../model/ProductService'
+import ProductService from '../model/ProductModel'
 import ErrorHandler from '../error/ErrorHandler'
 import { UploadedFile } from 'express-fileupload'
 

@@ -14,7 +14,7 @@ type TUpdateByIdData = {
   content: string
 }
 
-class InfoService {
+class InfoModel {
   public async getById(id: string): Promise<TGetInfoData | null> {
     const combineInfoData = (
       array: TGetInfoDataOrNullQueryResult[]
@@ -70,4 +70,4 @@ class InfoService {
   }
 }
 
-export default new InfoService()
+export default new InfoModel()

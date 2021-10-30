@@ -11,7 +11,7 @@ import { UploadedFile } from 'express-fileupload'
 import path from 'path/posix'
 import FileSystemUtils from '../utils/FileSystemUtils'
 
-class ProductService {
+class ProductModel {
   public async getOneById(id: string): Promise<TCProductFullInfo | null> {
     let result: TCProductFullInfo = {} as any
     const data: QueryResult<TCProductGetOneService> = await db.query(
@@ -279,4 +279,4 @@ class ProductService {
   }
 }
 
-export default new ProductService()
+export default new ProductModel()

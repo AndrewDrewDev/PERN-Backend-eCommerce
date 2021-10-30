@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import UserService from '../model/UserService'
+import UserService from '../model/UserModel'
 import config from '../config'
 import ErrorHandler from '../error/ErrorHandler'
 

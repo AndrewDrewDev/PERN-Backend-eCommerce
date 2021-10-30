@@ -1,7 +1,7 @@
 import db from '../db/db'
 import { TGetUsers } from '../types'
 
-class UserService {
+class UserModel {
   public async getByEmail(email: string): Promise<TGetUsers | null> {
     const data = await db.query(
       `select
@@ -27,4 +27,4 @@ class UserService {
   }
 }
 
-export default new UserService()
+export default new UserModel()

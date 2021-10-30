@@ -5,7 +5,7 @@ import {
   TResponseMessage,
   TShopControllerGetSlider,
 } from '../types'
-import ShopService from '../model/ShopService'
+import ShopService from '../model/ShopModel'
 import ErrorHandler from '../error/ErrorHandler'
 
 class ShopController {

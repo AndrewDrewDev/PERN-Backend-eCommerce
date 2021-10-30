@@ -17,7 +17,7 @@ import FileSystemUtils from '../utils/FileSystemUtils'
 import { UploadedFile } from 'express-fileupload'
 import path from 'path/posix'
 
-class CategoryService {
+class CategoryModel {
   public async getProductsById({
     categoryUrl,
     limit,
@@ -276,4 +276,4 @@ class CategoryService {
   }
 }
 
-export default new CategoryService()
+export default new CategoryModel()

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import InfoService from '../model/InfoService'
+import InfoService from '../model/InfoModel'
 import { TGetInfoData, TResponseMessage } from '../types'
 import ErrorHandler from '../error/ErrorHandler'
 
