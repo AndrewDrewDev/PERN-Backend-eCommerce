@@ -6,7 +6,7 @@ import {
   TDBMDataShopConfig,
   TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
-  TDBMDataImages,
+  TDBMDataProductImages,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
@@ -163,8 +163,8 @@ class PrepareData {
   }
 
   // TODO Refactor withoud any type
-  public imagesTable(products: TDBMJsonGoods[]): TDBMDataImages {
-    const result: TDBMDataImages = {} as any
+  public imagesTable(products: TDBMJsonGoods[]): TDBMDataProductImages {
+    const result: TDBMDataProductImages = {} as any
 
     const allImgNameStr = fs
       .readdirSync(StaticFolderService.datasetImgGoodsFolderPath)

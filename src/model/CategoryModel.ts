@@ -47,7 +47,7 @@ class CategoryModel {
                on
                    lb.id = pp.label_id
                    left join
-               images im
+               product_images im
                on
                            im.product_id = pp.id
                        and
@@ -174,7 +174,7 @@ class CategoryModel {
                    left join products pp on pp.id = ccp.product_id
                    left join statuses st on pp.status_id = st.id
                    left join labels lb on pp.label_id = lb.id
-                   left join images im on pp.id = im.product_id and im.preview = true
+                   left join product_images im on pp.id = im.product_id and im.preview = true
           where ct.id = ccp.custom_categories_id
           order by ccp.id asc
           limit $2 offset $3
@@ -203,7 +203,7 @@ class CategoryModel {
        from products pp
                 left join labels ll on ll.url = $1
                 left join statuses st on st.id = pp.status_id
-                left join images im on pp.id = im.product_id and im.preview = true
+                left join product_images im on pp.id = im.product_id and im.preview = true
        where pp.label_id = ll.id
        limit $2 offset $3`,
       [labelUrl, limit, offset]
@@ -229,7 +229,7 @@ class CategoryModel {
           from products pp
                    left join statuses st on pp.status_id = st.id
                    left join labels lb on pp.label_id = lb.id
-                   left join images im on pp.id = im.product_id and im.preview = true
+                   left join product_images im on pp.id = im.product_id and im.preview = true
           limit $1 offset $2
       `,
       [limit, offset]

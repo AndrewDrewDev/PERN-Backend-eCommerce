@@ -95,7 +95,7 @@ class ShopModel {
           from custom_categories cc
                    left join custom_categories_products ccp on cc.id = ccp.custom_categories_id
                    left join products pp on pp.id = ccp.product_id
-                   left join images im on pp.id = im.product_id and im.preview = true
+                   left join product_images im on pp.id = im.product_id and im.preview = true
           where cc.name = $1
           order by ccp.id asc
       `,

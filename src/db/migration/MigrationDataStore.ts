@@ -6,7 +6,7 @@ import {
   TDBMDataSuppliers,
   TDBMDataCategoryToProduct,
   TDBMDataCategoriesItem,
-  TDBMDataImages,
+  TDBMDataProductImages,
   TDBMDataShopConfig,
   TDBMDataCustomCategories,
   TDBMDataCustomCategoriesProducts,
@@ -22,7 +22,7 @@ class MigrationDataStore {
   private readonly _labels: TDBMDataLabels[]
   private readonly _products: TDBMJsonGoods[]
   private readonly _categoryToProduct: TDBMDataCategoryToProduct
-  private readonly _images: TDBMDataImages
+  private readonly _productImages: TDBMDataProductImages
   private readonly _statuses: string[]
   private readonly _shopConfig: TDBMDataShopConfig
   private readonly _customCategories: TDBMDataCustomCategories[]
@@ -38,7 +38,7 @@ class MigrationDataStore {
     this._units = PrepareData.unitsTable(Goods)
     this._suppliers = PrepareData.suppliersTable(Goods)
     this._categoryToProduct = PrepareData.categoryToProductTable(Goods)
-    this._images = PrepareData.imagesTable(Goods)
+    this._productImages = PrepareData.imagesTable(Goods)
     this._statuses = PrepareData.statusesTable(Goods)
     this._shopConfig = PrepareData.shopConfigTable(BaseInfo)
     this._customCategories = PrepareData.customCategoriesTable([
@@ -93,8 +93,8 @@ class MigrationDataStore {
     return this._categoryToProduct
   }
 
-  get images(): TDBMDataImages {
-    return this._images
+  get productImages(): TDBMDataProductImages {
+    return this._productImages
   }
 
   get statuses(): string[] {

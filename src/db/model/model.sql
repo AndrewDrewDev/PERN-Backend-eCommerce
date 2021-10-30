@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS properties
     value VARCHAR
 );
 
-CREATE TABLE IF NOT EXISTS images
+CREATE TABLE IF NOT EXISTS product_images
 (
     id      SERIAL PRIMARY KEY,
     -- FK product_id INT,
@@ -239,6 +239,6 @@ ALTER TABLE
         COLUMN IF NOT EXISTS product_id INTEGER REFERENCES products (id);
 -- FK images table
 ALTER TABLE
-    images
+    product_images
     ADD
         COLUMN IF NOT EXISTS product_id INTEGER REFERENCES products (id);

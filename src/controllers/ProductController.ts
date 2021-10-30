@@ -48,7 +48,7 @@ class ProductController {
     }
   }
 
-  public async updateOneImgById(
+  public async updateImage(
     req: Request,
     res: Response,
     next: NextFunction
@@ -56,24 +56,19 @@ class ProductController {
     try {
       const { oldName, preview }: TUpdateOneImgByIdBody = req.body
       const files = req.files
-
       // Extract img if exist
       let img: UploadedFile | null | any = null
-      if (files) {
+      if (files && oldName && preview) {
         img = files.img
       } else {
-        return res.status(404).json({
-          code: 404,
+        return res.status(422).send({
+          code: 422,
           status: 'FAILED',
           message: 'Upload img not found!',
         })
       }
 
-      const result = await ProductService.updateOneImgById(
-        oldName,
-        preview,
-        img
-      )
+      const result = await ProductService.updateImage(oldName, preview, img)
 
       if (!result) {
         return res

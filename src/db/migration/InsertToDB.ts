@@ -4,7 +4,7 @@ import {
   TDBMDataShopConfig,
   TDBMDataCategoriesItem,
   TDBMDataCategoryToProduct,
-  TDBMDataImages,
+  TDBMDataProductImages,
   TDBMDataLabels,
   TDBMDataSuppliers,
   TDBMDataUnits,
@@ -209,7 +209,9 @@ class InsertToDB {
     }
   }
 
-  public async imagesTable(images: TDBMDataImages): Promise<void> {
+  public async productImagesTable(
+    images: TDBMDataProductImages
+  ): Promise<void> {
     try {
       const writeToDB = async (
         product_id: string,
@@ -218,7 +220,7 @@ class InsertToDB {
       ) => {
         await db.query(
           `
-          insert into images
+          insert into product_images
             (product_id, name, preview)
           values
           (
@@ -259,7 +261,7 @@ class InsertToDB {
         }
       }
 
-      logger.info('migration data to table: images!')
+      logger.info('migration data to table: product_images!')
       return Promise.resolve()
     } catch (error) {
       logger.fatal(error, 'migration data to table: category_to_product!')

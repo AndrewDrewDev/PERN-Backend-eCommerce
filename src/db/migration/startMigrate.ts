@@ -77,7 +77,7 @@ const startMigrate = () => {
         migrationData.customCategoriesProducts
       )
     )
-    .then(() => InsertToDB.imagesTable(migrationData.images))
+    .then(() => InsertToDB.productImagesTable(migrationData.productImages))
     .then(() => logger.info('SUCCESS: MIGRATE TO DATABASE'))
     .catch(() => logger.fatal('FAILED: MIGRATE TO DATABASE'))
 }

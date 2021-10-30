@@ -105,7 +105,7 @@ export type TDBMDataCategoryToProduct = {
   [key: string]: string[]
 }
 
-export type TDBMDataImages = {
+export type TDBMDataProductImages = {
   [key: string]: {
     preview: string[]
     big: string[]

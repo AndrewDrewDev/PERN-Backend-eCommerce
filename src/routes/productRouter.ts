@@ -12,7 +12,7 @@ router.put(
 router.put(
   '/update/img',
   checkRoleMiddleware('ADMIN'),
-  ProductController.updateOneImgById
+  ProductController.updateImage
 )
 router.get('/list/search/:name', ProductController.getSearchByName)
 router.get('/list/info/labels', ProductController.getLabels)

@@ -53,7 +53,7 @@ class ProductModel {
                on
                    su.id = pp.supplier_id
                    left join
-               images im
+               product_images im
                on
                    im.product_id = pp.id
                    left join
@@ -185,7 +185,7 @@ class ProductModel {
                  pp.price      as price,
                  im.name       as img
           from products pp
-                   left join images im on im.product_id = pp.id and im.preview = true
+                   left join product_images im on im.product_id = pp.id and im.preview = true
           where pp.name ilike '%${name}%' limit 10
       `
     )
@@ -252,7 +252,7 @@ class ProductModel {
     return data.rows.map(i => i.name)
   }
 
-  public async updateOneImgById(
+  public async updateImage(
     imgOldName: string,
     preview: 'true' | 'false',
     img: UploadedFile
@@ -265,7 +265,7 @@ class ProductModel {
     )
 
     const result = await db.query(
-      `update images im
+      `update product_images im
        set name=$1,
            preview=$2
        where im.name = $3
