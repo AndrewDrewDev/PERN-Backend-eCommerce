@@ -175,6 +175,51 @@ class ProductController {
       next(new ErrorHandler(500, error.message))
     }
   }
+
+  public async addImageById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponseMessage> | void> {
+    try {
+      const { id } = req.params
+
+      // Extract images
+      const files = req.files
+      let img: UploadedFile | null | any = null
+      if (files) img = files.img
+
+      if (!id) {
+        return res.status(400).json({
+          code: 400,
+          status: 'FAILED',
+          message: 'Request parameter not found!',
+        })
+      }
+
+      if (!files) {
+        return res.status(400).json({
+          code: 400,
+          status: 'FAILED',
+          message: 'Image in body of request not found!',
+        })
+      }
+
+      const result = await ProductModel.addImageById(id, img)
+
+      if (!result)
+        res.status(500).send({
+          code: 422,
+          status: 'FAILED',
+          message:
+            'Failed write attempt! Logical error in request. Try check request data, please ;)',
+        })
+
+      return res.status(200).json({ status: 'OK' })
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
 }
 
 export default new ProductController()

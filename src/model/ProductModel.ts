@@ -295,6 +295,25 @@ class ProductModel {
     }
     return true
   }
+
+  public async addImageById(id: string, img: UploadedFile) {
+    const newImgFileName = v4() + '.jpg'
+    await img.mv(
+      path.resolve(FileSystemUtils.srcStaticFolderPath, newImgFileName)
+    )
+
+    const result = await db.query(
+      `
+          insert into product_images (product_id, name)
+          values ((select id from products pp where pp.product_id = $1),
+                  $2) returning *`,
+      [id, newImgFileName]
+    )
+
+    if (!result) return null
+
+    return result
+  }
 }
 
 export default new ProductModel()

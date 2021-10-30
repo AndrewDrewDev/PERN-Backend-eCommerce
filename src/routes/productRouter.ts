@@ -9,6 +9,13 @@ router.put(
   checkRoleMiddleware('ADMIN'),
   ProductController.updateOneInfoById
 )
+
+router.post(
+  '/add/img/:id',
+  checkRoleMiddleware('ADMIN'),
+  ProductController.addImageById
+)
+
 router.put(
   '/update/img',
   checkRoleMiddleware('ADMIN'),
