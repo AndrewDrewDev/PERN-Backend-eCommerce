@@ -14,6 +14,11 @@ router.put(
   checkRoleMiddleware('ADMIN'),
   ProductController.updateImage
 )
+router.put(
+  '/update/order-img',
+  checkRoleMiddleware('ADMIN'),
+  ProductController.updateOrderImages
+)
 router.get('/list/search/:name', ProductController.getSearchByName)
 router.get('/list/info/labels', ProductController.getLabels)
 router.get('/list/info/statuses', ProductController.getStatuses)

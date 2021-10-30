@@ -5,9 +5,14 @@ import {
   TResponseMessage,
   TUpdateOneImgByIdBody,
 } from '../types'
-import ProductService from '../model/ProductModel'
+import ProductModel from '../model/ProductModel'
 import ErrorHandler from '../error/ErrorHandler'
 import { UploadedFile } from 'express-fileupload'
+
+export type TCUpdateOrderImages = {
+  name: string
+  order: number
+}
 
 class ProductController {
   public async getOneById(
@@ -17,7 +22,7 @@ class ProductController {
   ): Promise<Response<TCProductFullInfo | null> | void> {
     try {
       const { id } = req.params
-      const data = await ProductService.getOneById(id)
+      const data = await ProductModel.getOneById(id)
 
       return res.status(200).json(data)
     } catch (error) {
@@ -33,7 +38,7 @@ class ProductController {
     try {
       const { id } = req.params
       const updateData: TCProductFullInfo = req.body
-      const updatedProduct = await ProductService.updateOneInfoById(
+      const updatedProduct = await ProductModel.updateOneInfoById(
         id,
         updateData
       )
@@ -68,7 +73,7 @@ class ProductController {
         })
       }
 
-      const result = await ProductService.updateImage(oldName, preview, img)
+      const result = await ProductModel.updateImage(oldName, preview, img)
 
       if (!result) {
         return res
@@ -89,7 +94,7 @@ class ProductController {
   ): Promise<Response<TGetSearchProductsByName[] | null> | void> {
     try {
       const { name } = req.params
-      const data = await ProductService.getSearchProductsByName(name)
+      const data = await ProductModel.getSearchProductsByName(name)
 
       return res.status(200).json(data)
     } catch (error) {
@@ -103,7 +108,7 @@ class ProductController {
     next: NextFunction
   ): Promise<Response<string[] | null> | void> {
     try {
-      const data = await ProductService.getLabels()
+      const data = await ProductModel.getLabels()
 
       return res.status(200).json(data)
     } catch (error) {
@@ -117,7 +122,7 @@ class ProductController {
     next: NextFunction
   ): Promise<Response<string[] | null> | void> {
     try {
-      const data = await ProductService.getStatuses()
+      const data = await ProductModel.getStatuses()
 
       return res.status(200).json(data)
     } catch (error) {
@@ -131,7 +136,7 @@ class ProductController {
     next: NextFunction
   ): Promise<Response<string[] | null> | void> {
     try {
-      const data = await ProductService.getSuppliers()
+      const data = await ProductModel.getSuppliers()
 
       return res.status(200).json(data)
     } catch (error) {
@@ -145,9 +150,27 @@ class ProductController {
     next: NextFunction
   ): Promise<Response<string[] | null> | void> {
     try {
-      const data = await ProductService.getUnits()
+      const data = await ProductModel.getUnits()
 
       return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async updateOrderImages(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TResponseMessage> | void> {
+    try {
+      const body: TCUpdateOrderImages[] = req.body
+
+      const result = ProductModel.updateOrderImages(body)
+
+      if (!result) return res.status(422).send({})
+
+      return res.status(200).json(req.body)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
     }

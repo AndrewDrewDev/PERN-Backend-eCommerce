@@ -121,7 +121,8 @@ CREATE TABLE IF NOT EXISTS product_images
     id      SERIAL PRIMARY KEY,
     -- FK product_id INT,
     name    VARCHAR UNIQUE NOT NULL,
-    preview BOOLEAN
+    preview BOOLEAN,
+    order_index INT
 );
 
 CREATE TABLE IF NOT EXISTS custom_categories

@@ -73,7 +73,7 @@ class CategoryController {
 
       const result = await CategoryService.updateCategoryById(id, name, img)
 
-      return res.json(result)
+      return res.status(200).json(result)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
     }
@@ -89,7 +89,13 @@ class CategoryController {
 
       const result = await CategoryService.updateOrder(data)
 
-      return res.json(result)
+      if (!result) {
+        return res
+          .status(422)
+          .json({ code: 422, status: 'FAILED', message: 'Wrong request data!' })
+      }
+
+      return res.status(200).json({ status: 'OK' })
     } catch (error) {
       next(new ErrorHandler(500, error.message))
     }

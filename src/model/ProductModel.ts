@@ -10,6 +10,7 @@ import db from '../db/db'
 import { UploadedFile } from 'express-fileupload'
 import path from 'path/posix'
 import FileSystemUtils from '../utils/FileSystemUtils'
+import { TCUpdateOrderImages } from '../controllers/ProductController'
 
 class ProductModel {
   public async getOneById(id: string): Promise<TCProductFullInfo | null> {
@@ -61,7 +62,7 @@ class ProductModel {
                on
                    st.id = pp.status_id
           where cp.product_id = (select id from products pp where pp.product_id = $1)
-          ORDER BY cp.level ASC`,
+          ORDER BY cp.level, im.order_index ASC`,
       [id]
     )
 
@@ -268,14 +269,31 @@ class ProductModel {
       `update product_images im
        set name=$1,
            preview=$2
-       where im.name = $3
-       returning *`,
+       where im.name = $3 returning *`,
       [newImgFileName, isPreview, imgOldName]
     )
 
     if (result.rowCount === 0) return null
 
     return result
+  }
+
+  public async updateOrderImages(
+    updatedData: TCUpdateOrderImages[]
+  ): Promise<true | null> {
+    for (const item of updatedData) {
+      const { name, order } = item
+
+      const result = await db.query(
+        `
+            update product_images pi
+            set order_index=$1
+            where pi.name = $2 returning *`,
+        [order, name]
+      )
+      if (result.rowCount === 0) return null
+    }
+    return true
   }
 }
 
