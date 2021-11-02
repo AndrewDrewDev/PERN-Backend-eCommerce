@@ -64,14 +64,26 @@ class CategoryController {
     next: NextFunction
   ): Promise<Response<TResponseMessage> | void> {
     try {
-      const { id } = req.params
-      const { name } = req.body
+      const { oldName, newName } = req.params
       const files = req.files
+
+      if (!oldName && !newName) {
+        return res.status(400).json({
+          code: 400,
+          status: 'FAILED',
+          message: 'Request parameter or body not found!',
+        })
+      }
+
       // Extract img if exist
       let img: UploadedFile | null | any = null
       if (files) img = files.img
 
-      const result = await CategoryService.updateCategoryById(id, name, img)
+      const result = await CategoryService.updateCategoryById(
+        oldName,
+        newName,
+        img
+      )
 
       return res.status(200).json(result)
     } catch (error) {

@@ -5,7 +5,7 @@ const router = Router()
 
 router.get('/products', CategoryController.getProductsById)
 router.put(
-  '/item/:id',
+  '/item/:oldName/:newName',
   checkRoleMiddleware('ADMIN'),
   CategoryController.updateCategoryById
 )
