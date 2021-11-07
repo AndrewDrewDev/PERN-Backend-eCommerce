@@ -1,25 +1,20 @@
 import { NextFunction, Request, Response } from 'express'
 import {
-  TCProductFullInfo,
-  TGetSearchProductsByName,
-  TResponseMessage,
-  TUpdateOneImgByIdBody,
+  TCMProductFullInfo,
+  TCMGetSearchProductsByName,
+  TCResponseMessage,
+  TCMUpdateOrderImages,
 } from '../types'
 import ProductModel from '../model/ProductModel'
 import ErrorHandler from '../error/ErrorHandler'
 import { UploadedFile } from 'express-fileupload'
-
-export type TCUpdateOrderImages = {
-  name: string
-  order: number
-}
 
 class ProductController {
   public async getOneById(
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TCProductFullInfo | null> | void> {
+  ): Promise<Response<TCMProductFullInfo | null> | void> {
     try {
       const { id } = req.params
       const data = await ProductModel.getOneById(id)
@@ -34,10 +29,10 @@ class ProductController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TCProductFullInfo> | void> {
+  ): Promise<Response<TCMProductFullInfo> | void> {
     try {
       const { id } = req.params
-      const updateData: TCProductFullInfo = req.body
+      const updateData: TCMProductFullInfo = req.body
       const updatedProduct = await ProductModel.updateOneInfoById(
         id,
         updateData
@@ -57,9 +52,15 @@ class ProductController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
-      const { oldName, preview }: TUpdateOneImgByIdBody = req.body
+      const {
+        oldName,
+        preview,
+      }: {
+        oldName: string
+        preview: 'true' | 'false'
+      } = req.body
       const files = req.files
       // Extract img if exist
       let img: UploadedFile | null | any = null
@@ -91,7 +92,7 @@ class ProductController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetSearchProductsByName[] | null> | void> {
+  ): Promise<Response<TCMGetSearchProductsByName[] | null> | void> {
     try {
       const { name } = req.params
       const data = await ProductModel.getSearchProductsByName(name)
@@ -162,9 +163,9 @@ class ProductController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
-      const body: TCUpdateOrderImages[] = req.body
+      const body: TCMUpdateOrderImages[] = req.body
 
       const result = ProductModel.updateOrderImages(body)
 
@@ -180,7 +181,7 @@ class ProductController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
       const { id } = req.params
 
@@ -224,7 +225,7 @@ class ProductController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
       const { imgName } = req.params
 

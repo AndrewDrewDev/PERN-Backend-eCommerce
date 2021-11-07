@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import CategoryService from '../model/CategoryModel'
 import {
-  TGetBreadcrumb,
-  TGetInfoByLevel,
-  TProductsByCategoryData,
-  TResponseMessage,
+  TCMGetBreadcrumb,
+  TCMGetInfoByLevel,
+  TCMProductsByCategoryData,
+  TCResponseMessage,
 } from '../types'
 import ErrorHandler from '../error/ErrorHandler'
 import { UploadedFile } from 'express-fileupload'
@@ -14,7 +14,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TProductsByCategoryData[] | null> | void> {
+  ): Promise<Response<TCMProductsByCategoryData[] | null> | void> {
     try {
       let { name, page, limit, type } = req.query as {
         name: string
@@ -62,7 +62,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
       const { oldName, newName } = req.params
       const files = req.files
@@ -95,7 +95,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
       const { data } = req.body
 
@@ -117,7 +117,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetInfoByLevel[] | null> | void> {
+  ): Promise<Response<TCMGetInfoByLevel[] | null> | void> {
     try {
       const { level } = req.params
       const data = await CategoryService.getInfoByLevel(level)
@@ -131,7 +131,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetBreadcrumb[] | null> | void> {
+  ): Promise<Response<TCMGetBreadcrumb[] | null> | void> {
     try {
       const { url } = req.params
       const data = await CategoryService.getBreadcrumb(url)
@@ -145,7 +145,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetInfoByLevel[] | null> | void> {
+  ): Promise<Response<TCMGetInfoByLevel[] | null> | void> {
     try {
       const { id } = req.params
       const data = await CategoryService.getCustomCategoryInfo(id)
@@ -158,7 +158,7 @@ class CategoryController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetInfoByLevel[] | null> | void> {
+  ): Promise<Response<TCMGetInfoByLevel[] | null> | void> {
     try {
       const data = await CategoryService.getAllCategoryInfo()
       return res.status(200).json(data)

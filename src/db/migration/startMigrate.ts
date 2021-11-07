@@ -2,7 +2,7 @@ import path from 'path'
 import excelValidator from 'excel-validator'
 
 import config from '../../config'
-import { TDBMJson } from '../../types'
+import { TDBMJson } from '../types'
 import MigrationDataStore from './MigrationDataStore'
 import initModel from '../model/initModel'
 import InsertToDB from './InsertToDB'

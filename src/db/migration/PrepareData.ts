@@ -18,7 +18,7 @@ import {
   TDBMDataInfoPages,
   TDBMDataSlider,
   TDBMJsonCategories,
-} from '../../types'
+} from '../types'
 import StaticFolderService from '../../utils/FileSystemUtils'
 import FileSystemService from '../../utils/FileSystemUtils'
 

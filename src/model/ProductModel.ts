@@ -2,20 +2,37 @@ import { QueryResult } from 'pg'
 import { v4 } from 'uuid'
 
 import {
-  TCProductGetOneService,
-  TCProductFullInfo,
-  TGetSearchProductsByName,
+  TCMProductFullInfo,
+  TCMGetSearchProductsByName,
+  TCMUpdateOrderImages,
 } from '../types'
 import db from '../db/db'
 import { UploadedFile } from 'express-fileupload'
 import path from 'path/posix'
 import FileSystemUtils from '../utils/FileSystemUtils'
-import { TCUpdateOrderImages } from '../controllers/ProductController'
+
+type TGetOneById = {
+  image: string
+  ispreview: boolean
+  categoryname: string
+  categoryurl: string
+  name: string
+  label: string
+  unit: string
+  supplier: string
+  id: string
+  description: string
+  price: string
+  old_price: string
+  amount: string
+  vendor_id: string
+  status: string
+}
 
 class ProductModel {
-  public async getOneById(id: string): Promise<TCProductFullInfo | null> {
-    let result: TCProductFullInfo = {} as any
-    const data: QueryResult<TCProductGetOneService> = await db.query(
+  public async getOneById(id: string): Promise<TCMProductFullInfo | null> {
+    let result: TCMProductFullInfo = {} as any
+    const data: QueryResult<TGetOneById> = await db.query(
       `
           select im.name        as image,
                  im.preview     as ispreview,
@@ -111,8 +128,8 @@ class ProductModel {
   // TCProductFullInfo | TResponseErrorMessage
   public async updateOneInfoById(
     id: string,
-    updateProduct: TCProductFullInfo
-  ): Promise<TCProductFullInfo | null> {
+    updateProduct: TCMProductFullInfo
+  ): Promise<TCMProductFullInfo | null> {
     const currentProduct = await this.getOneById(id)
 
     if (currentProduct && updateProduct) {
@@ -178,7 +195,7 @@ class ProductModel {
 
   public async getSearchProductsByName(
     name: string
-  ): Promise<QueryResult<TGetSearchProductsByName>[] | null> {
+  ): Promise<QueryResult<TCMGetSearchProductsByName>[] | null> {
     const data = await db.query(
       `
           select pp.name       as name,
@@ -279,7 +296,7 @@ class ProductModel {
   }
 
   public async updateOrderImages(
-    updatedData: TCUpdateOrderImages[]
+    updatedData: TCMUpdateOrderImages[]
   ): Promise<true | null> {
     for (const item of updatedData) {
       const { name, order } = item

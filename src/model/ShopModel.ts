@@ -1,12 +1,12 @@
 import { QueryResult } from 'pg'
 import {
-  TDBMDataShopConfig,
-  TGetCustomCategoryProducts,
-  TResponseMessage,
-  TShopControllerGetSlider,
+  TCMGetCustomCategoryProducts,
+  TCResponseMessage,
+  TCMShopControllerGetSlider,
 } from '../types'
 import db from '../db/db'
 import ProductService from './ProductModel'
+import { TDBMDataShopConfig } from '../db/types'
 
 class ShopModel {
   public async getConfig(): Promise<QueryResult<TDBMDataShopConfig>[] | null> {
@@ -67,7 +67,7 @@ class ShopModel {
   }
 
   public async getSlider(): Promise<
-    QueryResult<TShopControllerGetSlider>[] | null
+    QueryResult<TCMShopControllerGetSlider>[] | null
   > {
     const data = await db.query(
       `
@@ -84,7 +84,7 @@ class ShopModel {
 
   public async getCustomCategoryProductsByName(
     name: string
-  ): Promise<TGetCustomCategoryProducts | null> {
+  ): Promise<TCMGetCustomCategoryProducts | null> {
     const data = await db.query(
       `
           select cc.name      as category_name,
@@ -109,7 +109,7 @@ class ShopModel {
   public async createCustomCategoryProductsByName(
     categoryName: string,
     updateValue: string
-  ): Promise<TResponseMessage> {
+  ): Promise<TCResponseMessage> {
     const checkProductIdIfExist = await db.query(
       `select * from products pp where pp.product_id=$1`,
       [updateValue]
@@ -140,7 +140,7 @@ class ShopModel {
   public async deleteCustomCategoryProductsByName(
     categoryName: string,
     updateValue: string
-  ): Promise<TResponseMessage> {
+  ): Promise<TCResponseMessage> {
     const result = await db.query(
       `
       delete  from
@@ -170,7 +170,7 @@ class ShopModel {
   public async updateCustomCategoryProductsByName(
     categoryName: string,
     updateProductsIDs: string[]
-  ): Promise<TResponseMessage> {
+  ): Promise<TCResponseMessage> {
     // clear all product by custom category name
     await db.query(
       `

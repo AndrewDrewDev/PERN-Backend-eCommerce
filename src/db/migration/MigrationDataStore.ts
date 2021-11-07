@@ -12,7 +12,7 @@ import {
   TDBMDataCustomCategoriesProducts,
   TDBMDataInfoPages,
   TDBMDataSlider,
-} from '../../types'
+} from '../types'
 import PrepareData from './PrepareData'
 
 class MigrationDataStore {

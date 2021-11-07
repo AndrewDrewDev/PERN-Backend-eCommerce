@@ -13,7 +13,7 @@ import {
   TDBMDataCustomCategoriesProducts,
   TDBMDataInfoPages,
   TDBMDataSlider,
-} from '../../types'
+} from '../types'
 
 import db from '../db'
 import logger from '../../utils/logger'

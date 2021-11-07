@@ -1,15 +1,10 @@
 import { v4 } from 'uuid'
 
 import {
-  TProductsByCategoryData,
-  TGetProductById,
-  TGetInfoByLevel,
-  TGetBreadcrumb,
-  TGetAllProducts,
-  TGetCustomProduct,
-  TGetLabelProduct,
-  TResponseMessage,
-  TCUpdateCategories,
+  TCMProductsByCategoryData,
+  TCMGetInfoByLevel,
+  TCMGetBreadcrumb,
+  TCResponseMessage,
 } from '../types'
 import { QueryResult } from 'pg'
 import db from '../db/db'
@@ -18,11 +13,12 @@ import { UploadedFile } from 'express-fileupload'
 import path from 'path/posix'
 
 class CategoryModel {
-  public async getProductsById({
-    categoryUrl,
-    limit,
-    offset,
-  }: TGetProductById): Promise<QueryResult<TProductsByCategoryData>[] | null> {
+  public async getProductsById(args: {
+    categoryUrl: string
+    limit: string
+    offset: string
+  }): Promise<QueryResult<TCMProductsByCategoryData>[] | null> {
+    const { categoryUrl, limit, offset } = args
     const data = await db.query(
       `
           select pp.name       as name,
@@ -32,30 +28,18 @@ class CategoryModel {
                  lb.name       as label,
                  im.name       as img
           from products pp
-                   left join
-               category_to_product cp
-               on
-                   pp.id = cp.product_id
-                   left join
-               categories cc
-               on
-                           cc.url = $1
-                       and
-                           cc.id = cp.category_id
-                   left join
-               labels lb
-               on
-                   lb.id = pp.label_id
-                   left join
-               product_images im
-               on
-                           im.product_id = pp.id
-                       and
-                           im.preview = true
+                   left join category_to_product cp on pp.id = cp.product_id
+                   left join categories cc on cc.url = $1
+              and cc.id = cp.category_id
+                   left join labels lb on lb.id = pp.label_id
+                   left join product_images im on im.product_id = pp.id
+              and im.preview = true
           where cc.url = $1
             and cc.id = cp.category_id
             and pp.id = cp.product_id
-          group by pp.id, im.name, lb.name
+          group by pp.id,
+                   im.name,
+                   lb.name
           limit $2 offset $3
       `,
       [categoryUrl, limit, offset]
@@ -68,15 +52,15 @@ class CategoryModel {
     oldName: string,
     newName: string,
     img: UploadedFile | null
-  ): Promise<TResponseMessage> {
+  ): Promise<TCResponseMessage> {
     // update img if exist
     if (img) {
       const fileName = v4() + '.jpg'
       await img.mv(path.resolve(FileSystemUtils.srcStaticFolderPath, fileName))
       await db.query(
         `update categories cc
-                      set img=$1
-                      where cc.name = $2`,
+         set img=$1
+         where cc.name = $2`,
         [fileName, oldName]
       )
     }
@@ -84,8 +68,8 @@ class CategoryModel {
     // update category name
     await db.query(
       `update categories cc
-                    set name=$1
-                    where cc.name = $2 `,
+       set name=$1
+       where cc.name = $2 `,
       [newName, oldName]
     )
 
@@ -93,13 +77,18 @@ class CategoryModel {
   }
 
   public async updateOrder(
-    updateData: TCUpdateCategories
-  ): Promise<TResponseMessage> {
+    updateData: {
+      name: string
+      index: number
+    }[]
+  ): Promise<TCResponseMessage> {
     for (const updateItem of updateData) {
       const { name, index } = updateItem
 
       await db.query(
-        `update categories cc set order_index=$1 where cc.name=$2`,
+        `update categories cc
+         set order_index=$1
+         where cc.name = $2`,
         [index, name]
       )
     }
@@ -109,7 +98,7 @@ class CategoryModel {
 
   public async getInfoByLevel(
     level: string
-  ): Promise<QueryResult<TGetInfoByLevel>[] | null> {
+  ): Promise<QueryResult<TCMGetInfoByLevel>[] | null> {
     const result = await db.query(
       `
           select count(pp) as count, cc.name, cc.url, cc.img
@@ -128,8 +117,8 @@ class CategoryModel {
 
   public async getBreadcrumb(
     categoryUrl: string
-  ): Promise<TGetBreadcrumb[] | null> {
-    const data: QueryResult<TGetBreadcrumb> = await db.query(
+  ): Promise<TCMGetBreadcrumb[] | null> {
+    const data: QueryResult<TCMGetBreadcrumb> = await db.query(
       `
           with recursive tree(id, name, url, parent_id) as (
               select n.id, n.name, n.url, n.parent_id
@@ -153,13 +142,13 @@ class CategoryModel {
     })
   }
 
-  public async getCustomProductsById({
-    categoryUrl,
-    limit,
-    offset,
-  }: TGetCustomProduct): Promise<
-    QueryResult<TProductsByCategoryData>[] | null
-  > {
+  public async getCustomProductsById(args: {
+    categoryUrl: string
+    limit: string
+    offset: string
+  }): Promise<QueryResult<TCMProductsByCategoryData>[] | null> {
+    const { categoryUrl, limit, offset } = args
+
     const data = await db.query(
       `
           select pp.name       as name,
@@ -187,11 +176,13 @@ class CategoryModel {
     return data.rows
   }
 
-  public async getLabelProductsById({
-    labelUrl,
-    limit,
-    offset,
-  }: TGetLabelProduct): Promise<QueryResult<TProductsByCategoryData>[] | null> {
+  public async getLabelProductsById(args: {
+    labelUrl: string
+    limit: string
+    offset: string
+  }): Promise<QueryResult<TCMProductsByCategoryData>[] | null> {
+    const { labelUrl, limit, offset } = args
+
     const data = await db.query(
       `select pp.name       as name,
               pp.product_id as id,
@@ -214,10 +205,12 @@ class CategoryModel {
     return data.rows
   }
 
-  public async getAllProducts({
-    limit,
-    offset,
-  }: TGetAllProducts): Promise<QueryResult<TProductsByCategoryData>[] | null> {
+  public async getAllProducts(args: {
+    limit: string
+    offset: string
+  }): Promise<QueryResult<TCMProductsByCategoryData>[] | null> {
+    const { limit, offset } = args
+
     const data = await db.query(
       `
           select pp.name       as name,
@@ -242,7 +235,7 @@ class CategoryModel {
 
   public async getCustomCategoryInfo(
     id: string
-  ): Promise<TGetInfoByLevel[] | null> {
+  ): Promise<TCMGetInfoByLevel[] | null> {
     const data = await db.query(
       `select (select count(ccp.id) as count
                from custom_categories cc
@@ -260,7 +253,7 @@ class CategoryModel {
     return data.rows
   }
 
-  public async getAllCategoryInfo(): Promise<TGetInfoByLevel[] | null> {
+  public async getAllCategoryInfo(): Promise<TCMGetInfoByLevel[] | null> {
     const data = await db.query(`select count(*)
                                  from products`)
 

@@ -6,17 +6,6 @@ import UserService from '../model/UserModel'
 import config from '../config'
 import ErrorHandler from '../error/ErrorHandler'
 
-type TGenerateJwt = {
-  email: string
-  role: string
-}
-
-const generateJwt = ({ email, role }: TGenerateJwt) => {
-  return jwt.sign({ email, role }, config.SECRET_KEY, {
-    expiresIn: '24h',
-  })
-}
-
 class UserController {
   public async registration(
     req: Request,
@@ -88,6 +77,14 @@ class UserController {
     const token = generateJwt({ email: req.user.email, role: req.user.role })
     return res.json({ token })
   }
+}
+
+const generateJwt = (args: { email: string; role: string }) => {
+  const { email, role } = args
+
+  return jwt.sign({ email, role }, config.SECRET_KEY, {
+    expiresIn: '24h',
+  })
 }
 
 export default new UserController()

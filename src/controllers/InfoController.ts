@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import InfoService from '../model/InfoModel'
-import { TGetInfoData, TResponseMessage } from '../types'
+import { TCMGetInfoData, TCResponseMessage } from '../types'
 import ErrorHandler from '../error/ErrorHandler'
 
 class InfoController {
@@ -8,7 +8,7 @@ class InfoController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetInfoData | null> | void> {
+  ): Promise<Response<TCMGetInfoData | null> | void> {
     try {
       const { id } = req.params
       const data = await InfoService.getById(id)
@@ -22,7 +22,7 @@ class InfoController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
       const { id } = req.params
       const updateData = req.body

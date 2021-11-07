@@ -1,4 +1,4 @@
-import { TGetInfoData } from '../types'
+import { TCMGetInfoData } from '../types'
 import db from '../db/db'
 import { QueryResult } from 'pg'
 
@@ -15,11 +15,11 @@ type TUpdateByIdData = {
 }
 
 class InfoModel {
-  public async getById(id: string): Promise<TGetInfoData | null> {
+  public async getById(id: string): Promise<TCMGetInfoData | null> {
     const combineInfoData = (
       array: TGetInfoDataOrNullQueryResult[]
-    ): TGetInfoData => {
-      const result: TGetInfoData = {} as any
+    ): TCMGetInfoData => {
+      const result: TCMGetInfoData = {} as any
       result.img = []
       for (const elem of array) {
         result.name = elem.name

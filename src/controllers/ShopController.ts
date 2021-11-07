@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import {
-  TDBMDataShopConfig,
-  TGetCustomCategoryProducts,
-  TResponseMessage,
-  TShopControllerGetSlider,
+  TCMGetCustomCategoryProducts,
+  TCResponseMessage,
+  TCMShopControllerGetSlider,
 } from '../types'
 import ShopService from '../model/ShopModel'
 import ErrorHandler from '../error/ErrorHandler'
+import { TDBMDataShopConfig } from '../db/types'
 
 class ShopController {
   public async getConfig(
@@ -40,7 +40,7 @@ class ShopController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TShopControllerGetSlider[] | null> | void> {
+  ): Promise<Response<TCMShopControllerGetSlider[] | null> | void> {
     try {
       const data = await ShopService.getSlider()
       return res.status(200).json(data)
@@ -53,7 +53,7 @@ class ShopController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TGetCustomCategoryProducts | null> | void> {
+  ): Promise<Response<TCMGetCustomCategoryProducts | null> | void> {
     try {
       const { name } = req.params
       const data = await ShopService.getCustomCategoryProductsByName(name)
@@ -67,7 +67,7 @@ class ShopController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
       const { name } = req.params
       const { data } = req.body
@@ -87,7 +87,7 @@ class ShopController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
       const { name } = req.params
       const { data } = req.body
@@ -107,7 +107,7 @@ class ShopController {
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<Response<TResponseMessage> | void> {
+  ): Promise<Response<TCResponseMessage> | void> {
     try {
       const { name } = req.params
       const { data } = req.body
