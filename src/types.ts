@@ -97,3 +97,9 @@ export type TCMFilterParams = {
   supplier: string[]
   label: string[]
 }
+
+export type TCMGetProductsFiltersInfo = {
+  price: { min: string; max: string } | null
+  labels: { id: number; name: string }[] | null
+  suppliers: { id: number; name: string }[] | null
+}

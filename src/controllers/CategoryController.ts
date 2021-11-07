@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import CategoryService from '../model/CategoryModel'
+import CategoryModel from '../model/CategoryModel'
 import {
   TCMFilterParamsRaw,
   TCMGetBreadcrumb,
@@ -7,6 +7,7 @@ import {
   TCMProductsByCategoryData,
   TCResponseMessage,
   TCMFilterParams,
+  TCMGetProductsFiltersInfo,
 } from '../types'
 import ErrorHandler from '../error/ErrorHandler'
 import { UploadedFile } from 'express-fileupload'
@@ -35,28 +36,28 @@ class CategoryController {
 
       let data = null
       if (type === 'common') {
-        data = await CategoryService.getProductsById({
+        data = await CategoryModel.getProductsById({
           categoryUrl: name,
           limit,
           offset,
           filterObject: filterObject,
         })
       } else if (type === 'custom') {
-        data = await CategoryService.getCustomProductsById({
+        data = await CategoryModel.getCustomProductsById({
           categoryUrl: name,
           limit,
           offset,
           filterObject: filterObject,
         })
       } else if (type === 'label') {
-        data = await CategoryService.getLabelProductsById({
+        data = await CategoryModel.getLabelProductsById({
           labelUrl: name,
           limit,
           offset,
           filterObject: filterObject,
         })
       } else if (type === 'all') {
-        data = await CategoryService.getAllProducts({
+        data = await CategoryModel.getAllProducts({
           limit,
           offset,
           filterObject: filterObject,
@@ -92,7 +93,7 @@ class CategoryController {
       let img: UploadedFile | null | any = null
       if (files) img = files.img
 
-      const result = await CategoryService.updateCategoryById(
+      const result = await CategoryModel.updateCategoryById(
         oldName,
         newName,
         img
@@ -112,7 +113,7 @@ class CategoryController {
     try {
       const { data } = req.body
 
-      const result = await CategoryService.updateOrder(data)
+      const result = await CategoryModel.updateOrder(data)
 
       if (!result) {
         return res
@@ -133,7 +134,7 @@ class CategoryController {
   ): Promise<Response<TCMGetInfoByLevel[] | null> | void> {
     try {
       const { level } = req.params
-      const data = await CategoryService.getInfoByLevel(level)
+      const data = await CategoryModel.getInfoByLevel(level)
       return res.status(200).json(data)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
@@ -147,7 +148,7 @@ class CategoryController {
   ): Promise<Response<TCMGetBreadcrumb[] | null> | void> {
     try {
       const { url } = req.params
-      const data = await CategoryService.getBreadcrumb(url)
+      const data = await CategoryModel.getBreadcrumb(url)
       return res.json(data)
     } catch (error) {
       next(next(new ErrorHandler(500, error.message)))
@@ -161,7 +162,7 @@ class CategoryController {
   ): Promise<Response<TCMGetInfoByLevel[] | null> | void> {
     try {
       const { id } = req.params
-      const data = await CategoryService.getCustomCategoryInfo(id)
+      const data = await CategoryModel.getCustomCategoryInfo(id)
       return res.status(200).json(data)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
@@ -173,8 +174,24 @@ class CategoryController {
     next: NextFunction
   ): Promise<Response<TCMGetInfoByLevel[] | null> | void> {
     try {
-      const data = await CategoryService.getAllCategoryInfo()
+      const data = await CategoryModel.getAllCategoryInfo()
       return res.status(200).json(data)
+    } catch (error) {
+      next(new ErrorHandler(500, error.message))
+    }
+  }
+
+  public async getProductsFiltersInfoByUrl(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<TCMGetProductsFiltersInfo | TCResponseMessage> | void> {
+    try {
+      const { url } = req.params
+
+      const result = await CategoryModel.getProductsFiltersInfoByUrl(url)
+
+      return res.status(200).json(result)
     } catch (error) {
       next(new ErrorHandler(500, error.message))
     }

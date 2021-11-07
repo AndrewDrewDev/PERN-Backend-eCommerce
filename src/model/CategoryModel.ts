@@ -6,12 +6,14 @@ import {
   TCMGetBreadcrumb,
   TCResponseMessage,
   TCMFilterParams,
+  TCMGetProductsFiltersInfo,
 } from '../types'
 import { QueryResult } from 'pg'
 import db from '../db/db'
 import FileSystemUtils from '../utils/FileSystemUtils'
 import { UploadedFile } from 'express-fileupload'
 import path from 'path/posix'
+import { log } from 'util'
 
 type TFilterParams = TCMFilterParams | null
 
@@ -45,7 +47,7 @@ class CategoryModel {
                    left join labels lb on lb.id = pp.label_id
                    left join product_images im on im.product_id = pp.id and im.preview = true
                    left join suppliers sp on sp.id = pp.supplier_id
-          ${whereSequence}
+              ${whereSequence}
           group by pp.id,
                    im.name,
                    lb.name
@@ -180,7 +182,7 @@ class CategoryModel {
                    left join labels lb on pp.label_id = lb.id
                    left join product_images im on pp.id = im.product_id and im.preview = true
                    left join suppliers sp on sp.id = pp.supplier_id
-          ${whereSequence}
+              ${whereSequence}
           order by ccp.id asc
           limit $2 offset $3
       `,
@@ -218,7 +220,7 @@ class CategoryModel {
                 left join statuses st on st.id = pp.status_id
                 left join product_images im on pp.id = im.product_id and im.preview = true
                 left join suppliers sp on sp.id = pp.supplier_id
-       ${whereSequence}
+           ${whereSequence}
        limit $2 offset $3`,
       [labelUrl, limit, offset]
     )
@@ -253,7 +255,7 @@ class CategoryModel {
                    left join labels lb on pp.label_id = lb.id
                    left join product_images im on pp.id = im.product_id and im.preview = true
                    left join suppliers sp on sp.id = pp.supplier_id
-          ${whereSequence}
+              ${whereSequence}
           limit $1 offset $2
       `,
       [limit, offset]
@@ -268,14 +270,16 @@ class CategoryModel {
     id: string
   ): Promise<TCMGetInfoByLevel[] | null> {
     const data = await db.query(
-      `select (select count(ccp.id) as count
-               from custom_categories cc
-                        left join custom_categories_products ccp on cc.id = ccp.custom_categories_id
-               where cc.url = $1),
-              cc.name,
-              cc.url
-       from custom_categories cc
-       where cc.url = $1`,
+      `
+          select (select count(ccp.id) as count
+                  from custom_categories cc
+                           left join custom_categories_products ccp on cc.id = ccp.custom_categories_id
+                  where cc.url = $1),
+                 cc.name,
+                 cc.url
+          from custom_categories cc
+          where cc.url = $1
+      `,
       [id]
     )
 
@@ -285,8 +289,10 @@ class CategoryModel {
   }
 
   public async getAllCategoryInfo(): Promise<TCMGetInfoByLevel[] | null> {
-    const data = await db.query(`select count(*)
-                                 from products`)
+    const data = await db.query(`
+        select count(*)
+        from products
+    `)
 
     if (data.rows.length === 0) return null
     return [
@@ -297,6 +303,59 @@ class CategoryModel {
         count: data.rows[0].count,
       },
     ]
+  }
+
+  public async getProductsFiltersInfoByUrl(
+    url: string
+  ): Promise<TCMGetProductsFiltersInfo> {
+    const price = await db
+      .query(
+        `
+            select max(pp.price::float) as max,
+                   min(pp.price::float) as min
+            from products pp
+                     left join category_to_product ctp on ctp.product_id = pp.id
+                     left join categories cc on cc.id = ctp.category_id
+            where cc.url = $1
+        `,
+        [url]
+      )
+      .then(data => (data.rows[0].max !== null ? data.rows[0] : null))
+
+    const labels = await db
+      .query(
+        `
+            select distinct lb.id,
+                            lb.name
+            from labels lb
+                     left join products pp on pp.label_id = lb.id
+                     left join category_to_product ctp on ctp.product_id = pp.id
+                     left join categories cc on cc.id = ctp.category_id
+            where cc.url = $1
+        `,
+        [url]
+      )
+      .then(data => (data.rowCount !== 0 ? data.rows : null))
+
+    const suppliers = await db
+      .query(
+        `
+        select distinct sp.id, sp.name
+        from suppliers sp
+                 left join products pp on pp.supplier_id = sp.id
+                 left join category_to_product ctp on ctp.product_id = pp.id
+                 left join categories cc on cc.id = ctp.category_id
+        where cc.url = ''
+    `,
+        [url]
+      )
+      .then(data => (data.rowCount !== 0 ? data.rows : null))
+
+    return {
+      price,
+      labels,
+      suppliers,
+    }
   }
 }
 
