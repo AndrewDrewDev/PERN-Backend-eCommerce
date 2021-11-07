@@ -18,21 +18,22 @@ class CategoryController {
     next: NextFunction
   ): Promise<Response<TCMProductsByCategoryData[] | null> | void> {
     try {
-      let { name, page, limit, type, price } = req.query as {
+      let { name, page, limit, type, price, supplier, label } = req.query as {
         name: string
         page: string
         limit: string
         type: 'custom' | 'common' | 'label' | 'all'
-        price: string
-      }
+      } & TCMFilterParamsRaw
 
       const filterObject = filterParamsToObjectIfExistOrNull({
         price,
+        supplier,
+        label,
       })
 
       const offset: string = ((Number(page) - 1) * Number(limit)).toString()
-      let data = null
 
+      let data = null
       if (type === 'common') {
         data = await CategoryService.getProductsById({
           categoryUrl: name,
@@ -183,12 +184,20 @@ class CategoryController {
 const filterParamsToObjectIfExistOrNull = (
   args: TCMFilterParamsRaw
 ): TCMFilterParams | null => {
-  const { price } = args
+  const { price, supplier, label } = args
   const result: TCMFilterParams = {} as any
 
   if (price !== undefined) {
     const [min, max] = price.split('-')
     result.price = { min, max }
+  }
+
+  if (supplier !== undefined) {
+    result.supplier = supplier.split('-')
+  }
+
+  if (label !== undefined) {
+    result.label = label.split('-')
   }
 
   return Object.keys(result).length === 0 ? null : result

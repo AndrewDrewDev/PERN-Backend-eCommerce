@@ -5,4 +5,9 @@
     <file url="file://$PROJECT_DIR$/src/model/ProductModel.ts" dialect="GenericSQL" />
     <file url="PROJECT" dialect="PostgreSQL" />
   </component>
+  <component name="SqlResolveMappings">
+    <file url="file://$PROJECT_DIR$/src/db" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;name&quot;:{     &quot;@qname&quot;:&quot;43a94e46-fbd5-4ea2-a05d-c96d9a0c2b3c&quot;    },    &quot;group&quot;:{     &quot;@kind&quot;:&quot;database&quot;,     &quot;node&quot;:{      &quot;name&quot;:{       &quot;@qname&quot;:&quot;pern_eccomerce_db&quot;      }     }    }   }  } }}" />
+    <file url="file://$PROJECT_DIR$/src/model" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;name&quot;:{     &quot;@qname&quot;:&quot;43a94e46-fbd5-4ea2-a05d-c96d9a0c2b3c&quot;    },    &quot;group&quot;:{     &quot;@kind&quot;:&quot;database&quot;,     &quot;node&quot;:{      &quot;name&quot;:{       &quot;@qname&quot;:&quot;pern_eccomerce_db&quot;      }     }    }   }  } }}" />
+    <file url="PROJECT" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;@negative&quot;:&quot;1&quot;   }  } }}" />
+  </component>
 </project>

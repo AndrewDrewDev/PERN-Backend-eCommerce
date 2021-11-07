@@ -88,8 +88,12 @@ export type TCMUpdateOrderImages = {
 
 export type TCMFilterParamsRaw = {
   price: string
+  supplier: string
+  label: string
 }
 
 export type TCMFilterParams = {
   price: { min: string; max: string }
+  supplier: string[]
+  label: string[]
 }

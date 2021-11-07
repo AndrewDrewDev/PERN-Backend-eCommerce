@@ -41,11 +41,10 @@ class CategoryModel {
                  im.name       as img
           from products pp
                    left join category_to_product cp on pp.id = cp.product_id
-                   left join categories cc on cc.url = $1
-              and cc.id = cp.category_id
+                   left join categories cc on cc.url = $1 and cc.id = cp.category_id
                    left join labels lb on lb.id = pp.label_id
-                   left join product_images im on im.product_id = pp.id
-              and im.preview = true
+                   left join product_images im on im.product_id = pp.id and im.preview = true
+                   left join suppliers sp on sp.id = pp.supplier_id
           ${whereSequence}
           group by pp.id,
                    im.name,
@@ -180,6 +179,7 @@ class CategoryModel {
                    left join statuses st on pp.status_id = st.id
                    left join labels lb on pp.label_id = lb.id
                    left join product_images im on pp.id = im.product_id and im.preview = true
+                   left join suppliers sp on sp.id = pp.supplier_id
           ${whereSequence}
           order by ccp.id asc
           limit $2 offset $3
@@ -217,6 +217,7 @@ class CategoryModel {
                 left join labels ll on ll.url = $1
                 left join statuses st on st.id = pp.status_id
                 left join product_images im on pp.id = im.product_id and im.preview = true
+                left join suppliers sp on sp.id = pp.supplier_id
        ${whereSequence}
        limit $2 offset $3`,
       [labelUrl, limit, offset]
@@ -237,7 +238,6 @@ class CategoryModel {
     const whereSequence = filterObjectToSqlWhere({
       filterObject,
     })
-
     console.log(whereSequence)
 
     const data = await db.query(
@@ -252,6 +252,7 @@ class CategoryModel {
                    left join statuses st on pp.status_id = st.id
                    left join labels lb on pp.label_id = lb.id
                    left join product_images im on pp.id = im.product_id and im.preview = true
+                   left join suppliers sp on sp.id = pp.supplier_id
           ${whereSequence}
           limit $1 offset $2
       `,
@@ -305,14 +306,28 @@ const filterObjectToSqlWhere = (args: {
 }): string => {
   let { prefix, filterObject } = args
 
+  // prefix by default in not exist
   if (!prefix) prefix = 'where true'
   if (filterObject === null) return prefix
 
   const result = prefix ? [prefix] : []
 
-  if (filterObject.price) {
-    const { min, max } = filterObject.price
-    result.push(`pp.price BETWEEN '${min}' AND '${max}'`)
+  const { price, supplier, label } = filterObject
+
+  if (price) {
+    const { min, max } = price
+    result.push(`pp.price::float BETWEEN ${min} AND ${max}`)
+  }
+
+  if (supplier) {
+    const supplierWhereExpression = supplier.map(id => `sp.id = ${id}`)
+    result.push(`(${supplierWhereExpression.join(' OR ')})`)
+    // supplier.forEach(id => result.push(`sp.id = ${id}`))
+  }
+
+  if (label) {
+    const labelWhereExpression = label.map(id => `lb.id = ${id}`)
+    result.push(`(${labelWhereExpression.join(' OR ')})`)
   }
 
   return result.join(' and ')
