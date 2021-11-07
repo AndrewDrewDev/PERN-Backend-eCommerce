@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import CategoryService from '../model/CategoryModel'
 import {
+  TCMFilterParamsRaw,
   TCMGetBreadcrumb,
   TCMGetInfoByLevel,
   TCMProductsByCategoryData,
   TCResponseMessage,
+  TCMFilterParams,
 } from '../types'
 import ErrorHandler from '../error/ErrorHandler'
 import { UploadedFile } from 'express-fileupload'
@@ -16,12 +18,18 @@ class CategoryController {
     next: NextFunction
   ): Promise<Response<TCMProductsByCategoryData[] | null> | void> {
     try {
-      let { name, page, limit, type } = req.query as {
+      let { name, page, limit, type, price } = req.query as {
         name: string
         page: string
         limit: string
         type: 'custom' | 'common' | 'label' | 'all'
+        price: string
       }
+
+      const filterObject = filterParamsToObjectIfExistOrNull({
+        price,
+      })
+
       const offset: string = ((Number(page) - 1) * Number(limit)).toString()
       let data = null
 
@@ -30,23 +38,27 @@ class CategoryController {
           categoryUrl: name,
           limit,
           offset,
+          filterObject: filterObject,
         })
       } else if (type === 'custom') {
         data = await CategoryService.getCustomProductsById({
           categoryUrl: name,
           limit,
           offset,
+          filterObject: filterObject,
         })
       } else if (type === 'label') {
         data = await CategoryService.getLabelProductsById({
           labelUrl: name,
           limit,
           offset,
+          filterObject: filterObject,
         })
       } else if (type === 'all') {
         data = await CategoryService.getAllProducts({
           limit,
           offset,
+          filterObject: filterObject,
         })
       } else {
         return res.status(400).json({ message: 'Wrong type!' })
@@ -166,6 +178,20 @@ class CategoryController {
       next(new ErrorHandler(500, error.message))
     }
   }
+}
+
+const filterParamsToObjectIfExistOrNull = (
+  args: TCMFilterParamsRaw
+): TCMFilterParams | null => {
+  const { price } = args
+  const result: TCMFilterParams = {} as any
+
+  if (price !== undefined) {
+    const [min, max] = price.split('-')
+    result.price = { min, max }
+  }
+
+  return Object.keys(result).length === 0 ? null : result
 }
 
 export default new CategoryController()

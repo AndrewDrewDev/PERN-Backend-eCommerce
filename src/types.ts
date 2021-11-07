@@ -85,3 +85,11 @@ export type TCMUpdateOrderImages = {
   name: string
   order: number
 }
+
+export type TCMFilterParamsRaw = {
+  price: string
+}
+
+export type TCMFilterParams = {
+  price: { min: string; max: string }
+}

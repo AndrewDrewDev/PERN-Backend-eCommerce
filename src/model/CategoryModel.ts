@@ -5,6 +5,7 @@ import {
   TCMGetInfoByLevel,
   TCMGetBreadcrumb,
   TCResponseMessage,
+  TCMFilterParams,
 } from '../types'
 import { QueryResult } from 'pg'
 import db from '../db/db'
@@ -12,13 +13,24 @@ import FileSystemUtils from '../utils/FileSystemUtils'
 import { UploadedFile } from 'express-fileupload'
 import path from 'path/posix'
 
+type TFilterParams = TCMFilterParams | null
+
 class CategoryModel {
   public async getProductsById(args: {
     categoryUrl: string
     limit: string
     offset: string
+    filterObject: TFilterParams
   }): Promise<QueryResult<TCMProductsByCategoryData>[] | null> {
-    const { categoryUrl, limit, offset } = args
+    const { categoryUrl, limit, offset, filterObject } = args
+
+    const whereSequence = filterObjectToSqlWhere({
+      prefix: `where cc.url = $1
+            and cc.id = cp.category_id
+            and pp.id = cp.product_id`,
+      filterObject,
+    })
+
     const data = await db.query(
       `
           select pp.name       as name,
@@ -34,9 +46,7 @@ class CategoryModel {
                    left join labels lb on lb.id = pp.label_id
                    left join product_images im on im.product_id = pp.id
               and im.preview = true
-          where cc.url = $1
-            and cc.id = cp.category_id
-            and pp.id = cp.product_id
+          ${whereSequence}
           group by pp.id,
                    im.name,
                    lb.name
@@ -146,8 +156,14 @@ class CategoryModel {
     categoryUrl: string
     limit: string
     offset: string
+    filterObject: TFilterParams
   }): Promise<QueryResult<TCMProductsByCategoryData>[] | null> {
-    const { categoryUrl, limit, offset } = args
+    const { categoryUrl, limit, offset, filterObject } = args
+
+    const whereSequence = filterObjectToSqlWhere({
+      prefix: `where ct.id = ccp.custom_categories_id`,
+      filterObject,
+    })
 
     const data = await db.query(
       `
@@ -164,7 +180,7 @@ class CategoryModel {
                    left join statuses st on pp.status_id = st.id
                    left join labels lb on pp.label_id = lb.id
                    left join product_images im on pp.id = im.product_id and im.preview = true
-          where ct.id = ccp.custom_categories_id
+          ${whereSequence}
           order by ccp.id asc
           limit $2 offset $3
       `,
@@ -180,8 +196,14 @@ class CategoryModel {
     labelUrl: string
     limit: string
     offset: string
+    filterObject: TFilterParams
   }): Promise<QueryResult<TCMProductsByCategoryData>[] | null> {
-    const { labelUrl, limit, offset } = args
+    const { labelUrl, limit, offset, filterObject } = args
+
+    const whereSequence = filterObjectToSqlWhere({
+      prefix: `where pp.label_id = ll.id`,
+      filterObject,
+    })
 
     const data = await db.query(
       `select pp.name       as name,
@@ -195,7 +217,7 @@ class CategoryModel {
                 left join labels ll on ll.url = $1
                 left join statuses st on st.id = pp.status_id
                 left join product_images im on pp.id = im.product_id and im.preview = true
-       where pp.label_id = ll.id
+       ${whereSequence}
        limit $2 offset $3`,
       [labelUrl, limit, offset]
     )
@@ -208,8 +230,15 @@ class CategoryModel {
   public async getAllProducts(args: {
     limit: string
     offset: string
+    filterObject: TFilterParams
   }): Promise<QueryResult<TCMProductsByCategoryData>[] | null> {
-    const { limit, offset } = args
+    const { limit, offset, filterObject } = args
+
+    const whereSequence = filterObjectToSqlWhere({
+      filterObject,
+    })
+
+    console.log(whereSequence)
 
     const data = await db.query(
       `
@@ -223,6 +252,7 @@ class CategoryModel {
                    left join statuses st on pp.status_id = st.id
                    left join labels lb on pp.label_id = lb.id
                    left join product_images im on pp.id = im.product_id and im.preview = true
+          ${whereSequence}
           limit $1 offset $2
       `,
       [limit, offset]
@@ -267,6 +297,25 @@ class CategoryModel {
       },
     ]
   }
+}
+
+const filterObjectToSqlWhere = (args: {
+  prefix?: string
+  filterObject: TCMFilterParams | null
+}): string => {
+  let { prefix, filterObject } = args
+
+  if (!prefix) prefix = 'where true'
+  if (filterObject === null) return prefix
+
+  const result = prefix ? [prefix] : []
+
+  if (filterObject.price) {
+    const { min, max } = filterObject.price
+    result.push(`pp.price BETWEEN '${min}' AND '${max}'`)
+  }
+
+  return result.join(' and ')
 }
 
 export default new CategoryModel()
