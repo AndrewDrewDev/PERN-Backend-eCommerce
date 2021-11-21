@@ -240,7 +240,6 @@ class CategoryModel {
     const whereSequence = filterObjectToSqlWhere({
       filterObject,
     })
-    console.log(whereSequence)
 
     const data = await db.query(
       `
@@ -402,7 +401,7 @@ class CategoryModel {
         `
             select max(pp.price::float) as max,
                    min(pp.price::float) as min
-            from products
+            from products pp
         `
       )
       .then(data => (data.rows[0].max !== null ? data.rows[0] : null))
@@ -412,7 +411,7 @@ class CategoryModel {
         `
             select distinct lb.id,
                             lb.name
-            from labels
+            from labels lb
         `
       )
       .then(data => (data.rowCount !== 0 ? data.rows : null))
@@ -421,7 +420,7 @@ class CategoryModel {
       .query(
         `
             select distinct sp.id, sp.name
-            from suppliers
+            from suppliers sp
         `
       )
       .then(data => (data.rowCount !== 0 ? data.rows : null))
