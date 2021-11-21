@@ -181,15 +181,22 @@ class CategoryController {
     }
   }
 
-  public async getProductsFiltersInfoByUrl(
+  public async getProductsFiltersByUrl(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response<TCMGetProductsFiltersInfo | TCResponseMessage> | void> {
     try {
-      const { url } = req.params
+      const { type, url } = req.params
+      let result: TCMGetProductsFiltersInfo | null = null
 
-      const result = await CategoryModel.getProductsFiltersInfoByUrl(url)
+      if (type === 'all') {
+        result = await CategoryModel.getAllProductsFiltersByUrl()
+      } else if (type === 'label') {
+        result = await CategoryModel.getLabelProductsFiltersByUrl(url)
+      } else {
+        result = await CategoryModel.getCommonProductsFiltersByUrl(url)
+      }
 
       return res.status(200).json(result)
     } catch (error) {

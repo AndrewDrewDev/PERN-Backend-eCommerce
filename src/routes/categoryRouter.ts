@@ -17,7 +17,11 @@ router.put(
 router.get('/info/cloud/:level', CategoryController.getInfoByLevel)
 router.get('/breadcrumb/:url', CategoryController.getBreadcrumb)
 router.get('/info/custom/:id', CategoryController.getCustomProductsInfo)
-router.get('/info/filters/:url', CategoryController.getProductsFiltersInfoByUrl)
+router.get(
+  '/info/filters/:type/:url',
+  CategoryController.getProductsFiltersByUrl
+)
+
 router.get('/info/all/', CategoryController.getAllProductsInfo)
 
 export default router

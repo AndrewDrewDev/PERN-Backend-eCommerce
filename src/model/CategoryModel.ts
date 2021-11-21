@@ -305,7 +305,7 @@ class CategoryModel {
     ]
   }
 
-  public async getProductsFiltersInfoByUrl(
+  public async getCommonProductsFiltersByUrl(
     url: string
   ): Promise<TCMGetProductsFiltersInfo> {
     const price = await db
@@ -340,14 +340,89 @@ class CategoryModel {
     const suppliers = await db
       .query(
         `
-        select distinct sp.id, sp.name
-        from suppliers sp
-                 left join products pp on pp.supplier_id = sp.id
-                 left join category_to_product ctp on ctp.product_id = pp.id
-                 left join categories cc on cc.id = ctp.category_id
-        where cc.url = ''
-    `,
+            select distinct sp.id, sp.name
+            from suppliers sp
+                     left join products pp on pp.supplier_id = sp.id
+                     left join category_to_product ctp on ctp.product_id = pp.id
+                     left join categories cc on cc.id = ctp.category_id
+            where cc.url = $1
+        `,
         [url]
+      )
+      .then(data => (data.rowCount !== 0 ? data.rows : null))
+
+    return {
+      price,
+      labels,
+      suppliers,
+    }
+  }
+
+  public async getLabelProductsFiltersByUrl(
+    url: string
+  ): Promise<TCMGetProductsFiltersInfo> {
+    const price = await db
+      .query(
+        `
+            select max(pp.price::float) as max,
+                   min(pp.price::float) as min
+            from products pp
+                     left join labels lb on lb.id = pp.label_id
+            where lb.url = $1
+        `,
+        [url]
+      )
+      .then(data => (data.rows[0].max !== null ? data.rows[0] : null))
+
+    const labels = null
+
+    const suppliers = await db
+      .query(
+        `
+            select distinct sp.id, sp.name
+            from suppliers sp
+                     left join products pp on pp.supplier_id = sp.id
+                     left join labels lb on lb.id = pp.label_id
+            where lb.url = $1
+        `,
+        [url]
+      )
+      .then(data => (data.rowCount !== 0 ? data.rows : null))
+
+    return {
+      price,
+      labels,
+      suppliers,
+    }
+  }
+
+  public async getAllProductsFiltersByUrl(): Promise<TCMGetProductsFiltersInfo> {
+    const price = await db
+      .query(
+        `
+            select max(pp.price::float) as max,
+                   min(pp.price::float) as min
+            from products
+        `
+      )
+      .then(data => (data.rows[0].max !== null ? data.rows[0] : null))
+
+    const labels = await db
+      .query(
+        `
+            select distinct lb.id,
+                            lb.name
+            from labels
+        `
+      )
+      .then(data => (data.rowCount !== 0 ? data.rows : null))
+
+    const suppliers = await db
+      .query(
+        `
+            select distinct sp.id, sp.name
+            from suppliers
+        `
       )
       .then(data => (data.rowCount !== 0 ? data.rows : null))
 
