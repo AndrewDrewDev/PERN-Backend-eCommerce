@@ -2,10 +2,12 @@
   "private": true,
   "main": "./src/app.ts",
   "scripts": {
-    "start": "yarn run dev:server",
+    "start": "yarn run build && cross-env NODE_ENV=production node ./dist/app.js",
+    "dev": "yarn run dev:server",
     "dev:server": "cross-env NODE_ENV=development nodemon ./src/app.ts",
     "dev:db:init": "cross-env NODE_ENV=development nodemon ./src/db/model/startInitModel.ts",
     "dev:db:migrate": "cross-env NODE_ENV=development nodemon ./src/db/migration/startMigrate.ts",
+    "prod:db:migrate": "cross-env NODE_ENV=production node ./dist/db/migration/startMigrate.ts",
     "format": "prettier --write \"src/**/*.(ts|js|html)\"",
     "build": "tsc -p .",
     "test": "jest"

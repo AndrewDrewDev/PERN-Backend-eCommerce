@@ -13,7 +13,6 @@ import db from '../db/db'
 import FileSystemUtils from '../utils/FileSystemUtils'
 import { UploadedFile } from 'express-fileupload'
 import path from 'path/posix'
-import { log } from 'util'
 
 type TFilterParams = TCMFilterParams | null
 

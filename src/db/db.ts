@@ -1,18 +1,28 @@
 import { Pool } from 'pg'
 import config from '../config'
+import { StartModeEnum } from '../types'
 
 // Connected to PostgreSQL
 class Database {
   private _pool: Pool
 
   constructor() {
-    this._pool = new Pool({
-      user: config.DB_USER,
-      host: config.DB_HOST,
-      database: config.DB_NAME,
-      password: config.DB_PASSWORD,
-      port: config.DB_PORT,
-    })
+    if (process.env.NODE_ENV === StartModeEnum.Development) {
+      this._pool = new Pool({
+        user: config.DB_USER,
+        host: config.DB_HOST,
+        database: config.DB_NAME,
+        password: config.DB_PASSWORD,
+        port: config.DB_PORT,
+      })
+    } else {
+      this._pool = new Pool({
+        connectionString: 'postgresql-graceful-08599',
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      })
+    }
   }
 
   public async query(text: string, params: any[] = []) {
@@ -20,4 +30,6 @@ class Database {
   }
 }
 
-export default new Database()
+const database = new Database()
+
+export default database

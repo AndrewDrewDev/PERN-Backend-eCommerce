@@ -1,3 +1,8 @@
+export enum StartModeEnum {
+  Development = 'development',
+  Production = 'production',
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Prefix abbreviation Controllers types explain:
