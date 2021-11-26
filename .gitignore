@@ -1,6 +1,5 @@
 .vscode/
 dist/
-data/
 config/
 yarn.lock
 node_modules/

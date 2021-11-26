@@ -1,0 +1,182 @@
+{
+  "Goods": {
+    "d691_exCategory1": {
+      "Length": 40
+    },
+    "d692_exCategory2": {
+      "optional": true,
+      "Length": 40
+    },
+    "d693_exCategory3": {
+      "optional": true,
+      "Length": 40
+    },
+    "d720_exProductID": {
+      "Length": 15
+    },
+    "d721_exProductName": {
+      "Length": 50
+    },
+    "d734_exProductNew": {
+      "Length": 1,
+      "value": [
+        "@"
+      ],
+      "empty": true
+    },
+    "d735_exProductDiscounts": {
+      "Length": 1,
+      "value": [
+        "@"
+      ],
+      "empty": true
+    },
+    "d727_exProductProperty": {
+      "Length": 100,
+      "empty": true
+    },
+    "d802_exPriceSell": {
+      "Length": 50,
+      "callback": ["toFixed"]
+    },
+    "d781_exEd": {
+      "Length": 10
+    },
+    "d803_exPriceOldSell": {
+      "Length": 10,
+      "empty": true,
+      "callback": ["toFixed"]
+    },
+    "d723_exProductDescription": {
+      "Length": 10000,
+      "empty": true,
+      "callback": ["htmlEntities"]
+    },
+    "d748_exProductAmountRemaind": {
+      "Length": 10000,
+      "empty": true
+    },
+    "d722_exProductInStock": {
+      "value": [
+        "да",
+        "нет",
+        "подзаказ"
+      ],
+      "callback": ["toLowerCase"]
+    },
+    "d747_exProductCodeVender": {
+      "empty": true
+    },
+    "d738_exProductManufacturer": {
+      "empty": true
+    }
+  },
+  "BaseInfo": {
+    "d582_exShopSiteTitle": {
+      "Length": 50
+    },
+    "d583_exShopSiteSubTitle": {
+      "Length": 60
+    },
+    "d580_exShopSiteID": {
+      "Length": 50
+    },
+    "d581_exShopSiteBaseLink": {
+      "Length": 50
+    },
+    "d584_exShopSiteAddress": {
+      "Length": 50
+    },
+    "d585_exShopSitePhone": {
+      "Length": 50
+    },
+    "d586_exShopSiteEmail": {
+      "Length": 50
+    },
+    "d587_exShopSitePaginationNumber": {
+      "Length": 50
+    },
+    "d589_exShopSiteCurrency": {
+      "Length": 50,
+      "value": [
+        "грн.",
+        "руб.",
+        "USD"
+      ]
+    },
+    "d588_exShopSiteCatalogPage": {
+      "Length": 50,
+      "value": [
+        "grid4",
+        "grid"
+      ]
+    },
+    "d590_exShopSiteCategoryNumber": {
+      "Length": 50,
+      "value": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "d593_exShopSiteTheme": {
+      "Length": 50,
+      "value": [
+        "theme01"
+      ]
+    },
+    "d591_exShopSiteCopyright": {
+      "Length": 50
+    },
+    "d594_exShopSiteSocialNetwork": {
+      "Length": 50
+    },
+    "d595_exShopSiteCategoryCloudNumber": {
+      "Length": 50,
+      "value": [
+        "1;",
+        "1;2",
+        "1;2;3"
+      ]
+    },
+    "d601_exShopSiteCardView": {
+      "Length": 50,
+      "value": [
+        "square",
+        "vertical"
+      ]
+    },
+    "d602_exShopSiteGridView": {
+      "Length": 50,
+      "value": [
+        "square",
+        "vertical"
+      ]
+    },
+    "d603_exShopSiteDetailView": {
+      "Length": 50,
+      "value": [
+        "square",
+        "vertical"
+      ]
+    },
+    "d691_exCategory1": {
+      "Length": 50
+    },
+    "d692_exCategory2": {
+      "Length": 50
+    },
+    "d693_exCategory3": {
+      "Length": 50
+    },
+    "d592_exShopSiteSliderHeader": {
+      "Length": 50
+    },
+    "d599_exShopSiteDiscountCards": {
+      "Length": 50
+    },
+    "d600_exShopSiteNewCards": {
+      "Length": 50
+    }
+  }
+}
