@@ -14,7 +14,7 @@ const initModel = async (): Promise<void> => {
     await db.query(sql)
     logger.info(`init model of ${config.DB_NAME} database!`)
     return Promise.resolve()
-  } catch (error) {
+  } catch (error: any) {
     logger.error(error, `init model of ${config.DB_NAME} database!`)
     return Promise.reject()
   }

@@ -67,7 +67,7 @@ class CategoryController {
       }
 
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -100,7 +100,7 @@ class CategoryController {
       )
 
       return res.status(200).json(result)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -122,7 +122,7 @@ class CategoryController {
       }
 
       return res.status(200).json({ status: 'OK' })
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -136,7 +136,7 @@ class CategoryController {
       const { level } = req.params
       const data = await CategoryModel.getInfoByLevel(level)
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -150,7 +150,7 @@ class CategoryController {
       const { url } = req.params
       const data = await CategoryModel.getBreadcrumb(url)
       return res.json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(next(new ErrorHandler(500, error.message)))
     }
   }
@@ -164,7 +164,7 @@ class CategoryController {
       const { id } = req.params
       const data = await CategoryModel.getCustomCategoryInfo(id)
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -176,7 +176,7 @@ class CategoryController {
     try {
       const data = await CategoryModel.getAllCategoryInfo()
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -199,7 +199,7 @@ class CategoryController {
       }
 
       return res.status(200).json(result)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }

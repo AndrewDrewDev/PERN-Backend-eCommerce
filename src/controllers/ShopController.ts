@@ -17,7 +17,7 @@ class ShopController {
     try {
       const data = await ShopService.getConfig()
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -31,7 +31,7 @@ class ShopController {
       const updateData: TDBMDataShopConfig = req.body
       const data = await ShopService.updateConfig(updateData)
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -44,7 +44,7 @@ class ShopController {
     try {
       const data = await ShopService.getSlider()
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -58,7 +58,7 @@ class ShopController {
       const { name } = req.params
       const data = await ShopService.getCustomCategoryProductsByName(name)
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -78,7 +78,7 @@ class ShopController {
       )
 
       return res.status(200).json(result)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -98,7 +98,7 @@ class ShopController {
       )
 
       return res.status(200).json(result)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -118,7 +118,7 @@ class ShopController {
       )
 
       return res.status(200).json(result)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }

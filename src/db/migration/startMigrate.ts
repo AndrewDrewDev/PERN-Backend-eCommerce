@@ -1,5 +1,5 @@
 import path from 'path'
-import excelValidator from 'excel-validator'
+import excelValidator from 'pern-excel-validator'
 
 import config from '../../config'
 import { TDBMJson } from '../types'

@@ -41,7 +41,7 @@ class InsertToDB {
 
       logger.info('migration data to table: categories!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: categories!')
       return Promise.reject()
     }
@@ -56,7 +56,7 @@ class InsertToDB {
       }
       logger.info('migration data to table: labels!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: labels!')
       return Promise.reject()
     }
@@ -71,7 +71,7 @@ class InsertToDB {
       }
       logger.info('migration data to table: units!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: units!')
       return Promise.reject()
     }
@@ -91,8 +91,8 @@ class InsertToDB {
         logger.fatal('migration data to table: suppliers! - Lack in data!')
         return Promise.reject()
       }
-    } catch (err) {
-      logger.fatal('migration data to table: suppliers!', err)
+    } catch (error: any) {
+      logger.fatal(error, 'migration data to table: suppliers!')
       return Promise.reject()
     }
   }
@@ -203,8 +203,8 @@ class InsertToDB {
       }
       logger.info('migration data to table: category_to_product!')
       return Promise.resolve()
-    } catch (err) {
-      logger.fatal('migration data to table: category_to_product!', err)
+    } catch (error: any) {
+      logger.fatal(error, 'migration data to table: category_to_product!')
       return Promise.reject()
     }
   }
@@ -263,7 +263,7 @@ class InsertToDB {
 
       logger.info('migration data to table: product_images!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: category_to_product!')
       return Promise.reject()
     }
@@ -277,7 +277,7 @@ class InsertToDB {
 
       logger.info('migration data to table: statuses!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: statuses!')
       return Promise.reject()
     }
@@ -329,7 +329,7 @@ class InsertToDB {
       )
       logger.info('migration data to table: shop_config!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: shop_config!')
       return Promise.reject()
     }
@@ -347,7 +347,7 @@ class InsertToDB {
       }
       logger.info('migration data to table: custom_categories!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: custom_categories!')
       return Promise.resolve()
     }
@@ -386,7 +386,7 @@ class InsertToDB {
 
       logger.info('migration data to table: custom_categories_products!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(
         error,
         'migration data to table: custom_categories_products!'
@@ -409,7 +409,7 @@ class InsertToDB {
 
       logger.info('migration data to table: info_pages!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: info_pages!')
       return Promise.resolve()
     }
@@ -434,7 +434,7 @@ class InsertToDB {
 
       logger.info('migration data to table: info_pages_images!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: info_pages_images!')
       return Promise.resolve()
     }
@@ -453,7 +453,7 @@ class InsertToDB {
       }
       logger.info('migration data to table: slider!')
       return Promise.resolve()
-    } catch (error) {
+    } catch (error: any) {
       logger.fatal(error, 'migration data to table: slider!')
       return Promise.resolve()
     }

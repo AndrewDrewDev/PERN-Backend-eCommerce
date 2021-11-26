@@ -13,7 +13,7 @@ class InfoController {
       const { id } = req.params
       const data = await InfoService.getById(id)
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -35,7 +35,7 @@ class InfoController {
         })
       }
       return res.status(200).json({ status: 'OK' })
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }

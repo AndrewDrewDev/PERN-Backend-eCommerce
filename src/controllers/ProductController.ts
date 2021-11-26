@@ -20,7 +20,7 @@ class ProductController {
       const data = await ProductModel.getOneById(id)
 
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -43,7 +43,7 @@ class ProductController {
       }
 
       return res.status(200).json(updatedProduct)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -83,7 +83,7 @@ class ProductController {
       }
 
       return res.status(200).json({ status: 'OK' })
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -98,7 +98,7 @@ class ProductController {
       const data = await ProductModel.getSearchProductsByName(name)
 
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -112,7 +112,7 @@ class ProductController {
       const data = await ProductModel.getLabels()
 
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -126,7 +126,7 @@ class ProductController {
       const data = await ProductModel.getStatuses()
 
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -140,7 +140,7 @@ class ProductController {
       const data = await ProductModel.getSuppliers()
 
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -154,7 +154,7 @@ class ProductController {
       const data = await ProductModel.getUnits()
 
       return res.status(200).json(data)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -172,7 +172,7 @@ class ProductController {
       if (!result) return res.status(422).send({})
 
       return res.status(200).json(req.body)
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -216,7 +216,7 @@ class ProductController {
         })
 
       return res.status(200).json({ status: 'OK' })
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -247,7 +247,7 @@ class ProductController {
         })
 
       return res.status(200).send({ status: 'OK' })
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }

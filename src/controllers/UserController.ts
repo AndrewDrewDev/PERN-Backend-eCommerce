@@ -40,7 +40,7 @@ class UserController {
       const token = generateJwt({ email, role })
 
       return res.json({ token })
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
@@ -68,7 +68,7 @@ class UserController {
       })
 
       return res.json({ token })
-    } catch (error) {
+    } catch (error: any) {
       next(new ErrorHandler(500, error.message))
     }
   }
