@@ -51,9 +51,14 @@ class FileSystemUtils {
   }
 
   public clearStaticFolder(): void {
-    const name = this.srcStaticFolderPath
-    fs.removeSync(name)
-    fs.mkdirSync(name)
+    const excludes = ['.gitkeep']
+    const imagesNames = fs.readdirSync(this.srcStaticFolderPath)
+
+    for (const imagesName of imagesNames) {
+      if (!excludes.includes(imagesName)) {
+        fs.removeSync(this.srcStaticFolderPath + '/' + imagesName)
+      }
+    }
   }
 
   get srcStaticFolderPath() {

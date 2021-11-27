@@ -3,6 +3,6 @@ dist/
 config/
 yarn.lock
 node_modules/
-scratch/
-static/
+static/*
+!static/.gitkeep
 package-lock.json

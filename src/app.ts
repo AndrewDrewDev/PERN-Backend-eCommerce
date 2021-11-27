@@ -20,7 +20,6 @@ app.use(express.static(FileSystemUtils.srcStaticFolderPath))
 
 const start = async () => {
   try {
-    console.log(FileSystemUtils.srcStaticFolderPath)
     app.listen(PORT, () => {
       console.log(`Server Running on port ${PORT}!`)
     })
