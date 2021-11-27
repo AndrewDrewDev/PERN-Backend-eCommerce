@@ -8,7 +8,7 @@ import {
 } from '../types'
 import db from '../db/db'
 import { UploadedFile } from 'express-fileupload'
-import path from 'path/posix'
+import path from 'path'
 import FileSystemUtils from '../utils/FileSystemUtils'
 
 type TGetOneById = {

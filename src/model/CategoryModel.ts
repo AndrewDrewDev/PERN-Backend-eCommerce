@@ -12,7 +12,7 @@ import { QueryResult } from 'pg'
 import db from '../db/db'
 import FileSystemUtils from '../utils/FileSystemUtils'
 import { UploadedFile } from 'express-fileupload'
-import path from 'path/posix'
+import path from 'path'
 
 type TFilterParams = TCMFilterParams | null
 
