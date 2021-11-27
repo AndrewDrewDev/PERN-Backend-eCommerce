@@ -2,7 +2,7 @@
   "private": true,
   "main": "./src/app.ts",
   "scripts": {
-    "start": "yarn run build && yarn run copy-files && cross-env NODE_ENV=production node ./dist/app.js",
+    "start": "cross-env NODE_ENV=production node ./dist/app.js",
     "dev": "yarn run dev:server",
     "dev:server": "cross-env NODE_ENV=development nodemon ./src/app.ts",
     "dev:db:init": "cross-env NODE_ENV=development nodemon ./src/db/model/startInitModel.ts",
@@ -11,7 +11,7 @@
     "format": "prettier --write \"src/**/*.(ts|js|html)\"",
     "copy-files": "copyfiles -u 1 \"src/**/*.sql\" dist",
     "deploy": "git push heroku main:master",
-    "build": "tsc -p .",
+    "build": "tsc -p . && yarn run copy-files",
     "test": "jest"
   },
   "nodemonConfig": {

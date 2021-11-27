@@ -17,7 +17,7 @@ class Database {
       })
     } else {
       this._pool = new Pool({
-        connectionString: 'postgresql-graceful-08599',
+        connectionString: process.env.DATABASE_URL,
         ssl: {
           rejectUnauthorized: false,
         },
