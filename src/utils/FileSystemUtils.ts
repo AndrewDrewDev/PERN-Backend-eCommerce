@@ -9,13 +9,7 @@ class FileSystemUtils {
   private readonly _datasetImgCategoryFolderPath: string
 
   constructor() {
-    this._srcStaticFolderPath = path.resolve(
-      __dirname,
-      '..',
-      '..',
-      process.env.NODE_ENV === 'development' ? 'src' : 'dist',
-      'static'
-    )
+    this._srcStaticFolderPath = path.resolve(__dirname, '..', '..', 'static')
     this._datasetImgGoodsFolderPath = path.resolve(
       __dirname,
       '..',

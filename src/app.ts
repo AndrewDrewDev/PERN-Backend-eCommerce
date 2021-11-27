@@ -4,8 +4,8 @@ import fileUpload from 'express-fileupload'
 import cors from 'cors'
 import config from './config'
 import routes from './routes'
-import path from 'path'
 import errorResponseHandler from './error/errorResponseHandler'
+import FileSystemUtils from './utils/FileSystemUtils'
 
 const PORT = process.env.PORT || config.PORT
 
@@ -15,7 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(fileUpload({}))
 app.use('/api', routes)
-app.use(express.static(path.resolve(__dirname, 'static')))
+app.use(express.static(FileSystemUtils.srcStaticFolderPath))
 
 const start = async () => {
   try {
