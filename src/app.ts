@@ -9,7 +9,9 @@ import errorResponseHandler from './error/errorResponseHandler'
 import { StartModeEnum } from './types'
 
 const PORT =
-  process.env.NODE_ENV === StartModeEnum.Development ? config.PORT : '80'
+  process.env.NODE_ENV === StartModeEnum.Development
+    ? config.PORT
+    : process.env.PORT
 
 const app: Application = express()
 app.use(cors())
