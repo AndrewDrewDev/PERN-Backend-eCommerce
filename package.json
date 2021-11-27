@@ -10,7 +10,7 @@
     "prod:db:migrate": "cross-env NODE_ENV=production node ./dist/db/migration/startMigrate.js",
     "format": "prettier --write \"src/**/*.(ts|js|html)\"",
     "copy-files": "copyfiles -u 1 \"src/**/*.sql\" dist",
-    "deploy": "git push heroku main:master",
+    "deploy": "yarn run build && git push heroku main:master",
     "build": "tsc -p . && yarn run copy-files",
     "test": "jest"
   },

@@ -6,12 +6,8 @@ import config from './config'
 import routes from './routes'
 import path from 'path'
 import errorResponseHandler from './error/errorResponseHandler'
-import { StartModeEnum } from './types'
 
-const PORT =
-  process.env.NODE_ENV === StartModeEnum.Development
-    ? config.PORT
-    : process.env.PORT
+const PORT = process.env.PORT || config.PORT
 
 const app: Application = express()
 app.use(cors())

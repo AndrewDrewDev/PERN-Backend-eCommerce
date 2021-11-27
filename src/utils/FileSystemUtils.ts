@@ -13,7 +13,7 @@ class FileSystemUtils {
       __dirname,
       '..',
       '..',
-      'src',
+      process.env.NODE_ENV === 'development' ? 'src' : 'dist',
       'static'
     )
     this._datasetImgGoodsFolderPath = path.resolve(

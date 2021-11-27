@@ -10,9 +10,9 @@ const clearDatabase = (): Promise<void> => {
       create schema public;`)
       logger.info(`clear scheme ${config.DB_NAME} database!`)
       res()
-    } catch (e) {
-      logger.error(`clear scheme ${config.DB_NAME} database!`)
-      rej(e)
+    } catch (error: any) {
+      logger.fatal(error, `clear scheme ${config.DB_NAME} database!`)
+      rej(error)
     }
   })
 }
