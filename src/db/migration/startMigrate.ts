@@ -8,6 +8,7 @@ import initModel from '../model/initModel'
 import InsertToDB from './InsertToDB'
 import logger from '../../utils/logger'
 import FileSystemService from '../../utils/FileSystemUtils'
+import clearDatabase from './clearDatabase'
 
 const startMigrate = () => {
   const excelFilePath: string = path.resolve(
@@ -55,7 +56,8 @@ const startMigrate = () => {
 
   const migrationData: MigrationDataStore = new MigrationDataStore(jsonData)
 
-  initModel()
+  clearDatabase()
+    .then(() => initModel())
     .then(() => InsertToDB.sliderTable(migrationData.slider))
     .then(() => InsertToDB.infoPagesTable(migrationData.infoPages))
     .then(() => InsertToDB.infoPagesImagesTable(migrationData.infoPages))
