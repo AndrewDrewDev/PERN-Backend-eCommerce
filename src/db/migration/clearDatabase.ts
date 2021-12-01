@@ -1,6 +1,5 @@
 import db from '../db'
 import logger from '../../utils/logger'
-import getEnvVariable from '../../utils/getEnvVariable'
 
 const clearDatabase = (): Promise<void> => {
   return new Promise(async (res, rej) => {
@@ -8,10 +7,10 @@ const clearDatabase = (): Promise<void> => {
       await db.query(`
       drop schema public cascade;
       create schema public;`)
-      logger.info(`clear scheme ${getEnvVariable('DB_NAME')} database!`)
+      logger.info(`clear scheme database!`)
       res()
     } catch (error: any) {
-      logger.fatal(error, `clear scheme ${getEnvVariable('DB_NAME')} database!`)
+      logger.fatal(error, `clear scheme database!`)
       rej(error)
     }
   })
