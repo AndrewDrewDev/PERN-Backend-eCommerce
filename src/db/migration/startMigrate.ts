@@ -1,7 +1,9 @@
 import path from 'path'
 import excelValidator from 'pern-excel-validator'
 
-import config from '../../config'
+import dotenv from 'dotenv'
+dotenv.config()
+
 import { TDBMJson } from '../types'
 import MigrationDataStore from './MigrationDataStore'
 import initModel from '../model/initModel'
@@ -9,6 +11,7 @@ import InsertToDB from './InsertToDB'
 import logger from '../../utils/logger'
 import FileSystemService from '../../utils/FileSystemUtils'
 import clearDatabase from './clearDatabase'
+import getEnvVariable from '../../utils/getEnvVariable'
 
 const startMigrate = () => {
   const excelFilePath: string = path.resolve(
@@ -17,7 +20,7 @@ const startMigrate = () => {
     '..',
     '..',
     'data',
-    config.DBM_EXCEL_FILE_NAME
+    getEnvVariable('DBM_EXCEL_FILE_NAME')
   )
 
   const configFilePath: string = path.resolve(
@@ -26,7 +29,7 @@ const startMigrate = () => {
     '..',
     '..',
     'data',
-    config.DBM_EXCEL_CONFIG_FILE_NAME
+    getEnvVariable('DBM_EXCEL_CONFIG_FILE_NAME')
   )
 
   FileSystemService.clearStaticFolder()

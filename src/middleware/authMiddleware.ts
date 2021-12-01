@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 import { NextFunction, RequestHandler, Response } from 'express'
-import config from '../config'
+import getEnvVariable from '../utils/getEnvVariable'
 
 const authMiddleware: RequestHandler = async (
   req: Request | any,
@@ -14,9 +14,7 @@ const authMiddleware: RequestHandler = async (
 
     if (!token) return res.status(401).json({ message: 'User not auth!' })
 
-    const decoded = jwt.verify(token, config.SECRET_KEY)
-
-    req.user = decoded
+    req.user = jwt.verify(token, getEnvVariable('SECRET_KEY'))
 
     next()
   } catch (error) {

@@ -30,7 +30,7 @@ class InsertToDB {
         let img: string | null = null
 
         if (item.category.img) {
-          img = FileSystemService.copyImgFileToStatic(item.category.img, true)
+          img = FileSystemService.copyImgFileToStatic(item.category.img, false)
         }
 
         await db.query(
@@ -247,7 +247,7 @@ class InsertToDB {
         for (const imgPath of img.preview) {
           const newFileName = FileSystemService.copyImgFileToStatic(
             imgPath,
-            true
+            false
           )
           await writeToDB(id, newFileName, true)
         }
@@ -255,7 +255,7 @@ class InsertToDB {
         for (const imgPath of img.big) {
           const newFileName = FileSystemService.copyImgFileToStatic(
             imgPath,
-            true
+            false
           )
           await writeToDB(id, newFileName, false)
         }

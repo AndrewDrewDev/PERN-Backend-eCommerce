@@ -1,9 +1,9 @@
 import fs from 'fs-extra'
 import path from 'path'
 
-import config from '../../config'
 import db from '../db'
 import logger from '../../utils/logger'
+import getEnvVariable from '../../utils/getEnvVariable'
 
 const initModel = async (): Promise<void> => {
   try {
@@ -12,10 +12,10 @@ const initModel = async (): Promise<void> => {
       'utf-8'
     )
     await db.query(sql)
-    logger.info(`init model of ${config.DB_NAME} database!`)
+    logger.info(`init model of ${getEnvVariable('DB_NAME')} database!`)
     return Promise.resolve()
   } catch (error: any) {
-    logger.error(error, `init model of ${config.DB_NAME} database!`)
+    logger.error(error, `init model of ${getEnvVariable('DB_NAME')} database!`)
     return Promise.reject()
   }
 }

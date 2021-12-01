@@ -1,14 +1,15 @@
 import express, { Application } from 'express'
 import fileUpload from 'express-fileupload'
-
 import cors from 'cors'
-import config from './config'
 import routes from './routes'
 import errorResponseHandler from './error/errorResponseHandler'
 import FileSystemUtils from './utils/FileSystemUtils'
+import getEnvVariable from './utils/getEnvVariable'
 
-const PORT = process.env.PORT || config.PORT
-process.env.PWD = process.cwd()
+import dotenv from 'dotenv'
+dotenv.config()
+
+const PORT = getEnvVariable('PORT')
 
 const app: Application = express()
 app.use(cors())

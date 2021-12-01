@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import config from '../config'
 import { TUserAuthType } from '../types'
+import getEnvVariable from '../utils/getEnvVariable'
 
 const checkRoleMiddleware = (role: TUserAuthType) => {
   return (req: Request | any, res: Response, next: NextFunction) => {
@@ -11,7 +11,7 @@ const checkRoleMiddleware = (role: TUserAuthType) => {
 
       if (!token) return res.status(401).json({ message: 'User not auth!' })
 
-      const decode: any = jwt.verify(token, config.SECRET_KEY)
+      const decode: any = jwt.verify(token, getEnvVariable('SECRET_KEY'))
 
       if (decode.role !== role)
         return res.status(403).json({ message: 'No Access!' })

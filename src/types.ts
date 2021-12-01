@@ -3,6 +3,18 @@ export enum StartModeEnum {
   Production = 'production',
 }
 
+export interface ProcessEnv {
+  readonly PORT: string
+  readonly DBM_EXCEL_FILE_NAME: string
+  readonly DBM_EXCEL_CONFIG_FILE_NAME: string
+  readonly DB_NAME: string
+  readonly DB_USER: string
+  readonly DB_PASSWORD: string
+  readonly DB_HOST: string
+  readonly DB_PORT: string
+  readonly SECRET_KEY: string
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Prefix abbreviation Controllers types explain:

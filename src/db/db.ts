@@ -1,23 +1,26 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import { Pool } from 'pg'
-import config from '../config'
 import { StartModeEnum } from '../types'
+import getEnvVariable from '../utils/getEnvVariable'
 
 // Connected to PostgreSQL
 class Database {
   private _pool: Pool
 
   constructor() {
-    if (process.env.NODE_ENV === StartModeEnum.Development) {
+    if (getEnvVariable('NODE_ENV') === StartModeEnum.Development) {
       this._pool = new Pool({
-        user: config.DB_USER,
-        host: config.DB_HOST,
-        database: config.DB_NAME,
-        password: config.DB_PASSWORD,
-        port: config.DB_PORT,
+        user: getEnvVariable('DB_USER'),
+        host: getEnvVariable('DB_HOST'),
+        database: getEnvVariable('DB_NAME'),
+        password: getEnvVariable('DB_PASSWORD'),
+        port: Number(getEnvVariable('DB_PORT')),
       })
     } else {
       this._pool = new Pool({
-        connectionString: process.env.DATABASE_URL,
+        connectionString: getEnvVariable('DATABASE_URL'),
         ssl: {
           rejectUnauthorized: false,
         },

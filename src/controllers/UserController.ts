@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import UserService from '../model/UserModel'
-import config from '../config'
 import ErrorHandler from '../error/ErrorHandler'
+import getEnvVariable from '../utils/getEnvVariable'
 
 class UserController {
   public async registration(
@@ -82,7 +82,7 @@ class UserController {
 const generateJwt = (args: { email: string; role: string }) => {
   const { email, role } = args
 
-  return jwt.sign({ email, role }, config.SECRET_KEY, {
+  return jwt.sign({ email, role }, getEnvVariable('SECRET_KEY'), {
     expiresIn: '24h',
   })
 }
