@@ -33,6 +33,4 @@ class Database {
   }
 }
 
-const database = new Database()
-
-export default database
+export default new Database()
